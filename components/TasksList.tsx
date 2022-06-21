@@ -1,6 +1,7 @@
 import styles from "../styles/Home.module.css";
 import { query } from "thin-backend";
 import { useQuery } from "thin-backend-react";
+import { Editor } from "./Editor";
 
 export function TasksList() {
   const tasks = useQuery(query("tasks").orderByDesc("createdAt"));
@@ -14,7 +15,7 @@ export function TasksList() {
       {tasks.map((task) => (
         <div className={styles.card} key={task.title}>
           <h2>{task.title}</h2>
-          <p>{task.description}</p>
+          <Editor task={task} />
         </div>
       ))}
     </div>

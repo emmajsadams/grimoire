@@ -21,7 +21,6 @@ const Home: NextPage = () => {
           <UserStatus />
         </p>
         <TasksList />
-        <Editor />
       </main>
 
       <footer className={styles.footer}>

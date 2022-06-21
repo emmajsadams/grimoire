@@ -1,5 +1,6 @@
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin";
+import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
@@ -7,17 +8,20 @@ import TreeViewPlugin from "./plugins/TreeViewPlugin";
 import EmoticonPlugin from "./plugins/EmoticonPlugin";
 import MyCustomAutoFocusPlugin from "./plugins/MyCustomAutoFocusPlugin";
 import { Config } from "./Config";
-import { onChange } from "./onChange";
+import { makeOnChange } from "./onChange";
 
-export function Editor() {
+// TODO: Pull title from first header
+export function Editor(props: { task: any }): JSX.Element {
   return (
     <LexicalComposer initialConfig={Config}>
       <div className="editor-container">
-        <PlainTextPlugin
+        <RichTextPlugin
+          initialEditorState={props.task.description}
           contentEditable={<ContentEditable className="editor-input" />}
           placeholder={<Placeholder />}
         />
-        <OnChangePlugin onChange={onChange} />
+        <MarkdownShortcutPlugin />
+        <OnChangePlugin onChange={makeOnChange(props.task)} />
         <HistoryPlugin />
         <TreeViewPlugin />
         <EmoticonPlugin />
