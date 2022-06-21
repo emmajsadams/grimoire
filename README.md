@@ -2,6 +2,7 @@
 
 For lexical.dev I used docs and this sample primarily https://codesandbox.io/s/lexical-plain-text-example-g932e?file=/src/onChange.js:0-371
 For thin.dev I used their docs and https://thin.dev/docs/nextjs#retrieving-the-current-user
+TODO: Do I need force reoslutions pacakge?
 
 # END Acutal docs
 
