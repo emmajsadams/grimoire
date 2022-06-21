@@ -3,6 +3,7 @@ import { TreeView } from "@lexical/react/LexicalTreeView";
 
 export default function TreeViewPlugin() {
   const [editor] = useLexicalComposerContext();
+  editor.setEditorState
   return (
     <TreeView
       viewClassName="tree-view-output"

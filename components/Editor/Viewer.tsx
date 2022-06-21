@@ -3,6 +3,7 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import ExampleTheme from "./themes/ExampleTheme";
 import { HeadingNode } from "@lexical/rich-text";
+import { TaskStatePlugin } from "./plugins/TaskStatePlugin";
 
 // emoji node is broken EmojiNode
 export const Config: any = {
@@ -17,6 +18,8 @@ export const Config: any = {
 };
 
 export function Viewer(props: { task: any }): JSX.Element {
+  const { task } = props;
+
   return (
     <LexicalComposer initialConfig={Config}>
       <div className="editor-container">
@@ -25,6 +28,7 @@ export function Viewer(props: { task: any }): JSX.Element {
           contentEditable={<ContentEditable className="editor-input" />}
           placeholder=""
         />
+        <TaskStatePlugin task={task} />
       </div>
     </LexicalComposer>
   );

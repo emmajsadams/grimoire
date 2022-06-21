@@ -1,5 +1,4 @@
 import { $getRoot, $getSelection } from "lexical";
-import { text } from "stream/consumers";
 // Add this import
 import { updateRecord, getCurrentUserId } from "thin-backend";
 
@@ -7,6 +6,7 @@ import { updateRecord, getCurrentUserId } from "thin-backend";
 // TODO: Add some sort of delay on updating this all the time (or make sure pugin handles it)
 export function makeOnChange(task: any): any {
   return function (editorState: any) {
+    // TODO: quickly check editor state and unless it differs bail on all updates
     editorState.read(() => {
       // // Read the contents of the EditorState here.
 

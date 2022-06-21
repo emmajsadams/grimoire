@@ -23,6 +23,7 @@ export const Config: any = {
 };
 
 // TODO: Convert this to a TaskView Component
+// TODO: Prevent duplicate edits with a simple flag that checks if any client is editing
 export function Editor(props: { task: any }): JSX.Element {
   const { task } = props;
   const [edit, setEdit] = useState(false);
@@ -49,7 +50,11 @@ export function Editor(props: { task: any }): JSX.Element {
             placeholder={<Placeholder />}
           />
           <MarkdownShortcutPlugin />
-          <OnChangePlugin onChange={makeOnChange(task)} />
+          <OnChangePlugin
+            ignoreInitialChange={true}
+            ignoreSelectionChange={true}
+            onChange={makeOnChange(task)}
+          />
           <HistoryPlugin />
           <TreeViewPlugin />
           <EmoticonPlugin />
