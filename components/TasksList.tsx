@@ -2,6 +2,7 @@ import styles from "../styles/Home.module.css";
 import { query } from "thin-backend";
 import { useQuery } from "thin-backend-react";
 import { Editor } from "./Editor";
+import { Viewer } from "./Editor/Viewer";
 
 export function TasksList() {
   const tasks = useQuery(query("tasks").orderByDesc("createdAt"));
@@ -10,11 +11,12 @@ export function TasksList() {
     return <div>Loading ...</div>;
   }
 
+  // TODO enable editor view only if user clicks edit?
   return (
     <div className={styles.grid}>
-      {tasks.map((task) => (
+      {tasks.map((task, index) => (
         <div className={styles.card} key={task.id}>
-          <Editor task={task} />
+          {index === 0 ? <Editor task={task} /> : <Viewer task={task} />}
         </div>
       ))}
     </div>

@@ -13,6 +13,9 @@ import { HeadingNode } from "@lexical/rich-text";
 
 // emoji node is broken EmojiNode
 export const Config: any = {
+  readOnly: true,
+
+  // TODO: Consolidate configs, stuff below is identical
   theme: ExampleTheme,
   onError(error: any) {
     throw error;
@@ -20,26 +23,16 @@ export const Config: any = {
   nodes: [HeadingNode], // TODO: Add rest of rich-text stuff here for markdown
 };
 
-export function Editor(props: { task: any }): JSX.Element {
+export function Viewer(props: { task: any }): JSX.Element {
   return (
     <LexicalComposer initialConfig={Config}>
       <div className="editor-container">
         <RichTextPlugin
           initialEditorState={props.task.rawEditorState}
           contentEditable={<ContentEditable className="editor-input" />}
-          placeholder={<Placeholder />}
+          placeholder=""
         />
-        <MarkdownShortcutPlugin />
-        <OnChangePlugin onChange={makeOnChange(props.task)} />
-        <HistoryPlugin />
-        <TreeViewPlugin />
-        <EmoticonPlugin />
-        <MyCustomAutoFocusPlugin />
       </div>
     </LexicalComposer>
   );
-}
-
-function Placeholder() {
-  return <div className="editor-placeholder">Enter some plain text...</div>;
 }

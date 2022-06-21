@@ -35,11 +35,16 @@ export function makeOnChange(task: any): any {
       // TODO: Do I need this full editor state??? or is it ok to have something else with just the root nodes
       const rawEditorState = JSON.stringify(editorState);
 
+      // TODO: Consider how to store history?? separate field? are there limits
       const newTask = {
         rawEditorState,
         title,
         description,
-        // TODO: Add parser for Date: XXXXXXXX
+        // TODO: Add Parser for `Due: ....`
+        // TODO: Add Parser for `Tags: ....`
+        // TODO: Add Parser for `Recurring: Weekly|Monthly`
+        // TODO: Add Parser for Done (maybe a [x] at the end or beginning of title)
+
         // userId: getCurrentUserId(),
       };
 
