@@ -1,11 +1,10 @@
-import { AnyARecord } from "dns";
 import { $getRoot, $getSelection } from "lexical";
 import { text } from "stream/consumers";
 // Add this import
 import { updateRecord, getCurrentUserId } from "thin-backend";
 
-// When the editor changes, you can get notified via the
-// LexicalOnChangePlugin!
+// TODO: Is tasks the right name? Maybe notes?
+// TODO: Add some sort of delay on updating this all the time (or make sure pugin handles it)
 export function makeOnChange(task: any): any {
   return function (editorState: any) {
     editorState.read(() => {
@@ -35,7 +34,16 @@ export function makeOnChange(task: any): any {
       // TODO: Do I need this full editor state??? or is it ok to have something else with just the root nodes
       const rawEditorState = JSON.stringify(editorState);
 
-      // TODO: Consider how to store history?? separate field? are there limits
+      // TODO: Consider how to store history??
+      //  * I would say a separate history table that mirrors current tasks schemea
+      //  * add version column to both
+      //  * current version and all past versions are stored in history table
+      //  * draft is created in history table and editor shows the draft always
+      //  * save as draft button is added
+      //  * all updates happen in realtime to draft
+      //  * allow lexical local history to be used
+      //  * once save is clicked main version is updated to draft version
+      // TODO: make sure updates from multiple clients work
       const newTask = {
         rawEditorState,
         title,

@@ -40,7 +40,7 @@ export function Editor(props: { task: any }): JSX.Element {
   // TODO// convert this to a TextEdit component
   return (
     <>
-      <button onClick={() => setEdit(false)}>Stop Editing</button>
+      <button onClick={() => setEdit(false)}>Save</button>
       <LexicalComposer initialConfig={Config}>
         <div className="editor-container">
           <RichTextPlugin
