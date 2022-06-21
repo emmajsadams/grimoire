@@ -12,7 +12,7 @@ export function TasksList() {
   return (
     <div className={styles.grid}>
       {tasks.map((task) => (
-        <div className={styles.card}>
+        <div className={styles.card} key={task.title}>
           <h2>{task.title}</h2>
           <p>{task.description}</p>
         </div>

@@ -5,10 +5,10 @@ export function UserStatus() {
   const user = useCurrentUser();
 
   return (
-    <div>
+    <>
       {user?.email}
 
       <button onClick={() => logout()}>Logout</button>
-    </div>
+    </>
   );
 }

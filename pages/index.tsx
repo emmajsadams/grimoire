@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { TasksList } from "../components/TasksList";
 import { UserStatus } from "../components/UserStatus";
+import { Editor } from "../components/Editor";
 
 const Home: NextPage = () => {
   return (
@@ -20,6 +21,7 @@ const Home: NextPage = () => {
           <UserStatus />
         </p>
         <TasksList />
+        <Editor />
       </main>
 
       <footer className={styles.footer}>

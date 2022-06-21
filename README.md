@@ -1,3 +1,11 @@
+# Actual docs
+
+For lexical.dev I used docs and this sample primarily https://codesandbox.io/s/lexical-plain-text-example-g932e?file=/src/onChange.js:0-371
+
+# END Acutal docs
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
