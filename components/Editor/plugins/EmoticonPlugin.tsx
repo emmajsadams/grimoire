@@ -7,7 +7,7 @@ function emoticonTransform(node: any) {
   const textContent = node.getTextContent();
   // When you type :), we will replace it with an emoji node
   if (textContent === ":)") {
-    node.replace($createEmojiNode("emoji happysmile", "🙂"));
+    node.replace($createEmojiNode("emoji happysmile", "🙂", "key"));
   }
 }
 

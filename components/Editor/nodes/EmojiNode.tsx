@@ -5,16 +5,16 @@ export class EmojiNode extends TextNode {
     return "emoji";
   }
 
-  static clone(node) {
+  static clone(node: any) {
     return new EmojiNode(node.__className, node.__text, node.__key);
   }
 
-  constructor(className, text, key) {
+  constructor(className: any, text: any, key: any) {
     super(text, key);
     this.__className = className;
   }
 
-  createDOM(config) {
+  createDOM(config: any) {
     const dom = document.createElement("span");
     const inner = super.createDOM(config);
     dom.className = this.__className;
@@ -23,7 +23,7 @@ export class EmojiNode extends TextNode {
     return dom;
   }
 
-  updateDOM(prevNode, dom, config) {
+  updateDOM(prevNode: any, dom: any, config: any) {
     const inner = dom.firstChild;
     if (inner === null) {
       return true;
@@ -33,10 +33,10 @@ export class EmojiNode extends TextNode {
   }
 }
 
-export function $isEmojiNode(node) {
+export function $isEmojiNode(node: any) {
   return node instanceof EmojiNode;
 }
 
-export function $createEmojiNode(className, emojiText) {
-  return new EmojiNode(className, emojiText).setMode("token");
+export function $createEmojiNode(className: any, emojiText: any, key: any) {
+  return new EmojiNode(className, emojiText, key).setMode("token");
 }
