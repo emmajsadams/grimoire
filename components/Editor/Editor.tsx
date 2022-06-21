@@ -10,6 +10,8 @@ import MyCustomAutoFocusPlugin from "./plugins/MyCustomAutoFocusPlugin";
 import { makeOnChange } from "./onChange";
 import ExampleTheme from "./themes/ExampleTheme";
 import { HeadingNode } from "@lexical/rich-text";
+import { Viewer } from "./Viewer";
+import React, { useState } from "react";
 
 // emoji node is broken EmojiNode
 export const Config: any = {
@@ -20,23 +22,41 @@ export const Config: any = {
   nodes: [HeadingNode], // TODO: Add rest of rich-text stuff here for markdown
 };
 
+// TODO: Convert this to a TaskView Component
 export function Editor(props: { task: any }): JSX.Element {
+  const { task } = props;
+  const [edit, setEdit] = useState(false);
+
+  // TODO// convert this to a TextView component
+  if (!edit) {
+    return (
+      <>
+        <button onClick={() => setEdit(true)}>Edit</button>
+        <Viewer task={task} />
+      </>
+    );
+  }
+
+  // TODO// convert this to a TextEdit component
   return (
-    <LexicalComposer initialConfig={Config}>
-      <div className="editor-container">
-        <RichTextPlugin
-          initialEditorState={props.task.rawEditorState}
-          contentEditable={<ContentEditable className="editor-input" />}
-          placeholder={<Placeholder />}
-        />
-        <MarkdownShortcutPlugin />
-        <OnChangePlugin onChange={makeOnChange(props.task)} />
-        <HistoryPlugin />
-        <TreeViewPlugin />
-        <EmoticonPlugin />
-        <MyCustomAutoFocusPlugin />
-      </div>
-    </LexicalComposer>
+    <>
+      <button onClick={() => setEdit(false)}>Stop Editing</button>
+      <LexicalComposer initialConfig={Config}>
+        <div className="editor-container">
+          <RichTextPlugin
+            initialEditorState={task.rawEditorState}
+            contentEditable={<ContentEditable className="editor-input" />}
+            placeholder={<Placeholder />}
+          />
+          <MarkdownShortcutPlugin />
+          <OnChangePlugin onChange={makeOnChange(task)} />
+          <HistoryPlugin />
+          <TreeViewPlugin />
+          <EmoticonPlugin />
+          <MyCustomAutoFocusPlugin />
+        </div>
+      </LexicalComposer>
+    </>
   );
 }
 

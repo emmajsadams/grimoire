@@ -2,7 +2,6 @@ import styles from "../styles/Home.module.css";
 import { query } from "thin-backend";
 import { useQuery } from "thin-backend-react";
 import { Editor } from "./Editor";
-import { Viewer } from "./Editor/Viewer";
 
 export function TasksList() {
   const tasks = useQuery(query("tasks").orderByDesc("createdAt"));
@@ -16,7 +15,7 @@ export function TasksList() {
     <div className={styles.grid}>
       {tasks.map((task, index) => (
         <div className={styles.card} key={task.id}>
-          {index === 0 ? <Editor task={task} /> : <Viewer task={task} />}
+          <Editor task={task} />
         </div>
       ))}
     </div>
