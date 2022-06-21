@@ -1,13 +1,6 @@
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-import TreeViewPlugin from "./plugins/TreeViewPlugin";
-import EmoticonPlugin from "./plugins/EmoticonPlugin";
-import MyCustomAutoFocusPlugin from "./plugins/MyCustomAutoFocusPlugin";
-import { makeOnChange } from "./onChange";
 import ExampleTheme from "./themes/ExampleTheme";
 import { HeadingNode } from "@lexical/rich-text";
 
