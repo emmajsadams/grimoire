@@ -16,7 +16,7 @@ export function Editor(props: { task: any }): JSX.Element {
     <LexicalComposer initialConfig={Config}>
       <div className="editor-container">
         <RichTextPlugin
-          initialEditorState={props.task.description}
+          initialEditorState={props.task.rawEditorState}
           contentEditable={<ContentEditable className="editor-input" />}
           placeholder={<Placeholder />}
         />

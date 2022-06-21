@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "preinstall": "npx npm-force-resolutions && npm remove @types/thin-backend && npm install --save-dev 'https://thin.dev/types/afad04b6-8068-4de5-8219-79d524a7ff50/HTfJTpibSfjKjhrTFdiGQOcQWnBcRYyZ'"
+    "preinstall": "npx npm-force-resolutions && npm remove @types/thin-backend && npm install --save-dev 'https://thin.dev/types/6284f1df-d93c-466b-908f-89eecab9336f/zgiBxNjUGXXPDthcuEDULpAlwhPyAkou'"
   },
   "dependencies": {
     "@lexical/react": "^0.3.5",
@@ -22,7 +22,7 @@
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
-    "@types/thin-backend": "https://thin.dev/types/afad04b6-8068-4de5-8219-79d524a7ff50/HTfJTpibSfjKjhrTFdiGQOcQWnBcRYyZ",
+    "@types/thin-backend": "https://thin.dev/types/6284f1df-d93c-466b-908f-89eecab9336f/zgiBxNjUGXXPDthcuEDULpAlwhPyAkou",
     "eslint": "8.18.0",
     "eslint-config-next": "12.1.6",
     "npm-force-resolutions": "0.0.10",
