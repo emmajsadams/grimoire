@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "preinstall": "npx npm-force-resolutions"
   },
   "dependencies": {
     "@lexical/react": "^0.3.5",
@@ -24,6 +25,7 @@
     "@types/thin-backend": "https://thin.dev/types/afad04b6-8068-4de5-8219-79d524a7ff50/HTfJTpibSfjKjhrTFdiGQOcQWnBcRYyZ",
     "eslint": "8.18.0",
     "eslint-config-next": "12.1.6",
+    "npm-force-resolutions": "0.0.10",
     "typescript": "4.7.4"
   }
 }
