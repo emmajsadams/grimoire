@@ -24,7 +24,6 @@ export function TextView(props: {
   const { editDraft, children } = props;
 
   // TODO: use clientID to change buttons.
-
   return (
     <>
       <button onClick={editDraft}>Edit Draft</button>

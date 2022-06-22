@@ -67,3 +67,73 @@ export function makeOnChange(note: any): any {
     });
   };
 }
+
+// TODO!!!! use this code to write a custom onchange handler
+//
+// /**
+//  * Copyright (c) Meta Platforms, Inc. and affiliates.
+//  *
+//  * This source code is licensed under the MIT license found in the
+//  * LICENSE file in the root directory of this source tree.
+//  */
+// 'use strict';
+
+// var LexicalComposerContext = require('@lexical/react/LexicalComposerContext');
+// var react = require('react');
+
+// /**
+//  * Copyright (c) Meta Platforms, Inc. and affiliates.
+//  *
+//  * This source code is licensed under the MIT license found in the
+//  * LICENSE file in the root directory of this source tree.
+//  *
+//  */
+// const CAN_USE_DOM = typeof window !== 'undefined' && typeof window.document !== 'undefined' && typeof window.document.createElement !== 'undefined';
+
+// /**
+//  * Copyright (c) Meta Platforms, Inc. and affiliates.
+//  *
+//  * This source code is licensed under the MIT license found in the
+//  * LICENSE file in the root directory of this source tree.
+//  *
+//  */
+// const useLayoutEffectImpl = CAN_USE_DOM ? react.useLayoutEffect : react.useEffect;
+// var useLayoutEffect = useLayoutEffectImpl;
+
+// /**
+//  * Copyright (c) Meta Platforms, Inc. and affiliates.
+//  *
+//  * This source code is licensed under the MIT license found in the
+//  * LICENSE file in the root directory of this source tree.
+//  *
+//  */
+// function OnChangePlugin({
+//   ignoreInitialChange = true,
+//   ignoreSelectionChange = false,
+//   onChange
+// }) {
+//   const [editor] = LexicalComposerContext.useLexicalComposerContext();
+//   useLayoutEffect(() => {
+//     if (onChange) {
+//       return editor.registerUpdateListener(({
+//         editorState,
+//         dirtyElements,
+//         dirtyLeaves,
+//         prevEditorState
+//       }) => {
+//         if (ignoreSelectionChange && dirtyElements.size === 0 && dirtyLeaves.size === 0) {
+//           return;
+//         }
+
+//         if (ignoreInitialChange && prevEditorState.isEmpty()) {
+//           return;
+//         }
+
+//         onChange(editorState, editor);
+//       });
+//     }
+//   }, [editor, ignoreInitialChange, ignoreSelectionChange, onChange]);
+//   return null;
+// }
+
+// exports.OnChangePlugin = OnChangePlugin;

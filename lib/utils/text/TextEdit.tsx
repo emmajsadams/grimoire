@@ -10,7 +10,7 @@ import ExampleTheme from "../../utils/text/themes/ExampleTheme";
 import { HeadingNode } from "@lexical/rich-text";
 import React from "react";
 
-// emoji node is broken EmojiNode
+// TODO: emoji node is broken EmojiNode
 export const Config: any = {
   theme: ExampleTheme,
   onError(error: any) {
@@ -19,7 +19,7 @@ export const Config: any = {
   nodes: [HeadingNode], // TODO: Add rest of rich-text stuff here for markdown
 };
 
-// TODO: make param inputs generic separate from tasks
+// TODO: Look into collobartion plugin
 export function TextEdit(props: {
   initialState: any;
   saveDraft: () => any;
