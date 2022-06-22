@@ -5,7 +5,7 @@ import { updateRecord, getCurrentUserId } from "thin-backend";
 // TODO: move logic of parsing from rawState to Note into the notes directory
 // TODO: Is tasks the right name? Maybe notes?
 // TODO: Add some sort of delay on updating this all the time (or make sure pugin handles it)
-export function makeOnChange(task: any): any {
+export function makeOnChange(note: any): any {
   return function (editorState: any) {
     // TODO: quickly check editor state and unless it differs bail on all updates
     editorState.read(() => {
@@ -63,7 +63,7 @@ export function makeOnChange(task: any): any {
 
       console.log(newTask);
 
-      updateRecord("tasks", task.id, newTask);
+      updateRecord("notes", note.id, newTask);
     });
   };
 }

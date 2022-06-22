@@ -3,7 +3,6 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import ExampleTheme from "./themes/ExampleTheme";
 import { HeadingNode } from "@lexical/rich-text";
-import { TaskStatePlugin } from "./plugins/TaskStatePlugin";
 
 // emoji node is broken EmojiNode
 export const Config: any = {
@@ -17,20 +16,25 @@ export const Config: any = {
   nodes: [HeadingNode], // TODO: Add rest of rich-text stuff here for markdown
 };
 
-export function TextView(props: { task: any; setEdit: any }): JSX.Element {
-  const { task, setEdit } = props;
+export function TextView(props: {
+  clientID: any;
+  editDraft: () => any;
+  children: any;
+}): JSX.Element {
+  const { editDraft, children } = props;
+
+  // TODO: use clientID to change buttons.
 
   return (
     <>
-      <button onClick={() => setEdit(true)}>Edit Draft</button>
+      <button onClick={editDraft}>Edit Draft</button>
       <LexicalComposer initialConfig={Config}>
         <div className="editor-container">
           <RichTextPlugin
-            initialEditorState={props.task.rawEditorState}
             contentEditable={<ContentEditable className="editor-input" />}
             placeholder=""
           />
-          <TaskStatePlugin task={task} />
+          {children}
         </div>
       </LexicalComposer>
     </>

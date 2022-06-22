@@ -1,4 +1,4 @@
-import { Editor } from "../../models/notes/Task";
+import { TextEdit } from "./TextEdit";
 import { TextView } from "./TextView";
 
-export { Editor, TextView };
+export { TextEdit, TextView };

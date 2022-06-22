@@ -3,11 +3,9 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import TreeViewPlugin from "../../utils/text/plugins/TreeViewPlugin";
 import EmoticonPlugin from "../../utils/text/plugins/EmoticonPlugin";
 import MyCustomAutoFocusPlugin from "../../utils/text/plugins/MyCustomAutoFocusPlugin";
-import { makeOnChange } from "../../utils/text/plugins/OnChangePlugin";
 import ExampleTheme from "../../utils/text/themes/ExampleTheme";
 import { HeadingNode } from "@lexical/rich-text";
 import React from "react";
@@ -22,30 +20,29 @@ export const Config: any = {
 };
 
 // TODO: make param inputs generic separate from tasks
-export function TextEdit(props: { task: any; setEdit: any }): JSX.Element {
-  const { task, setEdit } = props;
+export function TextEdit(props: {
+  initialState: any;
+  saveDraft: () => any;
+  children: any;
+}): JSX.Element {
+  const { initialState, saveDraft, children } = props;
 
   return (
     <>
-      <button onClick={() => setEdit(false)}>Save Draft as New Version</button>
+      <button onClick={saveDraft}>Save Draft as New Version</button>
       <LexicalComposer initialConfig={Config}>
         <div className="editor-container">
           <RichTextPlugin
-            initialEditorState={task.rawEditorState}
+            initialEditorState={initialState}
             contentEditable={<ContentEditable className="editor-input" />}
             placeholder={<Placeholder />}
           />
           <MarkdownShortcutPlugin />
-          {/* TODO I might need to make my own OnChangePlugin that handles updating the task state from other clients without triggering onChange handler lop */}
-          <OnChangePlugin
-            ignoreInitialChange={true}
-            ignoreSelectionChange={true}
-            onChange={makeOnChange(task)}
-          />
           <HistoryPlugin />
           <TreeViewPlugin />
           <EmoticonPlugin />
           <MyCustomAutoFocusPlugin />
+          {children}
         </div>
       </LexicalComposer>
     </>
