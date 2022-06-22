@@ -12,8 +12,8 @@ const Home: NextPage<any, any> = (props: { clientID: string }) => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Grimoire</title>
-        <meta name="description" content="Grimoire Automata Notes" />
+        <title>Grimoire Automata</title>
+        <meta name="description" content="Grimoire Automata" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
