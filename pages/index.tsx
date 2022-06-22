@@ -18,7 +18,6 @@ const Home: NextPage<any, any> = (props: { clientID: string }) => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Grimoire</h1>
         <p className={styles.description}>
           <UserStatus />
         </p>
