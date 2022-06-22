@@ -50,6 +50,7 @@ export function Editor(props: { task: any }): JSX.Element {
             placeholder={<Placeholder />}
           />
           <MarkdownShortcutPlugin />
+          {/* TODO I might need to make my own OnChangePlugin that handles updating the task state from other clients without triggering onChange handler lop */}
           <OnChangePlugin
             ignoreInitialChange={true}
             ignoreSelectionChange={true}

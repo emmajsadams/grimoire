@@ -17,9 +17,13 @@ export function makeOnChange(task: any): any {
       const root = $getRoot();
       const textNodes = root.getAllTextNodes();
       let title: string | undefined;
+
+      // TODO: Change the first text node to always be an h1
       if (textNodes.length > 0) {
         title = textNodes.shift()?.getTextContent();
       }
+
+      // TODO: Parse any special lines such as (Due: ), and move them below title with bold text
 
       // parse rest of text as description
       let description: string | undefined;

@@ -4,9 +4,11 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { TasksList } from "../components/TasksList";
 import { UserStatus } from "../components/UserStatus";
-import { Editor } from "../components/Editor";
+import { v4 as uuidv4 } from "uuid";
 
-const Home: NextPage = () => {
+// TODO: Change the name of clientID to requestID
+const Home: NextPage<any, any> = (props: { clientID: string }) => {
+  const { clientID } = props;
   return (
     <div className={styles.container}>
       <Head>
@@ -20,7 +22,7 @@ const Home: NextPage = () => {
         <p className={styles.description}>
           <UserStatus />
         </p>
-        <TasksList />
+        <TasksList clientID={clientID} />
       </main>
 
       <footer className={styles.footer}>
@@ -40,3 +42,11 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      clientID: uuidv4(),
+    },
+  };
+}
