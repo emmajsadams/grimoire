@@ -14,7 +14,6 @@ function onClick(
   edit: boolean,
   setEdit: (newEdit: boolean) => any
 ) {
-  debugger;
   if (edit) {
     updateRecord("notes", note.id, { clientId: null });
     setEdit(false);
@@ -110,7 +109,7 @@ export function Note(props: { note: any; clientId: any }): JSX.Element {
   return (
     <div
       className={styles.card}
-      onClick={() => onClick(note, clientId, edit, setEdit)}
+      onClick={() => !edit && onClick(note, clientId, edit, setEdit)}
     >
       {textElement}
       <hr />
