@@ -1,6 +1,5 @@
-import { $getRoot, $getSelection } from "lexical";
-// Add this import
-import { updateRecord, getCurrentUserId } from "thin-backend";
+import { $getRoot } from "lexical";
+import { updateRecord } from "thin-backend";
 
 // TODO: move logic of parsing from rawState to Note into the notes directory
 // TODO: Is tasks the right name? Maybe notes?
@@ -9,17 +8,11 @@ export function makeOnChange(note: any): any {
   return function (editorState: any) {
     // TODO: quickly check editor state and unless it differs bail on all updates
     editorState.read(() => {
-      // // Read the contents of the EditorState here.
-
-      // const selection = $getSelection();
-
-      // console.log(, root, selection);
-
       const root = $getRoot();
       const textNodes = root.getAllTextNodes();
       let title: string | undefined;
 
-      // TODO: Change the first text node to always be an h1
+      // TODO: Change the first text node to always be an h1 (maybe do this on save?)
       if (textNodes.length > 0) {
         title = textNodes.shift()?.getTextContent();
       }
@@ -37,7 +30,7 @@ export function makeOnChange(note: any): any {
       }
 
       // TODO: Do I need this full editor state??? or is it ok to have something else with just the root nodes
-      const rawEditorState = JSON.stringify(editorState);
+      const draftRawEditorState = JSON.stringify(editorState);
 
       // TODO: Consider how to store history??
       //  * I would say a separate history table that mirrors current tasks schemea
@@ -50,7 +43,7 @@ export function makeOnChange(note: any): any {
       //  * once save is clicked main version is updated to draft version
       // TODO: make sure updates from multiple clients work
       const newTask = {
-        rawEditorState,
+        draftRawEditorState,
         title,
         description,
         // TODO: Add Parser for `Due: ....`
@@ -60,8 +53,6 @@ export function makeOnChange(note: any): any {
 
         // userId: getCurrentUserId(),
       };
-
-      console.log(newTask);
 
       updateRecord("notes", note.id, newTask);
     });

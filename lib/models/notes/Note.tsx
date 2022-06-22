@@ -26,20 +26,46 @@ function onClick(
 
 function getStatus(note: any, edit: boolean): string {
   if (edit) {
-    return "Editing";
+    return "Editing Here ";
   } else {
     if (note.clientId) {
-      return "Editing (in another Window)";
+      return "Editing Elsewhere ";
     } else if (note.draftRawEditorState) {
-      return "Draft";
+      return "Draft ";
     }
   }
 
   return "";
 }
 
+function getEditorState(note: any) {
+  if (note.draftRawEditorState) {
+    return note.draftRawEditorState;
+  } else if (note.rawEditorState) {
+    return note.rawEditorState;
+  }
+
+  return "";
+}
+
 // TODO: safe the draft as the primary version and create a history record
-function saveNewVersion(): any {}
+function saveNewVersion(note: any, setEdit: any): any {
+  // TODO: Save the note in another table
+  updateRecord("notes", note.id, {
+    rawEditorState: note.draftRawEditorState,
+    draftRawEditorState: "",
+    version: note.version++,
+  });
+  setEdit(false);
+}
+
+function deleteDraft(note: any, setEdit: any): any {
+  updateRecord("notes", note.id, {
+    rawEditorState: note.draftRawEditorState,
+    draftRawEditorState: "",
+  });
+  setEdit(false);
+}
 
 // TODO: Prevent duplicate edits with a simple flag that checks if any client is editing
 export function Note(props: { note: any; clientId: any }): JSX.Element {
@@ -63,11 +89,11 @@ export function Note(props: { note: any; clientId: any }): JSX.Element {
       </TextView>
     );
   } else {
-    const initialState: any = note.rawEditorState
-      ? { initialState: note.rawEditorState }
-      : {};
+    let initialState = getEditorState(note);
+
+    const editProps: any = initialState ? { initialState } : {};
     textElement = (
-      <TextEdit {...initialState}>
+      <TextEdit {...editProps}>
         {/* TODO I might need to make my own OnChangePlugin that handles updating the task state from other clients without triggering onChange handler lop */}
         <OnChangePlugin
           ignoreInitialChange={true}
@@ -80,6 +106,7 @@ export function Note(props: { note: any; clientId: any }): JSX.Element {
 
   // TODO: Add a draft_raw_entity_state column and use that in edit. Also use it to add (Draft)
   // TODO: Handle onClick anywhere updating edit status
+  // TODO: IF there are no changes yet
   return (
     <div
       className={styles.card}
@@ -90,10 +117,16 @@ export function Note(props: { note: any; clientId: any }): JSX.Element {
 
       {edit ? (
         <>
-          <button onClick={() => saveNewVersion()}>Save New Version</button>
+          <button onClick={() => saveNewVersion(note, setEdit)}>
+            Save New Version
+          </button>
           <br />
           <button onClick={() => onClick(note, clientId, edit, setEdit)}>
             Save Draft
+          </button>
+          <br />
+          <button onClick={() => deleteDraft(note, setEdit)}>
+            Delete Draft
           </button>
           <br />
         </>
@@ -101,9 +134,9 @@ export function Note(props: { note: any; clientId: any }): JSX.Element {
         <></>
       )}
       <span>
-        {formatTimeAgo(note.updatedAt)}
+        {}
         <br />
-        {getStatus(note, edit)}
+        {getStatus(note, edit) + `(${formatTimeAgo(note.updatedAt)})`}
       </span>
     </div>
   );
