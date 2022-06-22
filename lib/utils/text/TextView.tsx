@@ -16,26 +16,19 @@ export const Config: any = {
   nodes: [HeadingNode], // TODO: Add rest of rich-text stuff here for markdown
 };
 
-export function TextView(props: {
-  clientID: any;
-  editDraft: () => any;
-  children: any;
-}): JSX.Element {
-  const { editDraft, children } = props;
+export function TextView(props: { children: any }): JSX.Element {
+  const { children } = props;
 
   // TODO: use clientID to change buttons.
   return (
-    <>
-      <button onClick={editDraft}>Edit Draft</button>
-      <LexicalComposer initialConfig={Config}>
-        <div className="editor-container">
-          <RichTextPlugin
-            contentEditable={<ContentEditable className="editor-input" />}
-            placeholder=""
-          />
-          {children}
-        </div>
-      </LexicalComposer>
-    </>
+    <LexicalComposer initialConfig={Config}>
+      <div className="editor-container">
+        <RichTextPlugin
+          contentEditable={<ContentEditable className="editor-input" />}
+          placeholder=""
+        />
+        {children}
+      </div>
+    </LexicalComposer>
   );
 }

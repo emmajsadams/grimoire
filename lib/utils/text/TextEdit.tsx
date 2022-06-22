@@ -20,6 +20,7 @@ export const Config: any = {
 };
 
 // TODO: Look into collobartion plugin
+// TODO: Toggle treeview for development purposes  <TreeViewPlugin />
 export function TextEdit(props: {
   initialState: any;
   saveDraft: () => any;
@@ -28,24 +29,20 @@ export function TextEdit(props: {
   const { initialState, saveDraft, children } = props;
 
   return (
-    <>
-      <button onClick={saveDraft}>Save Draft as New Version</button>
-      <LexicalComposer initialConfig={Config}>
-        <div className="editor-container">
-          <RichTextPlugin
-            initialEditorState={initialState}
-            contentEditable={<ContentEditable className="editor-input" />}
-            placeholder={<Placeholder />}
-          />
-          <MarkdownShortcutPlugin />
-          <HistoryPlugin />
-          <TreeViewPlugin />
-          <EmoticonPlugin />
-          <MyCustomAutoFocusPlugin />
-          {children}
-        </div>
-      </LexicalComposer>
-    </>
+    <LexicalComposer initialConfig={Config}>
+      <div className="editor-container">
+        <RichTextPlugin
+          initialEditorState={initialState}
+          contentEditable={<ContentEditable className="editor-input" />}
+          placeholder={<Placeholder />}
+        />
+        <MarkdownShortcutPlugin />
+        <HistoryPlugin />
+        <EmoticonPlugin />
+        <MyCustomAutoFocusPlugin />
+        {children}
+      </div>
+    </LexicalComposer>
   );
 }
 

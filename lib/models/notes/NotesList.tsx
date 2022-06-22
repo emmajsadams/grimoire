@@ -5,9 +5,9 @@ import { Note } from "./Note";
 import { createRecord } from "thin-backend";
 
 // TODO: Create a separat tags entity. then retrieve a mapping of them with usequery once and use that
-export function NotesList(props: { clientID: string }) {
-  const { clientID } = props;
-  const tags = useQuery(query("notes").orderByDesc("createdAt"));
+export function NotesList(props: { clientId: string }) {
+  const { clientId } = props;
+  const tags = useQuery(query("tags"));
   const notes = useQuery(query("notes").orderByDesc("createdAt"));
 
   if (notes === null) {
@@ -25,7 +25,7 @@ export function NotesList(props: { clientID: string }) {
 
       <div className={styles.grid}>
         {notes.map((note) => (
-          <Note note={note} clientID={clientID} key={note.id} />
+          <Note note={note} clientId={clientId} key={note.id} />
         ))}
       </div>
     </>

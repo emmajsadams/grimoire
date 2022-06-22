@@ -7,8 +7,8 @@ import { UserStatus } from "../lib/models/users/UserStatus";
 import { v4 as uuidv4 } from "uuid";
 
 // TODO: Change the name of clientID to requestID
-const Home: NextPage<any, any> = (props: { clientID: string }) => {
-  const { clientID } = props;
+const Home: NextPage<any, any> = (props: { clientId: string }) => {
+  const { clientId } = props;
   return (
     <div className={styles.container}>
       <Head>
@@ -21,7 +21,7 @@ const Home: NextPage<any, any> = (props: { clientID: string }) => {
         <p className={styles.description}>
           <UserStatus />
         </p>
-        <NotesList clientID={clientID} />
+        <NotesList clientId={clientId} />
       </main>
 
       <footer className={styles.footer}>
@@ -45,7 +45,7 @@ export default Home;
 export async function getServerSideProps() {
   return {
     props: {
-      clientID: uuidv4(),
+      clientId: uuidv4(),
     },
   };
 }

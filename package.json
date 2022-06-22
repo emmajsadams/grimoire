@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "preinstall": "npm remove @types/thin-backend && npm install --save-dev 'https://thin.dev/types/d4d7fd0c-1710-4112-bac8-ca0cfe4b932a/fgxYcHEqODWRJpocTMbgvtEwUOhjfDtf'"
+    "preinstall": "npm remove @types/thin-backend && npm install --save-dev 'https://thin.dev/types/64b72fbb-2f01-49d3-b6e1-da8291642bfb/PXLdrtlwFDUAvbrKhbLEFgnAMncwRwUD'"
   },
   "dependencies": {
     "@lexical/react": "^0.3.5",
+    "javascript-time-ago": "^2.5.4",
     "lexical": "^0.3.5",
     "next": "12.1.6",
     "react": "18.2.0",
@@ -23,7 +24,7 @@
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
-    "@types/thin-backend": "https://thin.dev/types/d4d7fd0c-1710-4112-bac8-ca0cfe4b932a/fgxYcHEqODWRJpocTMbgvtEwUOhjfDtf",
+    "@types/thin-backend": "https://thin.dev/types/64b72fbb-2f01-49d3-b6e1-da8291642bfb/PXLdrtlwFDUAvbrKhbLEFgnAMncwRwUD",
     "@types/uuid": "^8.3.4",
     "eslint": "8.18.0",
     "eslint-config-next": "12.1.6",
