@@ -7,6 +7,12 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import React, { useState } from "react";
 import { formatTimeAgo } from "../../utils/time/formatTimeAgo";
 import { updateRecord } from "thin-backend";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 function onClick(
   note: any,
@@ -47,6 +53,7 @@ function getEditorState(note: any) {
   return "";
 }
 
+// TODO: Consider a separate draft_updated_at status
 // TODO: safe the draft as the primary version and create a history record
 function saveNewVersion(note: any, setEdit: any): any {
   // TODO: Save the note in another table
@@ -109,36 +116,37 @@ export function Note(props: { note: any; clientId: any }): JSX.Element {
   // TODO: IF there are no changes yet
   // TODO: figure out weird issues with text selection on omboiel
   return (
-    <div
-      className={styles.card}
+    <Card
+      variant="outlined"
+      sx={{ minWidth: 275 }}
       onClick={() => !edit && onClick(note, clientId, edit, setEdit)}
     >
-      {textElement}
-      <hr />
-
-      {edit ? (
-        <>
-          <button onClick={() => saveNewVersion(note, setEdit)}>
-            Save New Version
-          </button>
-          <br />
-          <button onClick={() => onClick(note, clientId, edit, setEdit)}>
-            Save Draft
-          </button>
-          <br />
-          <button onClick={() => deleteDraft(note, setEdit)}>
-            Delete Draft
-          </button>
-          <br />
-        </>
-      ) : (
-        <></>
-      )}
-      <span>
-        {}
-        <br />
-        {getStatus(note, edit) + `(${formatTimeAgo(note.updatedAt)})`}
-      </span>
-    </div>
+      <CardContent>
+        {textElement}
+        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+          {getStatus(note, edit) + `(${formatTimeAgo(note.updatedAt)})`}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        {edit ? (
+          <>
+            <button onClick={() => saveNewVersion(note, setEdit)}>
+              Save New Version
+            </button>
+            <br />
+            <button onClick={() => onClick(note, clientId, edit, setEdit)}>
+              Save Draft
+            </button>
+            <br />
+            <button onClick={() => deleteDraft(note, setEdit)}>
+              Delete Draft
+            </button>
+            <br />
+          </>
+        ) : (
+          <></>
+        )}
+      </CardActions>
+    </Card>
   );
 }

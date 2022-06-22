@@ -10,7 +10,11 @@
     "preinstall": "npm remove @types/thin-backend && npm install --save-dev 'https://thin.dev/types/64b72fbb-2f01-49d3-b6e1-da8291642bfb/PXLdrtlwFDUAvbrKhbLEFgnAMncwRwUD'"
   },
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
     "@lexical/react": "^0.3.5",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.8.5",
     "javascript-time-ago": "^2.5.4",
     "lexical": "^0.3.5",
     "next": "12.1.6",
