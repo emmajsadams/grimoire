@@ -2,6 +2,7 @@ import { $getRoot, $getSelection } from "lexical";
 // Add this import
 import { updateRecord, getCurrentUserId } from "thin-backend";
 
+// TODO: move logic of parsing from rawState to Note into the notes directory
 // TODO: Is tasks the right name? Maybe notes?
 // TODO: Add some sort of delay on updating this all the time (or make sure pugin handles it)
 export function makeOnChange(task: any): any {

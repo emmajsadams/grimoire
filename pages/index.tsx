@@ -2,8 +2,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { TasksList } from "../components/TasksList";
-import { UserStatus } from "../components/UserStatus";
+import { TasksList } from "../lib/models/notes/TasksList";
+import { UserStatus } from "../lib/models/users/UserStatus";
 import { v4 as uuidv4 } from "uuid";
 
 // TODO: Change the name of clientID to requestID

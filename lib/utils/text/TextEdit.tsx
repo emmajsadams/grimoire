@@ -4,14 +4,13 @@ import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPl
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-import TreeViewPlugin from "./plugins/TreeViewPlugin";
-import EmoticonPlugin from "./plugins/EmoticonPlugin";
-import MyCustomAutoFocusPlugin from "./plugins/MyCustomAutoFocusPlugin";
-import { makeOnChange } from "./onChange";
-import ExampleTheme from "./themes/ExampleTheme";
+import TreeViewPlugin from "../../utils/text/plugins/TreeViewPlugin";
+import EmoticonPlugin from "../../utils/text/plugins/EmoticonPlugin";
+import MyCustomAutoFocusPlugin from "../../utils/text/plugins/MyCustomAutoFocusPlugin";
+import { makeOnChange } from "../../utils/text/plugins/OnChangePlugin";
+import ExampleTheme from "../../utils/text/themes/ExampleTheme";
 import { HeadingNode } from "@lexical/rich-text";
-import { Viewer } from "./Viewer";
-import React, { useState } from "react";
+import React from "react";
 
 // emoji node is broken EmojiNode
 export const Config: any = {
@@ -22,26 +21,13 @@ export const Config: any = {
   nodes: [HeadingNode], // TODO: Add rest of rich-text stuff here for markdown
 };
 
-// TODO: Convert this to a TaskView Component
-// TODO: Prevent duplicate edits with a simple flag that checks if any client is editing
-export function Editor(props: { task: any }): JSX.Element {
-  const { task } = props;
-  const [edit, setEdit] = useState(false);
+// TODO: make param inputs generic separate from tasks
+export function TextEdit(props: { task: any; setEdit: any }): JSX.Element {
+  const { task, setEdit } = props;
 
-  // TODO// convert this to a TextView component
-  if (!edit) {
-    return (
-      <>
-        <button onClick={() => setEdit(true)}>Edit</button>
-        <Viewer task={task} />
-      </>
-    );
-  }
-
-  // TODO// convert this to a TextEdit component
   return (
     <>
-      <button onClick={() => setEdit(false)}>Save</button>
+      <button onClick={() => setEdit(false)}>Save Draft as New Version</button>
       <LexicalComposer initialConfig={Config}>
         <div className="editor-container">
           <RichTextPlugin

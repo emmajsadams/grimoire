@@ -1,7 +1,7 @@
-import styles from "../styles/Home.module.css";
+import styles from "../../../styles/Home.module.css";
 import { query } from "thin-backend";
 import { useQuery } from "thin-backend-react";
-import { Editor } from "./Editor";
+import { Task } from "./Task";
 
 // TODO: Create a separat tags entity. then retrieve a mapping of them with usequery once and use that
 export function TasksList(props: { clientID: string }) {
@@ -23,11 +23,7 @@ export function TasksList(props: { clientID: string }) {
   return (
     <div className={styles.grid}>
       {tasks.map((task) => (
-        <div className={styles.card} key={task.id}>
-          <Editor task={task} />
-          <hr />
-          <p>{task.updatedAt}</p>
-        </div>
+        <Task task={task} />
       ))}
     </div>
   );

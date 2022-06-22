@@ -17,19 +17,22 @@ export const Config: any = {
   nodes: [HeadingNode], // TODO: Add rest of rich-text stuff here for markdown
 };
 
-export function Viewer(props: { task: any }): JSX.Element {
-  const { task } = props;
+export function TextView(props: { task: any; setEdit: any }): JSX.Element {
+  const { task, setEdit } = props;
 
   return (
-    <LexicalComposer initialConfig={Config}>
-      <div className="editor-container">
-        <RichTextPlugin
-          initialEditorState={props.task.rawEditorState}
-          contentEditable={<ContentEditable className="editor-input" />}
-          placeholder=""
-        />
-        <TaskStatePlugin task={task} />
-      </div>
-    </LexicalComposer>
+    <>
+      <button onClick={() => setEdit(true)}>Edit Draft</button>
+      <LexicalComposer initialConfig={Config}>
+        <div className="editor-container">
+          <RichTextPlugin
+            initialEditorState={props.task.rawEditorState}
+            contentEditable={<ContentEditable className="editor-input" />}
+            placeholder=""
+          />
+          <TaskStatePlugin task={task} />
+        </div>
+      </LexicalComposer>
+    </>
   );
 }
