@@ -54,14 +54,15 @@ function saveNewVersion(note: any, setEdit: any): any {
     rawEditorState: note.draftRawEditorState,
     draftRawEditorState: "",
     version: note.version++,
+    clientId: null,
   });
   setEdit(false);
 }
 
 function deleteDraft(note: any, setEdit: any): any {
   updateRecord("notes", note.id, {
-    rawEditorState: note.draftRawEditorState,
     draftRawEditorState: "",
+    clientId: null,
   });
   setEdit(false);
 }
@@ -106,6 +107,7 @@ export function Note(props: { note: any; clientId: any }): JSX.Element {
   // TODO: Add a draft_raw_entity_state column and use that in edit. Also use it to add (Draft)
   // TODO: Handle onClick anywhere updating edit status
   // TODO: IF there are no changes yet
+  // TODO: figure out weird issues with text selection on omboiel
   return (
     <div
       className={styles.card}
