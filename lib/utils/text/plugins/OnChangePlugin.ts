@@ -1,6 +1,11 @@
 import { $getRoot } from "lexical";
 import { updateRecord } from "thin-backend";
 
+// TODO: Move this to some constants file
+const DONE = "done";
+const TODO = "todo";
+const STATUSES = [DONE, TODO];
+
 // TODO: move logic of parsing from rawState to Note into the notes directory
 // TODO: Is tasks the right name? Maybe notes?
 // TODO: Add some sort of delay on updating this all the time (or make sure pugin handles it)
@@ -17,6 +22,9 @@ export function makeOnChange(note: any): any {
         title = textNodes.shift()?.getTextContent();
       }
 
+      // Reset the error message.
+      note.error = "";
+
       // TODO: Parse any special lines such as (Due: ), and move them below title with bold text
 
       // parse rest of text as description
@@ -24,8 +32,21 @@ export function makeOnChange(note: any): any {
       if (textNodes.length > 0) {
         description = "";
         for (const textNode of textNodes) {
-          console.log(textNode);
-          description += textNode.getTextContent() + " \n ";
+          const textContent = textNode.getTextContent();
+          const lowerTextContent = textContent.toLowerCase();
+          if (lowerTextContent.startsWith("status: ")) {
+            const statusText = lowerTextContent.replace("status: ", "");
+            if (!STATUSES.includes(statusText)) {
+              note.error += `${statusText} is not a valid status. Acceptable values are ${STATUSES.join(
+                ","
+              )}`;
+              note.status = "";
+            } else {
+              note.status = statusText;
+            }
+          } else {
+            description += textNode.getTextContent() + " \n ";
+          }
         }
       }
 

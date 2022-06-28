@@ -6,9 +6,18 @@ import { NotesList } from "../lib/models/notes/NotesList";
 import { UserStatus } from "../lib/models/users/UserStatus";
 import { v4 as uuidv4 } from "uuid";
 
+interface IndexProps {
+  clientId: string; // TODO: Move clientID to app
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
+
 // TODO: Change the name of clientID to requestID
-const Home: NextPage<any, any> = (props: { clientId: string }) => {
-  const { clientId } = props;
+const Home: NextPage<any, any> = ({
+  clientId,
+  searchQuery,
+  setSearchQuery,
+}: IndexProps) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -21,7 +30,11 @@ const Home: NextPage<any, any> = (props: { clientId: string }) => {
         <p className={styles.description}>
           <UserStatus />
         </p>
-        <NotesList clientId={clientId} />
+        <NotesList
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          clientId={clientId}
+        />
       </main>
     </div>
   );

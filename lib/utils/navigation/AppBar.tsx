@@ -56,7 +56,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export function PrimaryAppBar() {
+interface PrimaryAppBarProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
+
+export function PrimaryAppBar({
+  searchQuery,
+  setSearchQuery,
+}: PrimaryAppBarProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -155,14 +163,6 @@ export function PrimaryAppBar() {
     </Menu>
   );
 
-  // TODO: Do I need a title? probably unnecessary for mobile in paritcular
-  // <Head>
-  //   <title>Grimoire Automata</title>
-  //   <meta name="description" content="Grimoire Automata" />
-  //   <link rel="icon" href="/favicon.ico" />
-  // </Head>;
-
-  // TODO: Do I even need a menu bar
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
@@ -181,20 +181,15 @@ export function PrimaryAppBar() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
+              sx={{ flexGrow: 1 }}
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={searchQuery}
+              autoFocus={true}
+              onChange={(event) => setSearchQuery(event.target.value)}
             />
           </Search>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"

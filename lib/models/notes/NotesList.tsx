@@ -5,11 +5,26 @@ import { Note } from "./Note";
 import { createRecord } from "thin-backend";
 import Stack from "@mui/material/Stack";
 
+interface NotesProps {
+  clientId: string; // TODO: Move clientID to app
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
+
 // TODO: Create a separat tags entity. then retrieve a mapping of them with usequery once and use that
-export function NotesList(props: { clientId: string }) {
-  const { clientId } = props;
-  const tags = useQuery(query("tags"));
-  const notes = useQuery(query("notes").orderByDesc("createdAt"));
+export function NotesList({ clientId, searchQuery }: NotesProps) {
+  const tags = useQuery(query("tags")); // TODO: maybe just delete a separate tags entity and store it as text. Can always iterate through and rewrite.
+
+  let notesQuery = query("notes").orderByDesc("createdAt");
+  if (searchQuery) {
+    // TODO: Denormalize all tags into a field on the note for full text search
+    notesQuery = notesQuery.whereTextSearchStartsWith(
+      "textSearch",
+      searchQuery
+    );
+  }
+
+  const notes = useQuery(notesQuery);
 
   if (notes === null) {
     return <div>Loading ...</div>;

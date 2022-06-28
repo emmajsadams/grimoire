@@ -54,9 +54,11 @@ function getEditorState(note: any) {
 }
 
 // TODO: Consider a separate draft_updated_at status
-// TODO: safe the draft as the primary version and create a history record
 function saveNewVersion(note: any, setEdit: any): any {
-  // TODO: Save the note in another table
+  createRecord("notes_history", {
+    rawEditorState: note.rawEditorState,
+    version: note.version,
+  });
   updateRecord("notes", note.id, {
     rawEditorState: note.draftRawEditorState,
     draftRawEditorState: "",
@@ -126,22 +128,36 @@ export function Note(props: { note: any; clientId: any }): JSX.Element {
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           {getStatus(note, edit) + `(${formatTimeAgo(note.updatedAt)})`}
         </Typography>
+        {note.error ? (
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <b>Error:</b> {note.error}
+          </Typography>
+        ) : (
+          <></>
+        )}
+        {note.status ? (
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <b>Status:</b> {note.status}
+          </Typography>
+        ) : (
+          <></>
+        )}
       </CardContent>
       <CardActions>
         {edit ? (
           <>
-            <button onClick={() => saveNewVersion(note, setEdit)}>
+            <Button
+              onClick={() => saveNewVersion(note, setEdit)}
+              disabled={note.error}
+            >
               Save New Version
-            </button>
-            <br />
-            <button onClick={() => onClick(note, clientId, edit, setEdit)}>
+            </Button>
+            <Button onClick={() => onClick(note, clientId, edit, setEdit)}>
               Save Draft
-            </button>
-            <br />
-            <button onClick={() => deleteDraft(note, setEdit)}>
+            </Button>
+            <Button onClick={() => deleteDraft(note, setEdit)}>
               Delete Draft
-            </button>
-            <br />
+            </Button>
           </>
         ) : (
           <></>
