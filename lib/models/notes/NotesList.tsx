@@ -45,7 +45,7 @@ export function NotesList({ clientId, searchQuery }: NotesProps) {
     <>
       <button
         onClick={async () => {
-          const note = await createRecord("notes", {});
+          const note = await createRecord("notes", { textSearch: "" });
           router.push(`/notes/${note.id}`);
         }}
       >

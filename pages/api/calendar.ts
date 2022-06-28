@@ -2,10 +2,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import ical from "ical-generator";
 
-// type Data = {
-//   name: string;
-// };
-
+// TODO: basically need to create a separate public entities
+// TODO: Set an api key for accessing this endpoint
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<string>
