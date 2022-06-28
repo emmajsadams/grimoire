@@ -6,7 +6,7 @@ import { TaskStatePlugin } from "../../utils/text/plugins/TaskStatePlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import React, { useState } from "react";
 import { formatTimeAgo } from "../../utils/time/formatTimeAgo";
-import { updateRecord } from "thin-backend";
+import { updateRecord, createRecord } from "thin-backend";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
