@@ -15,6 +15,7 @@
     "@lexical/react": "^0.3.5",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.5",
+    "ical-generator": "^3.4.3",
     "javascript-time-ago": "^2.5.4",
     "lexical": "^0.3.5",
     "next": "12.1.6",
