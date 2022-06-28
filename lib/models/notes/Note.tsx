@@ -149,7 +149,7 @@ export function Note(props: { note: Note; clientId: string }): JSX.Element {
           <>
             <Button
               onClick={() => saveNewVersion(note, setEdit)}
-              disabled={note.error}
+              disabled={!!note.error}
             >
               Save New Version
             </Button>
