@@ -71,6 +71,7 @@ function saveNewVersion(note: any, setEdit: any): any {
 function deleteDraft(note: any, setEdit: any): any {
   updateRecord("notes", note.id, {
     draftRawEditorState: "",
+    error: "",
     clientId: null,
   });
   setEdit(false);
@@ -131,13 +132,6 @@ export function Note(props: { note: any; clientId: any }): JSX.Element {
         {note.error ? (
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             <b>Error:</b> {note.error}
-          </Typography>
-        ) : (
-          <></>
-        )}
-        {note.status ? (
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            <b>Status:</b> {note.status}
           </Typography>
         ) : (
           <></>

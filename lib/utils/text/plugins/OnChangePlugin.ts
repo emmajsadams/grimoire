@@ -17,7 +17,7 @@ export function makeOnChange(note: any): any {
       const textNodes = root.getAllTextNodes();
       let title: string | undefined;
 
-      // TODO: Change the first text node to always be an h1 (maybe do this on save?)
+      // TODO: Change this to be a property like status: that is only used if it begins with `title:`
       if (textNodes.length > 0) {
         title = textNodes.shift()?.getTextContent();
       }
@@ -34,6 +34,9 @@ export function makeOnChange(note: any): any {
         for (const textNode of textNodes) {
           const textContent = textNode.getTextContent();
           const lowerTextContent = textContent.toLowerCase();
+
+          // TODO: pull this out into a function also called on save and only update the status on save. the
+          // note fields should only change on saving a new version
           if (lowerTextContent.startsWith("status: ")) {
             const statusText = lowerTextContent.replace("status: ", "");
             if (!STATUSES.includes(statusText)) {
@@ -42,6 +45,7 @@ export function makeOnChange(note: any): any {
               )}`;
               note.status = "";
             } else {
+              // TODO: Only set this on save!
               note.status = statusText;
             }
           } else {
