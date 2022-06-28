@@ -15,7 +15,8 @@ export interface AppProps {
   setSearchQuery: (query: string) => void;
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
+// TODO: What is the accurate type here?
+function MyApp({ Component, pageProps }: any): JSX.Element {
   const [searchQuery, setSearchQuery] = useState("");
   const [clientId, _] = useState(uuidv4());
   const customProps: AppProps = {
