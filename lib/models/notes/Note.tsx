@@ -6,7 +6,7 @@ import { TaskStatePlugin } from "../../utils/text/plugins/TaskStatePlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import React, { useState } from "react";
 import { formatTimeAgo } from "../../utils/time/formatTimeAgo";
-import { updateRecord, createRecord } from "thin-backend";
+import { updateRecord, createRecord, deleteRecords } from "thin-backend";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -65,6 +65,12 @@ function saveNewVersion(note: Note, setEdit: (edit: boolean) => void): any {
     return;
   }
 
+  // TODO: delete previous public note with same note_id
+  // then publish new note same note id only if due is present
+  // createRecord("public_notes", {
+  //   title: note.title,
+  //   due: parsedNote.due,
+  // });
   createRecord("notes_history", {
     rawEditorState: note.rawEditorState,
     version: note.version,
