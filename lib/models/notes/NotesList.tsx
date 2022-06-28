@@ -8,16 +8,16 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 interface NotesProps {
-  clientId: string; // TODO: Move clientID to app
+  clientId: string;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 }
 
-// TODO: Create a separat tags entity. then retrieve a mapping of them with usequery once and use that
 export function NotesList({ clientId, searchQuery }: NotesProps) {
   const router = useRouter();
 
-  const tags = useQuery(query("tags")); // TODO: maybe just delete a separate tags entity and store it as text. Can always iterate through and rewrite.
+  // TODO: just delete separate tags entity
+  // const tags = useQuery(query("tags")); // TODO: maybe just delete a separate tags entity and store it as text. Can always iterate through and rewrite.
 
   let notesQuery = query("notes").orderByDesc("createdAt");
   if (searchQuery) {

@@ -23,6 +23,8 @@ export function TaskStatePlugin(props: { note: any }): any {
     return;
   }
 
+  editor.parseEditorState(note.rawEditorState)
+
   // Else parse and set the state
   editor.setEditorState(editor.parseEditorState(note.rawEditorState));
 

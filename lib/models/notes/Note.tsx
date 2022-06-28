@@ -13,9 +13,12 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { $getRoot } from "lexical";
+import { parseNote } from "./parseNote";
+import { Note } from "thin-backend";
 
 function onClick(
-  note: any,
+  note: Note,
   clientId: string,
   edit: boolean,
   setEdit: (newEdit: boolean) => any
@@ -29,7 +32,7 @@ function onClick(
   }
 }
 
-function getStatus(note: any, edit: boolean): string {
+function getStatus(note: Note, edit: boolean): string {
   if (edit) {
     return "Editing Here ";
   } else {
@@ -43,7 +46,7 @@ function getStatus(note: any, edit: boolean): string {
   return "";
 }
 
-function getEditorState(note: any) {
+function getEditorState(note: Note) {
   if (note.draftRawEditorState) {
     return note.draftRawEditorState;
   } else if (note.rawEditorState) {
@@ -53,8 +56,15 @@ function getEditorState(note: any) {
   return "";
 }
 
-// TODO: Consider a separate draft_updated_at status
-function saveNewVersion(note: any, setEdit: any): any {
+function saveNewVersion(note: Note, setEdit: (edit: boolean) => void): any {
+  const parsedNote: Partial<Note> = JSON.parse(note.draftParsedNote) as any;
+  if (parsedNote.error) {
+    alert(
+      "This should never happen since the save button should be disabled. Please refresh your client."
+    );
+    return;
+  }
+
   createRecord("notes_history", {
     rawEditorState: note.rawEditorState,
     version: note.version,
@@ -64,11 +74,12 @@ function saveNewVersion(note: any, setEdit: any): any {
     draftRawEditorState: "",
     version: note.version++,
     clientId: null,
+    ...parsedNote,
   });
   setEdit(false);
 }
 
-function deleteDraft(note: any, setEdit: any): any {
+function deleteDraft(note: Note, setEdit: any): any {
   updateRecord("notes", note.id, {
     draftRawEditorState: "",
     error: "",
@@ -77,8 +88,7 @@ function deleteDraft(note: any, setEdit: any): any {
   setEdit(false);
 }
 
-// TODO: Prevent duplicate edits with a simple flag that checks if any client is editing
-export function Note(props: { note: any; clientId: any }): JSX.Element {
+export function Note(props: { note: Note; clientId: string }): JSX.Element {
   const { note, clientId } = props;
   const [edit, setEdit] = useState(false);
 
@@ -114,11 +124,7 @@ export function Note(props: { note: any; clientId: any }): JSX.Element {
     );
   }
 
-  // TODO: Add a draft_raw_entity_state column and use that in edit. Also use it to add (Draft)
   // TODO: Handle onClick anywhere updating edit status
-  // TODO: IF there are no changes yet
-  // TODO: figure out weird issues with text selection on omboiel
-  // TODO: Add a deleted status
   return (
     <Card
       variant="outlined"

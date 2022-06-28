@@ -4,12 +4,9 @@ import { Note } from "../../lib/models/notes/Note";
 import { query } from "thin-backend";
 import { useQuery } from "thin-backend-react";
 import { useRouter } from "next/router";
+import { AppProps } from "../_app";
 
-interface NotesViewProps {
-  clientId: string; // TODO: Move clientID to app
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-}
+interface NotesViewProps extends AppProps {}
 
 // TODO: Change the name of clientID to requestID
 const NotesView: NextPage<any, any> = ({ clientId }: NotesViewProps) => {
@@ -31,8 +28,8 @@ const NotesView: NextPage<any, any> = ({ clientId }: NotesViewProps) => {
   }
 
   const note = notes[0];
-  console.log(note);
 
+  // TODO: add breadcrumps going back to main list view
   return (
     <>
       <Head>

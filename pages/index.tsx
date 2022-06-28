@@ -4,12 +4,9 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { NotesList } from "../lib/models/notes/NotesList";
 import { UserStatus } from "../lib/models/users/UserStatus";
+import { AppProps } from "./_app";
 
-interface IndexProps {
-  clientId: string;
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-}
+interface IndexProps extends AppProps {}
 
 // TODO: Move this to notes/list? and maybe just redirect to notes list by default?
 const Home: NextPage<any, any> = ({
@@ -17,7 +14,6 @@ const Home: NextPage<any, any> = ({
   searchQuery,
   setSearchQuery,
 }: IndexProps) => {
-  console.log(clientId);
   return (
     <>
       <Head>

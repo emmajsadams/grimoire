@@ -15,6 +15,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import { AppProps } from "../../../pages/_app";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,10 +57,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-interface PrimaryAppBarProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-}
+interface PrimaryAppBarProps extends AppProps {}
 
 export function PrimaryAppBar({
   searchQuery,
@@ -163,6 +161,7 @@ export function PrimaryAppBar({
     </Menu>
   );
 
+  // TODO: Figure out why search input does not take up full width of
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
