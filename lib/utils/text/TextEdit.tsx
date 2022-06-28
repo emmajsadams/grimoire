@@ -34,7 +34,7 @@ export function TextEdit(props: {
         <RichTextPlugin
           initialEditorState={initialState}
           contentEditable={<ContentEditable className="editor-input" />}
-          placeholder={<Placeholder />}
+          placeholder={<></>}
         />
         <MarkdownShortcutPlugin />
         <HistoryPlugin />
@@ -44,8 +44,4 @@ export function TextEdit(props: {
       </div>
     </LexicalComposer>
   );
-}
-
-function Placeholder() {
-  return <div className="editor-placeholder">Enter some plain text...</div>;
 }

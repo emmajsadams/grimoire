@@ -4,29 +4,29 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { NotesList } from "../lib/models/notes/NotesList";
 import { UserStatus } from "../lib/models/users/UserStatus";
-import { v4 as uuidv4 } from "uuid";
 
 interface IndexProps {
-  clientId: string; // TODO: Move clientID to app
+  clientId: string;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 }
 
-// TODO: Change the name of clientID to requestID
+// TODO: Move this to notes/list? and maybe just redirect to notes list by default?
 const Home: NextPage<any, any> = ({
   clientId,
   searchQuery,
   setSearchQuery,
 }: IndexProps) => {
+  console.log(clientId);
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Grimoire Automata</title>
+        <title>Notes</title>
         <meta name="description" content="Grimoire Automata" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <main>
         <p className={styles.description}>
           <UserStatus />
         </p>
@@ -36,16 +36,8 @@ const Home: NextPage<any, any> = ({
           clientId={clientId}
         />
       </main>
-    </div>
+    </>
   );
 };
 
 export default Home;
-
-export async function getServerSideProps() {
-  return {
-    props: {
-      clientId: uuidv4(),
-    },
-  };
-}

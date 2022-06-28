@@ -4,6 +4,8 @@ import { useQuery } from "thin-backend-react";
 import { Note } from "./Note";
 import { createRecord } from "thin-backend";
 import Stack from "@mui/material/Stack";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface NotesProps {
   clientId: string; // TODO: Move clientID to app
@@ -13,6 +15,8 @@ interface NotesProps {
 
 // TODO: Create a separat tags entity. then retrieve a mapping of them with usequery once and use that
 export function NotesList({ clientId, searchQuery }: NotesProps) {
+  const router = useRouter();
+
   const tags = useQuery(query("tags")); // TODO: maybe just delete a separate tags entity and store it as text. Can always iterate through and rewrite.
 
   let notesQuery = query("notes").orderByDesc("createdAt");
@@ -39,7 +43,12 @@ export function NotesList({ clientId, searchQuery }: NotesProps) {
   // TODO: Investigate why textSearch: "" is necessarY?
   return (
     <>
-      <button onClick={() => createRecord("notes", { textSearch: "" })}>
+      <button
+        onClick={async () => {
+          const note = await createRecord("notes", {});
+          router.push(`/notes/${note.id}`);
+        }}
+      >
         Create New Note
       </button>
 

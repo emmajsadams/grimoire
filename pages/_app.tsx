@@ -1,28 +1,33 @@
 import "../styles/globals.css";
+import Head from "next/head";
 import type { AppProps } from "next/app";
 import { initThinBackend } from "thin-backend";
 import { ThinBackend } from "thin-backend-react";
 import { Container } from "@mui/material";
 import { PrimaryAppBar } from "../lib/utils/navigation/AppBar";
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 initThinBackend({ host: process.env.NEXT_PUBLIC_BACKEND_URL });
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [clientId, _] = useState(uuidv4());
+  const customProps = {
+    clientId,
+    searchQuery,
+    setSearchQuery,
+  };
 
   return (
     <ThinBackend requireLogin>
-      <PrimaryAppBar
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
+      <Head>
+        <meta name="description" content="Grimoire Automata" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <PrimaryAppBar {...customProps} />
       <Container maxWidth="sm">
-        <Component
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          {...pageProps}
-        />
+        <Component {...customProps} {...pageProps} />
       </Container>
     </ThinBackend>
   );

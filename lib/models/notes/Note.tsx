@@ -118,6 +118,7 @@ export function Note(props: { note: any; clientId: any }): JSX.Element {
   // TODO: Handle onClick anywhere updating edit status
   // TODO: IF there are no changes yet
   // TODO: figure out weird issues with text selection on omboiel
+  // TODO: Add a deleted status
   return (
     <Card
       variant="outlined"
