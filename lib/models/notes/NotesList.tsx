@@ -36,9 +36,12 @@ export function NotesList({ clientId, searchQuery }: NotesProps) {
   // TODO: if task.clientID is set prevent editing and show a button to force the other user to stop editing the draft
   // This can be used to ensure only a single editing is happening at the same time.
   // TODO: Move create new note to app bar!
+  // TODO: Investigate why textSearch: "" is necessarY?
   return (
     <>
-      <button onClick={() => createRecord("notes", {})}>Create New Note</button>
+      <button onClick={() => createRecord("notes", { textSearch: "" })}>
+        Create New Note
+      </button>
 
       <Stack spacing={2}>
         {notes.map((note) => (
