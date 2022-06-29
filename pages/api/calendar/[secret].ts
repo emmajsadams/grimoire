@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import ical from "ical-generator";
+import ical, { ICalAlarmType, ICalEventBusyStatus } from "ical-generator";
 import { DONE } from "../../../lib/models/notes/parseNote";
 import postgres from "postgres";
 
@@ -50,11 +50,27 @@ export default async function handler(
       const startTime = new Date(note.due);
       const endTime = new Date(note.due);
       endTime.setHours(startTime.getHours() + 1); // TODO: ask user to specify duration?
+      const alarmTime = new Date(note.due);
+      alarmTime.setHours(startTime.getHours() - 1);
 
+      // TODO: investigate more properties to set
       calendar.createEvent({
         start: startTime,
         end: endTime,
         summary: note.title,
+        busystatus: ICalEventBusyStatus.BUSY,
+        alarms: [
+          {
+            type: ICalAlarmType.display,
+            trigger: alarmTime,
+            description: note.title,
+          },
+          {
+            type: ICalAlarmType.audio,
+            trigger: alarmTime,
+            description: note.title,
+          },
+        ],
         // description: "It works ;)", TODO: ask user to specify description?
         // location: "my room", TODO: ask user to specify location?
         url: `https://grimoireautomata.com/notes/${note.id}`,
