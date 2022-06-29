@@ -2,12 +2,21 @@ import { Note } from "thin-backend";
 import { TextNode } from "lexical";
 
 // TODO: Move this to some constants file
-const DONE = "done";
-const TODO = "todo";
-const STATUSES = [DONE, TODO];
-const STATUS_PROPERTY = "status";
+export const DONE = "done";
+export const TODO = "todo";
+export const STATUSES = [DONE, TODO];
+export const STATUS_PROPERTY = "status";
 
-const TITLE_PROPERTY = "title";
+export const TITLE_PROPERTY = "title";
+
+export const DUE_PROPERTY = "due";
+
+// TODO: Move this to a helper function llibrary
+function isDate(date: string): boolean {
+  return (
+    (new Date(date) as any) !== "Invalid Date" && !isNaN(new Date(date) as any)
+  );
+}
 
 // TODO: Add Parser for `Due: ....`
 // TODO: Add Parser for `Tags: ....`
@@ -43,6 +52,17 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
         lowerCaseTextContent,
         note,
         (_) => "" // all text is valid as a title
+      );
+      if (isProperty) {
+        continue;
+      }
+
+      isProperty = parseProperty(
+        DUE_PROPERTY,
+        lowerCaseTextContent,
+        note,
+        (propertyText) =>
+          isDate(propertyText) ? "" : `${propertyText} is not a valid date.`
       );
       if (isProperty) {
         continue;

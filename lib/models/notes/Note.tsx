@@ -6,7 +6,7 @@ import { TaskStatePlugin } from "../../utils/text/plugins/TaskStatePlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import React, { useState } from "react";
 import { formatTimeAgo } from "../../utils/time/formatTimeAgo";
-import { updateRecord, createRecord, deleteRecords } from "thin-backend";
+import { updateRecord, createRecord, deleteRecord, query } from "thin-backend";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -14,7 +14,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { $getRoot } from "lexical";
-import { parseNote } from "./parseNote";
+import { DONE } from "./parseNote";
 import { Note } from "thin-backend";
 
 function onClick(
@@ -56,7 +56,10 @@ function getEditorState(note: Note) {
   return "";
 }
 
-function saveNewVersion(note: Note, setEdit: (edit: boolean) => void): any {
+async function saveNewVersion(
+  note: Note,
+  setEdit: (edit: boolean) => void
+): Promise<any> {
   const parsedNote: Partial<Note> = JSON.parse(note.draftParsedNote) as any;
   if (parsedNote.error) {
     alert(
@@ -65,13 +68,8 @@ function saveNewVersion(note: Note, setEdit: (edit: boolean) => void): any {
     return;
   }
 
-  // TODO: delete previous public note with same note_id
-  // then publish new note same note id only if due is present
-  // createRecord("public_notes", {
-  //   title: note.title,
-  //   due: parsedNote.due,
-  // });
   createRecord("notes_history", {
+    noteId: note.id,
     rawEditorState: note.rawEditorState,
     version: note.version,
   });

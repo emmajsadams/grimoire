@@ -46,10 +46,7 @@ export function NotesList({ clientId, searchQuery }: NotesProps) {
       <button
         onClick={async () => {
           // TODO: Figure out why textSearch and error need to be set to null for new notes?
-          const note = await createRecord("notes", {
-            textSearch: null,
-            error: null,
-          });
+          const note = await createRecord("notes", {} as any);
           router.push(`/notes/${note.id}`);
         }}
       >
