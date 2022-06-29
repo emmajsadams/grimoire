@@ -62,6 +62,6 @@ export default async function handler(
     }
     res.status(200).send(calendar.toString());
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).send((err as any).message);
   }
 }
