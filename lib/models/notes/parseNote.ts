@@ -1,5 +1,6 @@
 import { Note } from "thin-backend";
 import { TextNode } from "lexical";
+import moment from "moment-timezone";
 
 // TODO: Move this to some constants file
 export const DONE = "done";
@@ -12,10 +13,10 @@ export const TITLE_PROPERTY = "title";
 export const DUE_PROPERTY = "due";
 
 // TODO: Move this to a helper function llibrary
+// TODO: use user timezone
+// EXPECTED FORMAT: "2013-11-18 11:55"
 function isDate(date: string): boolean {
-  return (
-    (new Date(date) as any) !== "Invalid Date" && !isNaN(new Date(date) as any)
-  );
+  return moment.tz(date, "America/Los_Angeles").isValid();
 }
 
 // TODO: Add Parser for `Due: ....`
@@ -65,8 +66,11 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
           isDate(propertyText) ? "" : `${propertyText} is not a valid date.`
       );
       if (isProperty) {
-        // TODO: Do something with user.timezone
-        note.due = new Date(note.due as any).toISOString();
+        note.due = moment
+          .tz(note.due, "America/Los_Angeles")
+          .utc()
+          .toISOString();
+        console.log(note.due);
         continue;
       }
 

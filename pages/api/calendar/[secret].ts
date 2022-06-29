@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import ical, { ICalAlarmType, ICalEventBusyStatus } from "ical-generator";
 import { DONE } from "../../../lib/models/notes/parseNote";
 import postgres from "postgres";
+import moment from "moment-timezone";
 
 const sql = postgres(process.env.THIN_DB_URL || "", {});
 
@@ -45,18 +46,18 @@ export default async function handler(
       where user_id = ${user.id}
     `;
 
-    const calendar = ical({ name: "Grimoire Notes Calendar" });
+    const calendar = ical({
+      name: "Grimoire Notes Calendar",
+      timezone: "America/Los_Angeles",
+    });
     for (const note of notes) {
       if (!note.due || !note.title || note.status == DONE) {
         continue;
       }
 
-      console.log(getDateFromText(note.due));
-      const startTime = getDateFromText(note.due);
-      const endTime = getDateFromText(note.due);
-      endTime.setHours(startTime.getHours() + 1); // TODO: ask user to specify duration?
-      const alarmTime = getDateFromText(note.due);
-      alarmTime.setHours(startTime.getHours() - 1);
+      const startTime = moment.utc(note.due);
+      const endTime = moment.utc(note.due).add(1, "hours");
+      const alarmTime = moment.utc(note.due).subtract(1, "hours");
 
       // TODO: investigate more properties to set
       calendar.createEvent({
