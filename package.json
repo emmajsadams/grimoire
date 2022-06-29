@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "preinstall": "npm remove @types/thin-backend && npm install --save-dev 'https://thin.dev/types/a7bfd075-d6ef-4594-a4ae-f5b3f3bd51b1/vMGkgnIRJeLFsXYfSucrjlDgsmYPlfrY'"
+    "preinstall": "npm remove @types/thin-backend && npm install --save-dev 'https://thin.dev/types/3041c46f-39d4-4c69-9d00-37a601aebe38/QGxRhHAJaFDGAXNKeAGGlnEipyjUCSPi'"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -32,7 +32,7 @@
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
-    "@types/thin-backend": "https://thin.dev/types/a7bfd075-d6ef-4594-a4ae-f5b3f3bd51b1/vMGkgnIRJeLFsXYfSucrjlDgsmYPlfrY",
+    "@types/thin-backend": "https://thin.dev/types/3041c46f-39d4-4c69-9d00-37a601aebe38/QGxRhHAJaFDGAXNKeAGGlnEipyjUCSPi",
     "@types/uuid": "^8.3.4",
     "eslint": "8.18.0",
     "eslint-config-next": "12.1.6",

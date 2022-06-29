@@ -69,7 +69,7 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
         note.due = moment
           .tz(note.due, "America/Los_Angeles")
           .utc()
-          .toISOString();
+          .toISOString(true);
         console.log(note.due);
         continue;
       }
