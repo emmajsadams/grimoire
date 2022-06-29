@@ -18,12 +18,14 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import { AppProps } from "../../../pages/_app";
 
 // TODO: Add a query language in the search bar
-// It should support commands like `due:exists` or `due:>2019-06-05` (including <, >=, <=, =, !=)
-// By default `due:exists` and `status:!=done` should be set to get a filtered view
+// Commands should be wrapped in ``` character. EX: ```due:asc&&```
+// Should support || (OR) or && (AND). OrderBy commands should only support && (AND)
+// It should support commands like `due:exists`, `due:>2019-06-05` (including <, >=, <=, =, !=), `due:asc` (or desc)
+// By default `due:asc&&status:!=done&&` should be set to get a filtered view.
 //
 // TODO: parse this in appBar when setting state instead
 // function parseSearchQuery(searchQuery: string): string[] {
-//   const queryParts = searchQuery.split(" ");
+//   const queryParts = searchQuery.split(" ").trimSpace();
 
 //   const newSearchQueryParts: string[] = [];
 //   const tags: string[] = [];
