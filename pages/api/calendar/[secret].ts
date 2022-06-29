@@ -4,6 +4,7 @@ import ical, { ICalAlarmType, ICalEventBusyStatus } from "ical-generator";
 import { DONE } from "../../../lib/models/notes/parseNote";
 import postgres from "postgres";
 import moment from "moment-timezone";
+import { v4 as uuidv4 } from "uuid";
 
 const sql = postgres(process.env.THIN_DB_URL || "", {});
 
@@ -58,10 +59,10 @@ export default async function handler(
 
       const startTime = moment.utc(note.due);
       const endTime = moment.utc(note.due).add(1, "hours");
-      const alarmTime = moment.utc(note.due).subtract(1, "hours");
 
       // TODO: investigate more properties to set
       calendar.createEvent({
+        id: note.id,
         start: startTime,
         end: endTime,
         summary: note.title,
@@ -69,13 +70,23 @@ export default async function handler(
         alarms: [
           {
             type: ICalAlarmType.display,
-            trigger: alarmTime,
-            description: note.title,
+            triggerBefore: 3600, // 1 hour
+            // x: [
+            //   {
+            //     key: "X-WR-ALARM",
+            //     value: uuidv4(),
+            //   },
+            // ],
           },
           {
             type: ICalAlarmType.audio,
-            trigger: alarmTime,
-            description: note.title,
+            triggerBefore: 3600, // 1 hour
+            // x: [
+            //   {
+            //     key: "X-WR-ALARM",
+            //     value: uuidv4(),
+            //   },
+            // ],
           },
         ],
         // description: "It works ;)", TODO: ask user to specify description?
@@ -83,6 +94,7 @@ export default async function handler(
         url: `https://grimoireautomata.com/notes/${note.id}`,
       });
     }
+
     res.status(200).send(calendar.toString());
   } catch (err) {
     res.status(500).send((err as any).message);

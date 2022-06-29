@@ -6,6 +6,7 @@ import { createRecord } from "thin-backend";
 import Stack from "@mui/material/Stack";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import moment, { Moment } from "moment-timezone";
 
 interface NotesProps {
   clientId: string;
@@ -13,13 +14,29 @@ interface NotesProps {
   setSearchQuery: (query: string) => void;
 }
 
+function parseSearchQuery(searchQuery: string): string[] {
+  const queryParts = searchQuery.split(" ");
+
+  const newSearchQueryParts: string[] = [];
+  const tags: string[] = [];
+  const dueDates: Moment[] = [];
+  for (const queryPart in queryParts) {
+    if (queryPart.startsWith("tag:")) {
+      tags.push(queryPart.replaceAll("tag:", ""));
+    } else if (queryPart.startsWith("due:")) {
+      dueDates.push(
+        moment.tz(queryPart.replaceAll("due:", ""), "America/Los_Angeles").utc()
+      );
+    } else {
+      newSearchQueryParts.push(queryPart);
+    }
+  }
+}
+
 export function NotesList({ clientId, searchQuery }: NotesProps) {
   const router = useRouter();
 
-  // TODO: just delete separate tags entity
-  // const tags = useQuery(query("tags")); // TODO: maybe just delete a separate tags entity and store it as text. Can always iterate through and rewrite.
-
-  let notesQuery = query("notes").orderByDesc("createdAt");
+  let notesQuery = query("notes").orderByDesc("due").orderByDesc("createdAt");
   if (searchQuery) {
     // TODO: Denormalize all tags into a field on the note for full text search
     notesQuery = notesQuery.whereTextSearchStartsWith(
