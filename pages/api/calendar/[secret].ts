@@ -13,23 +13,28 @@ export default async function handler(
   res: NextApiResponse<string>
 ) {
   try {
-    // console.log("test");
-    // initThinBackend({ host: process.env.NEXT_PUBLIC_BACKEND_URL });
-
     const { secret } = req.query;
 
-    // if (!secret || typeof secret !== "string") {
-    //   res.status(400).send("Missing secret");
-    //   return;
-    // }
+    // TODO: Validate that secret is a uuid and bail early if not
+    // TODO: ratelimit failed attempts to prevent brute force attacks
+    if (!secret || typeof secret !== "string") {
+      res.status(400).send("Missing secret");
+      return;
+    }
 
-    // // TODO: For now secret is just user id, but it should be something separate and resettable.
-    // let publicNotes = await query("public_notes")
-    //   .where("userId", secret)
-    //   .fetch();
-    // console.log(publicNotes);
+    const users = await sql`
+      select
+        id,
+        timezone
+      from users
+      where calendar_secret = ${secret}
+    `;
+    if (!users || users.length !== 1) {
+      res.status(400).send("Invalid secret");
+      return;
+    }
+    const user = users[0];
 
-    console.log(secret);
     const notes = await sql`
       select
         id,
@@ -37,20 +42,20 @@ export default async function handler(
         due,
         status
       from notes
-      where user_id = ${secret}
+      where user_id = ${user.id}
     `;
 
     const calendar = ical({ name: "Grimoire Notes Calendar" });
     for (const note of notes) {
-      console.log(note);
       if (!note.due || !note.title || note.status == DONE) {
         continue;
       }
 
-      const startTime = new Date(note.due);
-      const endTime = new Date(note.due);
+      console.log(getDateFromText(note.due));
+      const startTime = getDateFromText(note.due);
+      const endTime = getDateFromText(note.due);
       endTime.setHours(startTime.getHours() + 1); // TODO: ask user to specify duration?
-      const alarmTime = new Date(note.due);
+      const alarmTime = getDateFromText(note.due);
       alarmTime.setHours(startTime.getHours() - 1);
 
       // TODO: investigate more properties to set
@@ -80,4 +85,10 @@ export default async function handler(
   } catch (err) {
     res.status(500).send((err as any).message);
   }
+}
+
+function getDateFromText(text: string): Date {
+  // TODO: is parse even necessary?
+  // TODO: Do something with user.timezone
+  return new Date(Date.parse(text));
 }

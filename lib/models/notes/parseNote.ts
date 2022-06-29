@@ -65,6 +65,8 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
           isDate(propertyText) ? "" : `${propertyText} is not a valid date.`
       );
       if (isProperty) {
+        // TODO: Do something with user.timezone
+        note.due = new Date(note.due as any).toISOString();
         continue;
       }
 
