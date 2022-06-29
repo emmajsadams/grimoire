@@ -73,22 +73,30 @@ export default async function handler(
             triggerBefore: 3600, // 1 hour
             // TODO: I might need this and a UID for the alarm but the library does not support it
             // So I can just add a new property for it and do a replaceAll
-            // x: [
-            //   {
-            //     key: "X-WR-ALARMUID",
-            //     value: uuidv4(),
-            //   },
-            // ],
+            x: [
+              {
+                key: "X-WR-ALARMUID",
+                value: uuidv4(),
+              },
+              {
+                key: "X-ALARMUIDTOBEREPLACED",
+                value: uuidv4(),
+              },
+            ],
           },
           {
             type: ICalAlarmType.audio,
             triggerBefore: 3600, // 1 hour
-            // x: [
-            //   {
-            //     key: "X-WR-ALARMUID",
-            //     value: uuidv4(),
-            //   },
-            // ],
+            x: [
+              {
+                key: "X-WR-ALARMUID",
+                value: uuidv4(),
+              },
+              {
+                key: "X-ALARMUIDTOBEREPLACED",
+                value: uuidv4(),
+              },
+            ],
           },
         ],
         // description: "It works ;)", TODO: ask user to specify description?
@@ -97,7 +105,9 @@ export default async function handler(
       });
     }
 
-    res.status(200).send(calendar.toString());
+    res
+      .status(200)
+      .send(calendar.toString().replaceAll("X-ALARMUIDTOBEREPLACED", "UID"));
   } catch (err) {
     res.status(500).send((err as any).message);
   }
