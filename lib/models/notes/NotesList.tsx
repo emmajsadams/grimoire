@@ -14,30 +14,11 @@ interface NotesProps {
   setSearchQuery: (query: string) => void;
 }
 
-// TODO: parse this in appBar when setting state instead
-// function parseSearchQuery(searchQuery: string): string[] {
-//   const queryParts = searchQuery.split(" ");
-
-//   const newSearchQueryParts: string[] = [];
-//   const tags: string[] = [];
-//   const dueDates: Moment[] = [];
-//   for (const queryPart in queryParts) {
-//     if (queryPart.startsWith("tag:")) {
-//       tags.push(queryPart.replaceAll("tag:", ""));
-//     } else if (queryPart.startsWith("due:")) {
-//       dueDates.push(
-//         moment.tz(queryPart.replaceAll("due:", ""), "America/Los_Angeles").utc()
-//       );
-//     } else {
-//       newSearchQueryParts.push(queryPart);
-//     }
-//   }
-// }
-
+// TODO: add some padding at the bottom so navigation doesn't cover up last card
 export function NotesList({ clientId, searchQuery }: NotesProps) {
   const router = useRouter();
 
-  let notesQuery = query("notes").orderByDesc("due").orderByDesc("createdAt");
+  let notesQuery = query("notes").orderByDesc("due").orderByAsc("createdAt");
   if (searchQuery) {
     // TODO: Denormalize all tags into a field on the note for full text search
     notesQuery = notesQuery.whereTextSearchStartsWith(

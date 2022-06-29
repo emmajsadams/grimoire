@@ -17,6 +17,30 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { AppProps } from "../../../pages/_app";
 
+// TODO: Add a query language in the search bar
+// It should support commands like `due:exists` or `due:>2019-06-05` (including <, >=, <=, =, !=)
+// By default `due:exists` and `status:!=done` should be set to get a filtered view
+//
+// TODO: parse this in appBar when setting state instead
+// function parseSearchQuery(searchQuery: string): string[] {
+//   const queryParts = searchQuery.split(" ");
+
+//   const newSearchQueryParts: string[] = [];
+//   const tags: string[] = [];
+//   const dueDates: Moment[] = [];
+//   for (const queryPart in queryParts) {
+//     if (queryPart.startsWith("tag:")) {
+//       tags.push(queryPart.replaceAll("tag:", ""));
+//     } else if (queryPart.startsWith("due:")) {
+//       dueDates.push(
+//         moment.tz(queryPart.replaceAll("due:", ""), "America/Los_Angeles").utc()
+//       );
+//     } else {
+//       newSearchQueryParts.push(queryPart);
+//     }
+//   }
+// }
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -185,7 +209,7 @@ export function PrimaryAppBar({
               inputProps={{ "aria-label": "search" }}
               value={searchQuery}
               autoFocus={true}
-              onChange={(event) => setSearchQuery(event.target.value)}
+              onChange={(event) => setSearchQuery(event.target.value)} // TODO: Convert this to an object that contains the parsed search components maybe?s
             />
           </Search>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
