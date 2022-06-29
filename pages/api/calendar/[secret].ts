@@ -49,6 +49,7 @@ export default async function handler(
     const calendar = ical({
       name: "Grimoire Notes Calendar",
       timezone: "America/Los_Angeles",
+      url: "https://grimoireautomata.com",
     });
     for (const note of notes) {
       if (!note.due || !note.title || note.status == DONE) {
