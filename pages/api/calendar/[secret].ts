@@ -105,16 +105,11 @@ export default async function handler(
       });
     }
 
+    // TODO: Figure out what `ATTACH;VALUE=URI:Basso` is in the output from this?
     res
       .status(200)
       .send(calendar.toString().replaceAll("X-ALARMUIDTOBEREPLACED", "UID"));
   } catch (err) {
     res.status(500).send((err as any).message);
   }
-}
-
-function getDateFromText(text: string): Date {
-  // TODO: is parse even necessary?
-  // TODO: Do something with user.timezone
-  return new Date(Date.parse(text));
 }
