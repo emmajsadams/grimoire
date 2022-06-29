@@ -71,9 +71,11 @@ export default async function handler(
           {
             type: ICalAlarmType.display,
             triggerBefore: 3600, // 1 hour
+            // TODO: I might need this and a UID for the alarm but the library does not support it
+            // So I can just add a new property for it and do a replaceAll
             // x: [
             //   {
-            //     key: "X-WR-ALARM",
+            //     key: "X-WR-ALARMUID",
             //     value: uuidv4(),
             //   },
             // ],
@@ -83,7 +85,7 @@ export default async function handler(
             triggerBefore: 3600, // 1 hour
             // x: [
             //   {
-            //     key: "X-WR-ALARM",
+            //     key: "X-WR-ALARMUID",
             //     value: uuidv4(),
             //   },
             // ],
