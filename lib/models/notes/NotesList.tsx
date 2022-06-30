@@ -1,36 +1,30 @@
-import styles from "../../../styles/Home.module.css";
-import { query } from "thin-backend";
-import { useQuery } from "thin-backend-react";
-import { Note } from "./Note";
-import { createRecord } from "thin-backend";
-import Stack from "@mui/material/Stack";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import moment, { Moment } from "moment-timezone";
+import { query } from 'thin-backend'
+import { useQuery } from 'thin-backend-react'
+import { Note } from './Note'
+import { createRecord } from 'thin-backend'
+import Stack from '@mui/material/Stack'
+import { useRouter } from 'next/router'
 
 interface NotesProps {
-  clientId: string;
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
+  clientId: string
+  searchQuery: string
+  setSearchQuery: (query: string) => void
 }
 
 // TODO: add some padding at the bottom so navigation doesn't cover up last card
 export function NotesList({ clientId, searchQuery }: NotesProps) {
-  const router = useRouter();
+  const router = useRouter()
 
-  let notesQuery = query("notes").orderByDesc("due").orderByAsc("createdAt");
+  let notesQuery = query('notes').orderByDesc('due').orderByAsc('createdAt')
   if (searchQuery) {
     // TODO: Denormalize all tags into a field on the note for full text search
-    notesQuery = notesQuery.whereTextSearchStartsWith(
-      "textSearch",
-      searchQuery
-    );
+    notesQuery = notesQuery.whereTextSearchStartsWith('textSearch', searchQuery)
   }
 
-  const notes = useQuery(notesQuery);
+  const notes = useQuery(notesQuery)
 
   if (notes === null) {
-    return <div>Loading ...</div>;
+    return <div>Loading ...</div>
   }
 
   // TODO: Use clientID to mark which client is editing the draft.
@@ -45,8 +39,8 @@ export function NotesList({ clientId, searchQuery }: NotesProps) {
       <button
         onClick={async () => {
           // TODO: Figure out why textSearch and error need to be set to null for new notes?
-          const note = await createRecord("notes", {} as any);
-          router.push(`/notes/${note.id}`);
+          const note = await createRecord('notes', {} as any)
+          router.push(`/notes/${note.id}`)
         }}
       >
         Create New Note
@@ -58,5 +52,5 @@ export function NotesList({ clientId, searchQuery }: NotesProps) {
         ))}
       </Stack>
     </>
-  );
+  )
 }

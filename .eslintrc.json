@@ -1,3 +1,40 @@
 {
-  "extends": "next/core-web-vitals"
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:react/recommended",
+    // "plugin:markdown/recommended", TODO: Do I need this?
+    "plugin:jsx-a11y/strict",
+    "plugin:@next/next/recommended",
+    "next/core-web-vitals",
+    "prettier"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "globals": {
+    "React": true,
+    // google: true,
+    // mount: true,
+    // mountWithRouter: true,
+    // shallow: true,
+    // shallowWithRouter: true,
+    // context: true,
+    // expect: true,
+    // jsdom: true,
+    "JSX": true
+  },
+  "rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error"
+  }
 }

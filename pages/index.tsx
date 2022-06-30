@@ -1,10 +1,9 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import { NotesList } from "../lib/models/notes/NotesList";
-import { UserStatus } from "../lib/models/users/UserStatus";
-import { AppProps } from "./_app";
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import styles from '../styles/Home.module.css'
+import { NotesList } from '../lib/models/notes/NotesList'
+import { UserStatus } from '../lib/models/users/UserStatus'
+import { AppProps } from './_app'
 
 interface IndexProps extends AppProps {}
 
@@ -33,7 +32,7 @@ const Home: NextPage<any, any> = ({
         />
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

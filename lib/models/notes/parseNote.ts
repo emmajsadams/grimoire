@@ -1,22 +1,22 @@
-import { Note } from "thin-backend";
-import { TextNode } from "lexical";
-import moment from "moment-timezone";
+import { Note } from '@types/thin-backend'
+import { TextNode } from 'lexical'
+import moment from 'moment-timezone'
 
 // TODO: Move this to some constants file
-export const DONE = "done";
-export const TODO = "todo";
-export const STATUSES = [DONE, TODO];
-export const STATUS_PROPERTY = "status";
+export const DONE = 'done'
+export const TODO = 'todo'
+export const STATUSES = [DONE, TODO]
+export const STATUS_PROPERTY = 'status'
 
-export const TITLE_PROPERTY = "title";
+export const TITLE_PROPERTY = 'title'
 
-export const DUE_PROPERTY = "due";
+export const DUE_PROPERTY = 'due'
 
 // TODO: Move this to a helper function llibrary
 // TODO: use user timezone
 // EXPECTED FORMAT: "2013-11-18 11:55"
 function isDate(date: string): boolean {
-  return moment.tz(date, "America/Los_Angeles").isValid();
+  return moment.tz(date, 'America/Los_Angeles').isValid()
 }
 
 // TODO: Add Parser for `Due: ....`
@@ -24,16 +24,16 @@ function isDate(date: string): boolean {
 // TODO: Add Parser for `Recurring: Weekly|Monthly`
 export function parseNote(textNodes: TextNode[]): Partial<Note> {
   const note: Partial<Note> = {
-    title: "",
-    description: "",
-    status: "",
-    error: "",
-  };
+    title: '',
+    description: '',
+    status: '',
+    error: '',
+  }
 
   if (textNodes.length > 0) {
     for (const textNode of textNodes) {
-      const textContent = textNode.getTextContent();
-      const lowerCaseTextContent = textContent.toLowerCase();
+      const textContent = textNode.getTextContent()
+      const lowerCaseTextContent = textContent.toLowerCase()
 
       let isProperty = parseProperty(
         STATUS_PROPERTY,
@@ -41,21 +41,21 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
         note,
         (propertyText) =>
           STATUSES.includes(propertyText)
-            ? ""
-            : `${propertyText} is not a valid status (${STATUSES.join(",")}).`
-      );
+            ? ''
+            : `${propertyText} is not a valid status (${STATUSES.join(',')}).`,
+      )
       if (isProperty) {
-        continue;
+        continue
       }
 
       isProperty = parseProperty(
         TITLE_PROPERTY,
         lowerCaseTextContent,
         note,
-        (_) => "" // all text is valid as a title
-      );
+        () => '', // all text is valid as a title
+      )
       if (isProperty) {
-        continue;
+        continue
       }
 
       isProperty = parseProperty(
@@ -63,22 +63,22 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
         lowerCaseTextContent,
         note,
         (propertyText) =>
-          isDate(propertyText) ? "" : `${propertyText} is not a valid date.`
-      );
+          isDate(propertyText) ? '' : `${propertyText} is not a valid date.`,
+      )
       if (isProperty) {
         note.due = moment
-          .tz(note.due, "America/Los_Angeles")
+          .tz(note.due, 'America/Los_Angeles')
           .utc()
-          .toISOString(true);
-        console.log(note.due);
-        continue;
+          .toISOString(true)
+        console.log(note.due)
+        continue
       }
 
-      note.description += textContent + " \n ";
+      note.description += textContent + ' \n '
     }
   }
 
-  return note;
+  return note
 }
 
 // Returns true if the text contains the property (but not necessarily if it successfully parsed it since note.error is for that.)
@@ -86,28 +86,28 @@ function parseProperty(
   property: string,
   lowerCaseTextContent: string,
   note: Partial<Note>,
-  validate: (value: string) => string
+  validate: (value: string) => string,
 ): boolean {
   if (!lowerCaseTextContent.startsWith(`${property}:`)) {
-    return false;
+    return false
   }
 
   // If the property is already set that means multiple of the same properties were added to the same note
   // which is not allowed.
   if ((note as any)[property]) {
-    note.error += `${property} is already set.`;
-    return true;
+    note.error += `${property} is already set.`
+    return true
   }
 
   // Check if the property text is in the acceptable format
-  const propertyText = lowerCaseTextContent.replace(`${property}:`, "").trim();
-  const error = validate(propertyText);
+  const propertyText = lowerCaseTextContent.replace(`${property}:`, '').trim()
+  const error = validate(propertyText)
   if (error) {
-    note.error += error;
+    note.error += error
   }
 
   // Finally set the property
-  (note as any)[property] = propertyText;
+  ;(note as any)[property] = propertyText
 
-  return true;
+  return true
 }

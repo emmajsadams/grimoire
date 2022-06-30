@@ -1,121 +1,117 @@
-import styles from "../../../styles/Home.module.css";
-import { TextView } from "../../utils/text/TextView";
-import { TextEdit } from "../../utils/text/TextEdit";
-import { makeOnChange } from "../../utils/text/plugins/OnChangePlugin";
-import { TaskStatePlugin } from "../../utils/text/plugins/TaskStatePlugin";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-import React, { useState } from "react";
-import { formatTimeAgo } from "../../utils/time/formatTimeAgo";
-import { updateRecord, createRecord, deleteRecord, query } from "thin-backend";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { $getRoot } from "lexical";
-import { DONE } from "./parseNote";
-import { Note } from "thin-backend";
+import { TextView } from '../../utils/text/TextView'
+import { TextEdit } from '../../utils/text/TextEdit'
+import { makeOnChange } from '../../utils/text/plugins/OnChangePlugin'
+import { TaskStatePlugin } from '../../utils/text/plugins/TaskStatePlugin'
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
+import React, { useState } from 'react'
+import { formatTimeAgo } from '../../utils/time/formatTimeAgo'
+import { updateRecord, createRecord } from 'thin-backend'
+import { Note as NoteType } from '@types/thin-backend'
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 
 function onClick(
-  note: Note,
+  note: NoteType,
   clientId: string,
   edit: boolean,
-  setEdit: (newEdit: boolean) => any
+  setEdit: (newEdit: boolean) => any,
 ) {
   if (edit) {
-    updateRecord("notes", note.id, { clientId: null });
-    setEdit(false);
+    updateRecord('notes', note.id, { clientId: null })
+    setEdit(false)
   } else {
-    updateRecord("notes", note.id, { clientId: clientId });
-    setEdit(true);
+    updateRecord('notes', note.id, { clientId: clientId })
+    setEdit(true)
   }
 }
 
-function getStatus(note: Note, edit: boolean): string {
+function getStatus(note: NoteType, edit: boolean): string {
   if (edit) {
-    return "Editing Here ";
+    return 'Editing Here '
   } else {
     if (note.clientId) {
-      return "Editing Elsewhere ";
+      return 'Editing Elsewhere '
     } else if (note.draftRawEditorState) {
-      return "Draft ";
+      return 'Draft '
     }
   }
 
-  return "";
+  return ''
 }
 
-function getEditorState(note: Note) {
+function getEditorState(note: NoteType) {
   if (note.draftRawEditorState) {
-    return note.draftRawEditorState;
+    return note.draftRawEditorState
   } else if (note.rawEditorState) {
-    return note.rawEditorState;
+    return note.rawEditorState
   }
 
-  return "";
+  return ''
 }
 
 async function saveNewVersion(
-  note: Note,
-  setEdit: (edit: boolean) => void
+  note: NoteType,
+  setEdit: (edit: boolean) => void,
 ): Promise<any> {
-  const parsedNote: Partial<Note> = JSON.parse(note.draftParsedNote) as any;
+  const parsedNote: Partial<NoteType> = JSON.parse(note.draftParsedNote) as any
   if (parsedNote.error) {
     alert(
-      "This should never happen since the save button should be disabled. Please refresh your client."
-    );
-    return;
+      'This should never happen since the save button should be disabled. Please refresh your client.',
+    )
+    return
   }
 
-  createRecord("notes_history", {
+  createRecord('notes_history', {
     noteId: note.id,
     rawEditorState: note.rawEditorState,
     version: note.version,
-  });
-  updateRecord("notes", note.id, {
+  })
+  updateRecord('notes', note.id, {
     rawEditorState: note.draftRawEditorState,
-    draftRawEditorState: "",
+    draftRawEditorState: '',
     version: note.version++,
     clientId: null,
     ...parsedNote,
-  });
-  setEdit(false);
+  })
+  setEdit(false)
 }
 
-function deleteDraft(note: Note, setEdit: any): any {
-  updateRecord("notes", note.id, {
-    draftRawEditorState: "",
-    error: "",
+function deleteDraft(note: NoteType, setEdit: any): any {
+  updateRecord('notes', note.id, {
+    draftRawEditorState: '',
+    error: '',
     clientId: null,
-  });
-  setEdit(false);
+  })
+  setEdit(false)
 }
 
-export function Note(props: { note: Note; clientId: string }): JSX.Element {
-  const { note, clientId } = props;
-  const [edit, setEdit] = useState(false);
+export function Note(props: { note: NoteType; clientId: string }): JSX.Element {
+  const { note, clientId } = props
+  const [edit, setEdit] = useState(false)
 
   if (!note) {
-    return <p>Loading Note</p>;
+    return <p>Loading Note</p>
   }
 
   // Cancel out of edit if another window takes focus
   if (clientId != note.clientId && edit) {
-    setEdit(false);
+    setEdit(false)
   }
 
-  let textElement: JSX.Element;
+  let textElement: JSX.Element
   if (!edit) {
     textElement = (
       <TextView>
         <TaskStatePlugin note={note} />
       </TextView>
-    );
+    )
   } else {
-    let initialState = getEditorState(note);
+    let initialState = getEditorState(note)
 
-    const editProps: any = initialState ? { initialState } : {};
+    const editProps: any = initialState ? { initialState } : {}
     textElement = (
       <TextEdit {...editProps}>
         {/* TODO I might need to make my own OnChangePlugin that handles updating the task state from other clients without triggering onChange handler lop */}
@@ -125,7 +121,7 @@ export function Note(props: { note: Note; clientId: string }): JSX.Element {
           onChange={makeOnChange(note)}
         />
       </TextEdit>
-    );
+    )
   }
 
   // TODO: Handle onClick anywhere updating edit status
@@ -169,5 +165,5 @@ export function Note(props: { note: Note; clientId: string }): JSX.Element {
         )}
       </CardActions>
     </Card>
-  );
+  )
 }
