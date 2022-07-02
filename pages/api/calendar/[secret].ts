@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import ical, { ICalEventBusyStatus } from 'ical-generator'
-import { DONE } from '../../../lib/models/notes/parseNote'
+import { DONE, DELETED } from '../../../lib/models/notes/parseNote'
 import postgres from 'postgres'
 import moment from 'moment-timezone'
 import { validate as validateUUID } from 'uuid'
@@ -46,6 +46,10 @@ export default async function handler(
         status
       from notes
       where user_id = ${user.id}
+        AND status != ${DELETED}
+        AND status != ${DONE}
+        AND due IS NOT NULL
+        AND title != ''
     `
 
     const calendar = ical({
@@ -54,7 +58,7 @@ export default async function handler(
       url: 'https://grimoireautomata.com',
     })
     for (const note of notes) {
-      if (!note.due || !note.title || note.status == DONE) {
+      if (!note.due || !note.title) {
         continue
       }
 

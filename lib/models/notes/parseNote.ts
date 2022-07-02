@@ -42,11 +42,19 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
   }
 
   // quick and dirty way to check if the title text includes other information
-  if (headerText.toLowerCase().includes('on ')) {
-    note.title = headerText.split('on ')[0]
+  if (headerText.includes('ON ')) {
+    note.title = headerText.split('ON ')[0]
+    console.log(note.title)
     const due = chrono.parseDate(headerText)
     if (due) {
-      note.due = moment.tz(due, 'America/Los_Angeles').utc().toISOString(true)
+      let dueMoment = moment.tz(due, 'America/Los_Angeles')
+
+      // if we dont include AT assume it is an all day event (which for now just means notify at 9am)
+      if (!headerText.includes('AT ')) {
+        dueMoment = dueMoment.hours(9).minutes(0).seconds(0).milliseconds(0)
+      }
+
+      note.due = dueMoment.utc().toISOString(true)
     }
   } else {
     note.title = headerText
