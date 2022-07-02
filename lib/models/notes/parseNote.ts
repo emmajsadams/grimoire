@@ -43,9 +43,9 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
 
   // quick and dirty way to check if the title text includes other information
   if (headerText.includes('ON ')) {
-    note.title = headerText.split('ON ')[0]
-    console.log(note.title)
-    const due = chrono.parseDate(headerText)
+    const [title, dueString] = headerText.split('ON ')
+    note.title = title
+    const due = chrono.parseDate(dueString)
     if (due) {
       let dueMoment = moment.tz(due, 'America/Los_Angeles')
 
@@ -55,6 +55,8 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
       }
 
       note.due = dueMoment.utc().toISOString(true)
+    } else {
+      note.error += `Could not parse due date: ${dueString}`
     }
   } else {
     note.title = headerText

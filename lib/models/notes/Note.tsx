@@ -151,6 +151,13 @@ export function Note(props: { note: NoteType; clientId: string }): JSX.Element {
         ) : (
           <></>
         )}
+        {!edit && note.due ? (
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <b>Due:</b> {formatTimeAgo(note.due)}
+          </Typography>
+        ) : (
+          <></>
+        )}
       </CardContent>
       <CardActions>
         {edit ? (
