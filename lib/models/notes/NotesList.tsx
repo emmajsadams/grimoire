@@ -3,7 +3,6 @@ import { useQuery } from 'thin-backend-react'
 import { Note } from './Note'
 import { createRecord } from 'thin-backend'
 import Stack from '@mui/material/Stack'
-import { useRouter } from 'next/router'
 import { DELETED } from './parseNote'
 
 interface NotesProps {
@@ -14,8 +13,6 @@ interface NotesProps {
 
 // TODO: add some padding at the bottom so navigation doesn't cover up last card
 export function NotesList({ clientId, searchQuery }: NotesProps) {
-  const router = useRouter()
-
   let notesQuery = query('notes')
     .whereNot('status', DELETED)
     .orderByAsc('due')
@@ -38,22 +35,20 @@ export function NotesList({ clientId, searchQuery }: NotesProps) {
   // This can be used to ensure only a single editing is happening at the same time.
   // TODO: Move create new note to app bar!
   // TODO: Investigate why textSearch: "" is necessarY?
+  // TODO: I added a bunch of linebreaks hackily to make sure I can always view the bottom ote.
   return (
     <>
-      <button
-        onClick={async () => {
-          // TODO: Figure out why textSearch and error need to be set to null for new notes?
-          const note = await createRecord('notes', {} as any)
-          router.push(`/notes/${note.id}`)
-        }}
-      >
-        Create New Note
-      </button>
-
       <Stack spacing={2}>
         {notes.map((note) => (
           <Note note={note} clientId={clientId} key={note.id} />
         ))}
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </Stack>
     </>
   )

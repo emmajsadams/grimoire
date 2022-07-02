@@ -13,8 +13,11 @@ import SearchIcon from '@mui/icons-material/Search'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import MailIcon from '@mui/icons-material/Mail'
 import NotificationsIcon from '@mui/icons-material/Notifications'
-import MoreIcon from '@mui/icons-material/MoreVert'
 import { AppProps } from '../../../pages/_app'
+import { logout } from 'thin-backend'
+import { useCurrentUser } from 'thin-backend-react'
+import { createRecord } from 'thin-backend'
+import { useRouter } from 'next/router'
 
 // TODO: Add a query language in the search bar
 // Commands should be wrapped in ``` character. EX: ```due:asc&&```
@@ -53,8 +56,8 @@ const Search = styled('div')(({ theme }) => ({
   'marginLeft': 0,
   'width': '100%',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
+    // marginLeft: theme.spacing(3),
+    width: '100%',
   },
 }))
 
@@ -76,9 +79,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
   },
 }))
 
@@ -88,6 +88,8 @@ export function PrimaryAppBar({
   searchQuery,
   setSearchQuery,
 }: PrimaryAppBarProps) {
+  const router = useRouter()
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
@@ -129,8 +131,25 @@ export function PrimaryAppBar({
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem>{useCurrentUser()?.email}</MenuItem>
+      <MenuItem onClick={(e) => logout()}>Logout</MenuItem>
+      <MenuItem
+        onClick={() => {
+          router.push(`/`) // TODO: DO not do this imperatively!! just link
+        }}
+      >
+        Notes
+      </MenuItem>
+      <MenuItem>--</MenuItem>
+      <MenuItem
+        onClick={async () => {
+          // TODO: Figure out why textSearch and error need to be set to null for new notes?
+          const note = await createRecord('notes', {} as any)
+          router.push(`/notes/${note.id}`)
+        }}
+      >
+        Create New Note
+      </MenuItem>
     </Menu>
   )
 
@@ -181,7 +200,7 @@ export function PrimaryAppBar({
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>{useCurrentUser()?.email}</p>
       </MenuItem>
     </Menu>
   )
@@ -197,6 +216,7 @@ export function PrimaryAppBar({
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
+            onClick={handleProfileMenuOpen}
           >
             <MenuIcon />
           </IconButton>
@@ -213,40 +233,6 @@ export function PrimaryAppBar({
               onChange={(event) => setSearchQuery(event.target.value)} // TODO: Convert this to an object that contains the parsed search components maybe?s
             />
           </Search>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

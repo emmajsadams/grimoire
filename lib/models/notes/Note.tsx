@@ -11,6 +11,7 @@ import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import { useRouter } from 'next/router'
 
 function onClick(
   note: NoteType,
@@ -90,6 +91,7 @@ function deleteDraft(note: NoteType, setEdit: any): any {
 export function Note(props: { note: NoteType; clientId: string }): JSX.Element {
   const { note, clientId } = props
   const [edit, setEdit] = useState(false)
+  const router = useRouter()
 
   if (!note) {
     return <p>Loading Note</p>
@@ -132,7 +134,14 @@ export function Note(props: { note: NoteType; clientId: string }): JSX.Element {
     >
       <CardContent>
         {textElement}
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+        <Typography
+          sx={{ mb: 1.5 }}
+          color="text.secondary"
+          onClick={async () => {
+            // TODO: DO NOT DO THIS IMPERATIVELY and make it a link instead
+            router.push(`/notes/${note.id}`)
+          }}
+        >
           {getStatus(note, edit) + `(${formatTimeAgo(note.updatedAt)})`}
         </Typography>
         {note.error ? (

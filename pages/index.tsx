@@ -1,8 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
 import { NotesList } from '../lib/models/notes/NotesList'
-import { UserStatus } from '../lib/models/users/UserStatus'
 import { AppProps } from './_app'
 
 interface IndexProps extends AppProps {}
@@ -22,9 +20,6 @@ const Home: NextPage<any, any> = ({
       </Head>
 
       <main>
-        <p className={styles.description}>
-          <UserStatus />
-        </p>
         <NotesList
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
