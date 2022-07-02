@@ -1,11 +1,13 @@
-import { Note } from '@types/thin-backend'
+import { Note } from 'thin-backend'
 import { TextNode } from 'lexical'
 import moment from 'moment-timezone'
+import * as chrono from 'chrono-node'
 
 // TODO: Move this to some constants file
 export const DONE = 'done'
 export const TODO = 'todo'
-export const STATUSES = [DONE, TODO]
+export const DELETED = 'deleted'
+export const STATUSES = [DONE, TODO, DELETED]
 export const STATUS_PROPERTY = 'status'
 
 export const TITLE_PROPERTY = 'title'
@@ -30,52 +32,61 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
     error: '',
   }
 
-  if (textNodes.length > 0) {
-    for (const textNode of textNodes) {
-      const textContent = textNode.getTextContent()
-      const lowerCaseTextContent = textContent.toLowerCase()
+  if (textNodes.length == 0) {
+    return note
+  }
 
-      let isProperty = parseProperty(
-        STATUS_PROPERTY,
-        lowerCaseTextContent,
-        note,
-        (propertyText) =>
-          STATUSES.includes(propertyText)
-            ? ''
-            : `${propertyText} is not a valid status (${STATUSES.join(',')}).`,
-      )
-      if (isProperty) {
-        continue
-      }
+  const headerText = textNodes[0].getTextContent().trim()
+  if (headerText === '') {
+    return note
+  }
 
-      isProperty = parseProperty(
-        TITLE_PROPERTY,
-        lowerCaseTextContent,
-        note,
-        () => '', // all text is valid as a title
-      )
-      if (isProperty) {
-        continue
-      }
-
-      isProperty = parseProperty(
-        DUE_PROPERTY,
-        lowerCaseTextContent,
-        note,
-        (propertyText) =>
-          isDate(propertyText) ? '' : `${propertyText} is not a valid date.`,
-      )
-      if (isProperty) {
-        note.due = moment
-          .tz(note.due, 'America/Los_Angeles')
-          .utc()
-          .toISOString(true)
-        console.log(note.due)
-        continue
-      }
-
-      note.description += textContent + ' \n '
+  // quick and dirty way to check if the title text includes other information
+  if (headerText.toLowerCase().includes('on ')) {
+    note.title = headerText.split('on ')[0]
+    const due = chrono.parseDate(headerText)
+    if (due) {
+      note.due = moment.tz(due, 'America/Los_Angeles').utc().toISOString(true)
     }
+  } else {
+    note.title = headerText
+  }
+
+  // Parse for metadata tags:
+  for (const textNode of textNodes) {
+    const textContent = textNode.getTextContent()
+    const lowerCaseTextContent = textContent.toLowerCase()
+
+    let isProperty = parseProperty(
+      STATUS_PROPERTY,
+      lowerCaseTextContent,
+      note,
+      (propertyText) =>
+        STATUSES.includes(propertyText)
+          ? ''
+          : `${propertyText} is not a valid status (${STATUSES.join(',')}).`,
+    )
+    if (isProperty) {
+      continue
+    }
+
+    isProperty = parseProperty(
+      DUE_PROPERTY,
+      lowerCaseTextContent,
+      note,
+      (propertyText) =>
+        isDate(propertyText) ? '' : `${propertyText} is not a valid date.`,
+    )
+    if (isProperty) {
+      note.due = moment
+        .tz(note.due, 'America/Los_Angeles')
+        .utc()
+        .toISOString(true)
+      console.log(note.due)
+      continue
+    }
+
+    note.description += textContent + ' \n '
   }
 
   return note

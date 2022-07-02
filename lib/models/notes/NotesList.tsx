@@ -4,6 +4,7 @@ import { Note } from './Note'
 import { createRecord } from 'thin-backend'
 import Stack from '@mui/material/Stack'
 import { useRouter } from 'next/router'
+import { DELETED } from './parseNote'
 
 interface NotesProps {
   clientId: string
@@ -15,7 +16,10 @@ interface NotesProps {
 export function NotesList({ clientId, searchQuery }: NotesProps) {
   const router = useRouter()
 
-  let notesQuery = query('notes').orderByDesc('due').orderByAsc('createdAt')
+  let notesQuery = query('notes')
+    .whereNot('status', DELETED)
+    .orderByAsc('due')
+    .orderByAsc('createdAt')
   if (searchQuery) {
     // TODO: Denormalize all tags into a field on the note for full text search
     notesQuery = notesQuery.whereTextSearchStartsWith('textSearch', searchQuery)

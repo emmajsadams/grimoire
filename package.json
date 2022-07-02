@@ -10,7 +10,7 @@
     "test": "echo 'TODO'",
     "lint": "next lint",
     "lint-fix": "eslint * --fix --no-error-on-unmatched-pattern",
-    "preinstall": "npm remove @types/thin-backend && npm install --save-dev 'https://thin.dev/types/3041c46f-39d4-4c69-9d00-37a601aebe38/QGxRhHAJaFDGAXNKeAGGlnEipyjUCSPi'"
+    "preinstall": "npm remove @types/thin-backend && npm install --save-dev 'https://thin.dev/types/62f9e237-3444-4296-a5ea-67fc2568ba5c/LPWUAMRGWEhlOErYOwPADxKMeIzYEnJf'"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -18,6 +18,7 @@
     "@lexical/react": "^0.3.5",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.5",
+    "chrono-node": "^2.3.8",
     "ical-generator": "^3.4.3",
     "javascript-time-ago": "^2.5.4",
     "lexical": "^0.3.5",
@@ -37,7 +38,7 @@
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
-    "@types/thin-backend": "https://thin.dev/types/3041c46f-39d4-4c69-9d00-37a601aebe38/QGxRhHAJaFDGAXNKeAGGlnEipyjUCSPi",
+    "@types/thin-backend": "https://thin.dev/types/62f9e237-3444-4296-a5ea-67fc2568ba5c/LPWUAMRGWEhlOErYOwPADxKMeIzYEnJf",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "5.30.0",
     "@typescript-eslint/parser": "5.30.0",
