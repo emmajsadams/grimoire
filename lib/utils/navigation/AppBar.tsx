@@ -110,10 +110,6 @@ export function PrimaryAppBar({
     handleMobileMenuClose()
   }
 
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget)
-  }
-
   const menuId = 'primary-search-account-menu'
   const renderMenu = (
     <Menu
@@ -132,7 +128,7 @@ export function PrimaryAppBar({
       onClose={handleMenuClose}
     >
       <MenuItem>{useCurrentUser()?.email}</MenuItem>
-      <MenuItem onClick={(e) => logout()}>Logout</MenuItem>
+      <MenuItem onClick={() => logout()}>Logout</MenuItem>
       <MenuItem
         onClick={() => {
           router.push(`/`) // TODO: DO not do this imperatively!! just link

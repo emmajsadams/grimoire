@@ -1,7 +1,6 @@
 import { query } from 'thin-backend'
 import { useQuery } from 'thin-backend-react'
 import { Note } from './Note'
-import { createRecord } from 'thin-backend'
 import Stack from '@mui/material/Stack'
 import { DELETED } from './parseNote'
 
