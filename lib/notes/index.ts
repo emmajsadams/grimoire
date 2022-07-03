@@ -5,8 +5,10 @@ export const TODO = 'todo'
 export type TODO_TYPE = 'todo'
 export const DELETED = 'deleted'
 export type DELETED_TYPE = 'deleted'
-export const STATUSES = [DONE, TODO, DELETED]
-export type STATUSES_TYPE = DONE_TYPE | TODO_TYPE | DELETED_TYPE
+export const NOTE = 'note'
+export type NOTE_TYPE = 'note'
+export const STATUSES = [DONE, TODO, DELETED, NOTE]
+export type STATUSES_TYPE = DONE_TYPE | TODO_TYPE | DELETED_TYPE | NOTE_TYPE
 export const STATUS_PROPERTY = 'status'
 export type STATUS_PROPERTY_TYPE = 'status'
 

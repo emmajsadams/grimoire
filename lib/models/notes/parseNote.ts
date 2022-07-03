@@ -45,6 +45,7 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
       }
 
       note.due = dueMoment.utc().toISOString(true)
+      note.status = 'todo' // By default unless overridden anything with a due date is something todo
     } else {
       note.error += `Could not parse due date: ${dueString}`
     }

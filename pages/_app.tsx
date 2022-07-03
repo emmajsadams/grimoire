@@ -19,7 +19,7 @@ export interface AppProps {
 // TODO: What is the accurate type here?
 function MyApp({ Component, pageProps }: any): JSX.Element {
   const [searchQuery, setSearchQuery] = useState(
-    parseSearchQuery('status:!=:deleted '),
+    parseSearchQuery('status:==:todo'), //
   ) // TODO: Convert this to an object that contains the parsed search components maybe?
   const [clientId] = useState(uuidv4())
   const customProps: AppProps = {
