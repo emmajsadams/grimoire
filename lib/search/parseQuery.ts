@@ -90,7 +90,7 @@ function parseQueryPart(
     return false
   }
 
-  const [_, operation, rawValue] = stringQueryPart.split(':')
+  const [, operation, rawValue] = stringQueryPart.split(':')
 
   if (!Operations.includes(operation)) {
     query.errors.push(`Unknown operation: ${operation}`)
