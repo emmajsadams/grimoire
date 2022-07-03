@@ -66,16 +66,16 @@ export function NotesList({ searchQuery }: NotesProps) {
   // TODO: Move create new note to app bar!
   // TODO: Investigate why textSearch: "" is necessarY?
   // TODO: I added a bunch of linebreaks hackily to make sure I can always view the bottom ote.
+  // TODO: Add other properties? and header?
+  // //           <TableHead>
+  //           <TableRow>
+  //             <TableCell>Title</TableCell>
+  //           </TableRow>
+  //         </TableHead>
   return (
     <>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Due</TableCell>
-            </TableRow>
-          </TableHead>
+        <Table aria-label="simple table">
           <TableBody>
             {notes.map((note) => (
               <Link href={`/notes/${note.id}`} key={note.id}>
@@ -86,9 +86,13 @@ export function NotesList({ searchQuery }: NotesProps) {
                   }}
                 >
                   <TableCell component="th" scope="row">
-                    {note.title}
+                    {note.title}{' '}
+                    {note.due ? (
+                      <b>{`(due ${formatTimeAgo(note.due as any)})`}</b>
+                    ) : (
+                      <></>
+                    )}
                   </TableCell>
-                  <TableCell>{formatTimeAgo(note.due as any)}</TableCell>
                 </TableRow>
               </Link>
             ))}
