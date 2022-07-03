@@ -152,7 +152,11 @@ function parseQueryPart(
   }
 
   if (!rawValue) {
-    query.errors.push(`Value not defined (${expectedValues.join(', ')})`)
+    query.errors.push(
+      `Value not defined ${
+        expectedValues ? `(${expectedValues.join(', ')})` : ''
+      }`,
+    )
     return true
   }
 
