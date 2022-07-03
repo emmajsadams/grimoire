@@ -2,17 +2,8 @@ import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
-import ExampleTheme from '../../utils/text/themes/ExampleTheme'
-import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import React from 'react'
-
-export const Config: any = {
-  theme: ExampleTheme,
-  onError(error: any) {
-    throw error
-  },
-  nodes: [HeadingNode, QuoteNode],
-}
+import { DefaultConfig } from '../../text'
 
 // TODO: Look into collobartion plugin
 export function TextEdit(props: {
@@ -22,7 +13,7 @@ export function TextEdit(props: {
   const { initialState, children } = props
 
   return (
-    <LexicalComposer initialConfig={Config}>
+    <LexicalComposer initialConfig={DefaultConfig}>
       <div className="editor-container">
         <RichTextPlugin
           initialEditorState={initialState}
