@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import ical, { ICalEventBusyStatus } from 'ical-generator'
-import { DONE, DELETED } from '../../../lib/models/notes/parseNote'
+import { DONE, DELETED } from '../../../lib/notes'
 import postgres from 'postgres'
 import moment from 'moment-timezone'
 import { validate as validateUUID } from 'uuid'

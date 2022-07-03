@@ -1,9 +1,5 @@
 import { query } from 'thin-backend'
 import { useQuery } from 'thin-backend-react'
-import { Note } from './Note'
-import Stack from '@mui/material/Stack'
-import { DELETED } from './parseNote'
-import { Operation } from '../../utils/navigation/AppBar'
 import * as React from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -15,23 +11,9 @@ import Paper from '@mui/material/Paper'
 import Link from 'next/link'
 import { AppProps } from '../../../pages/_app'
 import { formatTimeAgo } from '../../utils/time/formatTimeAgo'
+import { setQueryFilters } from '../../search'
 
 interface NotesProps extends AppProps {}
-
-// TODO: move to a file with other parsing logic
-function setQueryFilters(
-  queryBuilder: any,
-  searchQueryPart: any,
-  property: any,
-): any {
-  if (searchQueryPart.operation === '==') {
-    return queryBuilder.where(property, searchQueryPart.value)
-  } else if (searchQueryPart.operation === '!=') {
-    return queryBuilder.whereNot(property, searchQueryPart.value)
-  }
-
-  return queryBuilder
-}
 
 export function NotesList({ clientId, searchQuery }: NotesProps) {
   // TODO: let orderby be set by filters???
@@ -113,15 +95,11 @@ export function NotesList({ clientId, searchQuery }: NotesProps) {
           </TableBody>
         </Table>
       </TableContainer>
-      <Stack spacing={2}>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-      </Stack>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </>
   )
 }
