@@ -18,6 +18,66 @@ import { logout } from 'thin-backend'
 import { useCurrentUser } from 'thin-backend-react'
 import { createRecord } from 'thin-backend'
 import { useRouter } from 'next/router'
+import moment, { Moment } from 'moment-timezone'
+import {
+  TITLE_PROPERTY,
+  DUE_PROPERTY,
+  STATUS_PROPERTY,
+  TAG_PROPERTY,
+  STATUSES_TYPE,
+  TAGS_TYPE,
+  TAGS,
+  STATUSES,
+  Properties,
+} from '../../models/notes/parseNote'
+
+const Operations = ['==', '!=', '>', '<', '>=', '<=']
+export type Operation = '==' | '!=' | '>' | '<' | '>=' | '<='
+
+interface TitleQueryPart {
+  operation: Operation
+  value: string
+}
+
+interface DueQueryPart {
+  operation: Operation
+  value: Moment
+}
+
+interface StatusQueryPart {
+  operation: Operation
+  value: STATUSES_TYPE
+}
+
+interface TagQueryPart {
+  operation: Operation
+  value: TAGS_TYPE
+}
+
+export interface Query {
+  [TITLE_PROPERTY]: TitleQueryPart[]
+  [DUE_PROPERTY]: DueQueryPart[]
+  [STATUS_PROPERTY]: StatusQueryPart[]
+  [TAG_PROPERTY]: TagQueryPart[]
+  errors: string[]
+  rawQuery: string
+}
+
+export function createDefaultQuery(): Query {
+  return {
+    [TITLE_PROPERTY]: [
+      {
+        operation: '==',
+        value: '',
+      },
+    ],
+    [DUE_PROPERTY]: [],
+    [STATUS_PROPERTY]: [],
+    [TAG_PROPERTY]: [],
+    errors: [],
+    rawQuery: '',
+  }
+}
 
 // TODO: Add a query language in the search bar
 // Commands should be wrapped in ``` character. EX: ```due:asc&&```
@@ -26,24 +86,91 @@ import { useRouter } from 'next/router'
 // By default `due:asc&&status:!=done&&` should be set to get a filtered view.
 //
 // TODO: parse this in appBar when setting state instead
-// function parseSearchQuery(searchQuery: string): string[] {
-//   const queryParts = searchQuery.split(" ").trimSpace();
+export function parseSearchQuery(searchQuery: string): Query {
+  const stringQueryParts = searchQuery.trim().split(' ')
+  const queryParts = createDefaultQuery()
+  queryParts.rawQuery = searchQuery
 
-//   const newSearchQueryParts: string[] = [];
-//   const tags: string[] = [];
-//   const dueDates: Moment[] = [];
-//   for (const queryPart in queryParts) {
-//     if (queryPart.startsWith("tag:")) {
-//       tags.push(queryPart.replaceAll("tag:", ""));
-//     } else if (queryPart.startsWith("due:")) {
-//       dueDates.push(
-//         moment.tz(queryPart.replaceAll("due:", ""), "America/Los_Angeles").utc()
-//       );
-//     } else {
-//       newSearchQueryParts.push(queryPart);
-//     }
-//   }
-// }
+  for (const stringQueryPart of stringQueryParts) {
+    const parsedTag = parseQueryPart(
+      queryParts,
+      stringQueryPart,
+      TAG_PROPERTY,
+      TAGS,
+      (value) => value,
+    )
+    if (parsedTag) {
+      continue
+    }
+
+    const parsedDue = parseQueryPart(
+      queryParts,
+      stringQueryPart,
+      DUE_PROPERTY,
+      null,
+      (value) => moment.tz(value, 'America/Los_Angeles').utc(),
+    )
+    if (parsedDue) {
+      continue
+    }
+
+    const parsedStatus = parseQueryPart(
+      queryParts,
+      stringQueryPart,
+      STATUS_PROPERTY,
+      STATUSES,
+      (value) => value,
+    )
+    if (parsedStatus) {
+      continue
+    }
+
+    // if could not parse it as a query part than it is part of title
+    queryParts[TITLE_PROPERTY][0].value += stringQueryPart + ' '
+  }
+
+  return queryParts
+}
+
+// Returns true if the query part contained the property (errors and results will be set on query directly)
+function parseQueryPart(
+  query: Query,
+  stringQueryPart: string,
+  property: string,
+  expectedValues: string[] | null,
+  parse: (stringQueryPart: string) => any,
+): boolean {
+  if (!stringQueryPart.startsWith(`${property}:`)) {
+    return false
+  }
+
+  const [_, operation, rawValue] = stringQueryPart.split(':')
+
+  if (!Operations.includes(operation)) {
+    query.errors.push(`Unknown operation: ${operation}`)
+    return true
+  }
+
+  if (!rawValue) {
+    query.errors.push(`Value not defined (${expectedValues.join(', ')})`)
+    return true
+  }
+
+  const value = parse(rawValue.trim())
+  if (expectedValues && !expectedValues.includes(value)) {
+    query.errors.push(
+      `Value is not allowed (${expectedValues.join(', ')}): ${rawValue}`,
+    )
+    return true
+  }
+
+  ;(query as any)[property].push({
+    operation: operation.trim(),
+    value: value,
+  })
+
+  return true
+}
 
 const Search = styled('div')(({ theme }) => ({
   'position': 'relative',
@@ -55,8 +182,7 @@ const Search = styled('div')(({ theme }) => ({
   'marginRight': theme.spacing(2),
   'marginLeft': 0,
   'width': '100%',
-  [theme.breakpoints.up('sm')]: {
-    // marginLeft: theme.spacing(3),
+  '& .MuiInputBase-root': {
     width: '100%',
   },
 }))
@@ -129,6 +255,7 @@ export function PrimaryAppBar({
     >
       <MenuItem>{useCurrentUser()?.email}</MenuItem>
       <MenuItem onClick={() => logout()}>Logout</MenuItem>
+      <MenuItem>--</MenuItem>
       <MenuItem
         onClick={() => {
           router.push(`/`) // TODO: DO not do this imperatively!! just link
@@ -136,7 +263,6 @@ export function PrimaryAppBar({
       >
         Notes
       </MenuItem>
-      <MenuItem>--</MenuItem>
       <MenuItem
         onClick={async () => {
           // TODO: Figure out why textSearch and error need to be set to null for new notes?
@@ -224,9 +350,11 @@ export function PrimaryAppBar({
               sx={{ flexGrow: 1 }}
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
-              value={searchQuery}
+              value={searchQuery.rawQuery}
               // autoFocus={true} TODO: restore this after investigating accessibility concerns
-              onChange={(event) => setSearchQuery(event.target.value)} // TODO: Convert this to an object that contains the parsed search components maybe?s
+              onChange={(event) =>
+                setSearchQuery(parseSearchQuery(event.target.value))
+              } // TODO: Convert this to an object that contains the parsed search components maybe?s
             />
           </Search>
         </Toolbar>

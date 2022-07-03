@@ -3,22 +3,70 @@ import { useQuery } from 'thin-backend-react'
 import { Note } from './Note'
 import Stack from '@mui/material/Stack'
 import { DELETED } from './parseNote'
+import { Operation } from '../../utils/navigation/AppBar'
+import * as React from 'react'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
+import Link from 'next/link'
+import { AppProps } from '../../../pages/_app'
 
-interface NotesProps {
-  clientId: string
-  searchQuery: string
-  setSearchQuery: (query: string) => void
+interface NotesProps extends AppProps {}
+
+// TODO: move to a file with other parsing logic
+function setQueryFilters(
+  queryBuilder: any,
+  searchQueryPart: any,
+  property: any,
+): any {
+  if (searchQueryPart.operation === '==') {
+    return queryBuilder.where(property, searchQueryPart.value)
+  } else if (searchQueryPart.operation === '!=') {
+    return queryBuilder.whereNot(property, searchQueryPart.value)
+  }
+
+  return queryBuilder
 }
 
-// TODO: add some padding at the bottom so navigation doesn't cover up last card
 export function NotesList({ clientId, searchQuery }: NotesProps) {
-  let notesQuery = query('notes')
-    .whereNot('status', DELETED)
-    .orderByAsc('due')
-    .orderByAsc('createdAt')
+  // TODO: let orderby be set by filters???
+  let notesQuery = query('notes').orderByAsc('due').orderByAsc('createdAt')
   if (searchQuery) {
-    // TODO: Denormalize all tags into a field on the note for full text search
-    notesQuery = notesQuery.whereTextSearchStartsWith('textSearch', searchQuery)
+    if (
+      searchQuery.title.length == 0 ||
+      searchQuery.title[0].operation !== '=='
+    ) {
+      alert('Invalid query this should never happen')
+      return <></>
+    }
+
+    if (searchQuery.errors.length > 0) {
+      return <p>Search Query Errors: {searchQuery.errors.join(', ')}</p>
+    }
+
+    // TODO: move these loops into the query filters object
+    for (const searchQueryPart of searchQuery.status) {
+      notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'status')
+    }
+
+    for (const searchQueryPart of searchQuery.due) {
+      notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'due')
+    }
+
+    for (const searchQueryPart of searchQuery.tag) {
+      notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'tag')
+    }
+
+    if (searchQuery.title[0].value !== '') {
+      notesQuery = notesQuery.whereTextSearchStartsWith(
+        'textSearch',
+        searchQuery.title[0].value,
+      )
+    }
   }
 
   const notes = useQuery(notesQuery)
@@ -37,10 +85,34 @@ export function NotesList({ clientId, searchQuery }: NotesProps) {
   // TODO: I added a bunch of linebreaks hackily to make sure I can always view the bottom ote.
   return (
     <>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Title</TableCell>
+              <TableCell>Due</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {notes.map((note) => (
+              <Link href={`/notes/${note.id}`} key={note.id}>
+                <TableRow
+                  sx={{
+                    '&:last-child td, &:last-child th': { border: 0 },
+                    'cursor': 'pointer',
+                  }}
+                >
+                  <TableCell component="th" scope="row">
+                    {note.title}
+                  </TableCell>
+                  <TableCell>{note.due}</TableCell>
+                </TableRow>
+              </Link>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <Stack spacing={2}>
-        {notes.map((note) => (
-          <Note note={note} clientId={clientId} key={note.id} />
-        ))}
         <br />
         <br />
         <br />
