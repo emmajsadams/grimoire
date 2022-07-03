@@ -177,7 +177,7 @@ export function PrimaryAppBar({
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="sticky" color="primary">
+      <AppBar position="fixed" color="primary">
         <Toolbar>
           <IconButton
             size="large"
@@ -208,6 +208,12 @@ export function PrimaryAppBar({
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      <br />
+      <br />
+      <br />
+      <br />
     </Box>
   )
 }
+
+// TODO: I should not need <br> at the end to avoid he search bar covering scrolling notes
