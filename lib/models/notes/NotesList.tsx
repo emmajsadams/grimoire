@@ -15,7 +15,7 @@ import { setQueryFilters } from '../../search'
 
 interface NotesProps extends AppProps {}
 
-export function NotesList({ clientId, searchQuery }: NotesProps) {
+export function NotesList({ searchQuery }: NotesProps) {
   // TODO: let orderby be set by filters???
   let notesQuery = query('notes').orderByAsc('due').orderByAsc('createdAt')
   if (searchQuery) {
@@ -24,35 +24,35 @@ export function NotesList({ clientId, searchQuery }: NotesProps) {
       searchQuery.title[0].operation !== '=='
     ) {
       alert('Invalid query this should never happen')
-      return <></>
-    }
+      searchQuery.errors.push('Invalid query this should never happen')
+    } else {
+      // TODO: move these loops into the query filters object
+      for (const searchQueryPart of searchQuery.status) {
+        notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'status')
+      }
 
-    if (searchQuery.errors.length > 0) {
-      return <p>Search Query Errors: {searchQuery.errors.join(', ')}</p>
-    }
+      for (const searchQueryPart of searchQuery.due) {
+        notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'due')
+      }
 
-    // TODO: move these loops into the query filters object
-    for (const searchQueryPart of searchQuery.status) {
-      notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'status')
-    }
+      for (const searchQueryPart of searchQuery.tag) {
+        notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'tag')
+      }
 
-    for (const searchQueryPart of searchQuery.due) {
-      notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'due')
-    }
-
-    for (const searchQueryPart of searchQuery.tag) {
-      notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'tag')
-    }
-
-    if (searchQuery.title[0].value !== '') {
-      notesQuery = notesQuery.whereTextSearchStartsWith(
-        'textSearch',
-        searchQuery.title[0].value,
-      )
+      if (searchQuery.title[0].value !== '') {
+        notesQuery = notesQuery.whereTextSearchStartsWith(
+          'textSearch',
+          searchQuery.title[0].value,
+        )
+      }
     }
   }
 
   const notes = useQuery(notesQuery)
+
+  if (searchQuery.errors.length > 0) {
+    return <p>Search Query Errors: {searchQuery.errors.join(', ')}</p>
+  }
 
   if (notes === null) {
     return <div>Loading ...</div>
