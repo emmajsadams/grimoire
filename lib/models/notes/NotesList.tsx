@@ -14,6 +14,7 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Link from 'next/link'
 import { AppProps } from '../../../pages/_app'
+import { formatTimeAgo } from '../../utils/time/formatTimeAgo'
 
 interface NotesProps extends AppProps {}
 
@@ -105,7 +106,7 @@ export function NotesList({ clientId, searchQuery }: NotesProps) {
                   <TableCell component="th" scope="row">
                     {note.title}
                   </TableCell>
-                  <TableCell>{note.due}</TableCell>
+                  <TableCell>{formatTimeAgo(note.due as any)}</TableCell>
                 </TableRow>
               </Link>
             ))}
