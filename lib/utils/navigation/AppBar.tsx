@@ -175,10 +175,9 @@ export function PrimaryAppBar({
     </Menu>
   )
 
-  // TODO: Figure out why search input does not take up full width of
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+      <AppBar position="sticky" color="primary">
         <Toolbar>
           <IconButton
             size="large"
