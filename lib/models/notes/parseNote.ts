@@ -32,6 +32,7 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
   }
 
   // quick and dirty way to check if the title text includes other information
+  let isTask = false
   if (headerText.includes('ON ')) {
     const [title, dueString] = headerText.split('ON ')
     note.title = title
@@ -45,7 +46,7 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
       }
 
       note.due = dueMoment.utc().toISOString(true)
-      note.status = 'todo' // By default unless overridden anything with a due date is something todo
+      isTask = true
     } else {
       note.error += `Could not parse due date: ${dueString}`
     }
@@ -85,6 +86,11 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
         .toISOString(true)
       console.log(note.due)
       continue
+    }
+
+    // By default unless overridden anything with a due date should have the status todo.
+    if (isTask && !note.status) {
+      note.status = 'todo'
     }
 
     note.description += textContent + ' \n '
