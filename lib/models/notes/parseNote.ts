@@ -88,12 +88,12 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
       continue
     }
 
-    // By default unless overridden anything with a due date should have the status todo.
-    if (isTask && !note.status) {
-      note.status = 'todo'
-    }
-
     note.description += textContent + ' \n '
+  }
+
+  // By default unless overridden anything with a due date should have the status todo.
+  if (isTask && !note.status) {
+    note.status = 'todo'
   }
 
   return note
