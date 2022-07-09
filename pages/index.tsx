@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { NotesList } from '../lib/models/notes/NotesList'
+import { NotesList } from '../lib/notes/NotesList'
 import { AppProps } from './_app'
 
 interface IndexProps extends AppProps {}

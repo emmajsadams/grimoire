@@ -1,17 +1,20 @@
 import { Note } from 'thin-backend'
 import { TextNode } from 'lexical'
 import moment from 'moment-timezone'
-import * as chrono from 'chrono-node'
-import { STATUS_PROPERTY, DUE_PROPERTY, STATUSES } from '../../notes'
+import { STATUS_PROPERTY, DUE_PROPERTY, STATUSES } from '.'
+import { isDate, parseDate } from 'lib/date'
 
-// TODO: Move this to a helper function llibrary
-// TODO: use user timezone
-// EXPECTED FORMAT: "2013-11-18 11:55"
-function isDate(date: string): boolean {
-  return moment.tz(date, 'America/Los_Angeles').isValid()
-}
+const ANYTIME_SYNONYMS = [
+  'anytime',
+  'whenever',
+  'eventually',
+  'any time',
+  'at any time',
+  'someday',
+  'soon',
+  'some day',
+]
 
-// TODO: Add Parser for `Due: ....`
 // TODO: Add Parser for `Tags: ....`
 // TODO: Add Parser for `Recurring: Weekly|Monthly`
 export function parseNote(textNodes: TextNode[]): Partial<Note> {
@@ -20,6 +23,7 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
     description: '',
     status: '',
     error: '',
+    allDay: false,
   }
 
   if (textNodes.length == 0) {
@@ -36,19 +40,19 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
   if (headerText.includes('ON ')) {
     const [title, dueString] = headerText.split('ON ')
     note.title = title
-    const due = chrono.parseDate(dueString)
-    if (due) {
-      let dueMoment = moment.tz(due, 'America/Los_Angeles')
 
-      // if we dont include AT assume it is an all day event (which for now just means notify at 9am)
-      if (!headerText.includes('AT ')) {
-        dueMoment = dueMoment.hours(9).minutes(0).seconds(0).milliseconds(0)
-      }
-
-      note.due = dueMoment.utc().toISOString(true)
+    if (ANYTIME_SYNONYMS.includes(dueString.toLowerCase().trim())) {
+      note.due = null
       isTask = true
     } else {
-      note.error += `Could not parse due date: ${dueString}`
+      const [due, allDay] = parseDate(dueString, 'America/Los_Angeles') // TODO: pull timezone from user settings.
+      if (due) {
+        note.due = due.toISOString(true)
+        note.allDay = allDay
+        isTask = true
+      } else {
+        note.error += `Could not parse due date: ${dueString}`
+      }
     }
   } else {
     note.title = headerText

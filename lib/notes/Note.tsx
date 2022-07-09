@@ -1,10 +1,10 @@
-import { TextView } from '../../utils/text/TextView'
-import { TextEdit } from '../../utils/text/TextEdit'
-import { makeOnChange } from '../../utils/text/plugins/OnChangePlugin'
-import { TaskStatePlugin } from '../../utils/text/plugins/TaskStatePlugin'
+import { TextView } from '../utils/text/TextView'
+import { TextEdit } from '../utils/text/TextEdit'
+import { makeOnChange } from '../utils/text/plugins/OnChangePlugin'
+import { TaskStatePlugin } from '../utils/text/plugins/TaskStatePlugin'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import React, { useState } from 'react'
-import { formatTimeAgo } from '../../utils/time/formatTimeAgo'
+import { formatTimeAgo } from '../utils/time/formatTimeAgo'
 import { updateRecord, createRecord, Note as NoteType } from 'thin-backend'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
@@ -125,6 +125,8 @@ export function Note(props: { note: NoteType; clientId: string }): JSX.Element {
     )
   }
 
+  const allDayText = note.allDay ? '(all day)' : ''
+
   // TODO: Handle onClick anywhere updating edit status
   return (
     <Card
@@ -153,7 +155,7 @@ export function Note(props: { note: NoteType; clientId: string }): JSX.Element {
         )}
         {!edit && note.due ? (
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            <b>Due:</b> {formatTimeAgo(note.due)}
+            <b>Due:</b> {formatTimeAgo(note.due)} {allDayText}
           </Typography>
         ) : (
           <></>

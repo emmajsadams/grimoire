@@ -1,6 +1,6 @@
 import { $getRoot } from "lexical";
 import { updateRecord } from "thin-backend";
-import { parseNote } from "../../../models/notes/parseNote";
+import { parseNote } from "../../../notes/parseNote";
 
 // TODO: Do I need this full editor state??? or is it ok to have something else with just the root nodes
 // TODO: Is tasks the right name? Maybe notes?

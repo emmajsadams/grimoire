@@ -43,7 +43,8 @@ export default async function handler(
         id,
         title,
         due,
-        status
+        status,
+        all_day
       from notes
       where user_id = ${user.id}
         AND status != ${DELETED}
@@ -63,15 +64,16 @@ export default async function handler(
       }
 
       const startTime = moment.utc(note.due)
-      const endTime = moment.utc(note.due).add(1, 'hours')
+      const endTime = moment.utc(note.due).add(1, 'hours') // TODO: allow duration to be specified
 
       // TODO: investigate more properties to set. `alarms` in particular seemed valuable but was ignored by all cliens.
       calendar.createEvent({
         id: note.id,
         start: startTime,
-        end: endTime,
+        end: note.all_day ? null : endTime,
+        allDay: note.all_day,
         summary: note.title,
-        busystatus: ICalEventBusyStatus.BUSY,
+        busystatus: ICalEventBusyStatus.BUSY, // TODO: allow use to specify busy status?
         url: `https://grimoireautomata.com/notes/${note.id}`,
       })
     }

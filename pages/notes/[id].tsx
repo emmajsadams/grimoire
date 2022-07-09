@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Note } from "../../lib/models/notes/Note";
+import { Note } from "../../lib/notes/Note";
 import { query } from "thin-backend";
 import { useQuery } from "thin-backend-react";
 import { useRouter } from "next/router";
