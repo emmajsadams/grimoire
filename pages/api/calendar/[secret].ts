@@ -63,14 +63,11 @@ export default async function handler(
         continue
       }
 
-      const startTime = moment.utc(note.due)
-      const endTime = moment.utc(note.due).add(1, 'hours') // TODO: allow duration to be specified
-
       // TODO: investigate more properties to set. `alarms` in particular seemed valuable but was ignored by all cliens.
       calendar.createEvent({
         id: note.id,
-        start: startTime,
-        end: note.all_day ? null : endTime,
+        start: moment.utc(note.due),
+        end: moment.utc(note.due).add(1, 'hours'), // TODO: allow duration to be specified
         allDay: note.all_day,
         summary: note.title,
         busystatus: ICalEventBusyStatus.BUSY, // TODO: allow use to specify busy status?
