@@ -97,7 +97,7 @@ export function PrimaryAppBar({
       <MenuItem
         onClick={() => {
           handleMenuClose()
-          router.push(`/notes`)
+          router.push(`/`)
         }}
       >
         <Link href="/">Notes</Link>
