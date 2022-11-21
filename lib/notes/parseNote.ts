@@ -17,7 +17,7 @@ const ANYTIME_SYNONYMS = [
 
 // TODO: Add Parser for `Tags: ....`
 // TODO: Add Parser for `Recurring: Weekly|Monthly`
-export function parseNote(textNodes: TextNode[]): Partial<Note> {
+export function parseNote(text: string): Partial<Note> {
   const note: Partial<Note> = {
     title: '',
     description: '',
@@ -26,11 +26,16 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
     allDay: false,
   }
 
-  if (textNodes.length == 0) {
+  if (text == '') {
     return note
   }
 
-  const headerText = textNodes[0].getTextContent().trim()
+  const textLines = text.split('\n')
+  if (textLines.length == 0) {
+    return note
+  }
+
+  const headerText = textLines[0]
   if (headerText === '') {
     return note
   }
@@ -59,9 +64,12 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
   }
 
   // Parse for metadata tags:
-  for (const textNode of textNodes) {
-    const textContent = textNode.getTextContent()
-    const lowerCaseTextContent = textContent.toLowerCase()
+  for (const textLine of textLines) {
+    if (textLine === '') {
+      continue
+    }
+
+    const lowerCaseTextContent = textLine.toLowerCase().trim()
 
     let isProperty = parseProperty(
       STATUS_PROPERTY.toString(),
@@ -92,12 +100,17 @@ export function parseNote(textNodes: TextNode[]): Partial<Note> {
       continue
     }
 
-    note.description += textContent + ' \n '
+    note.description += textLine + ' \n '
   }
 
   // By default unless overridden anything with a due date should have the status todo.
   if (isTask && !note.status) {
     note.status = 'todo'
+  }
+
+  // Final trim of all whitespace
+  if (note.description) {
+    note.description = note.description.trim()
   }
 
   return note

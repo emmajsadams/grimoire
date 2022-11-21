@@ -1,8 +1,4 @@
-import { TextView } from '../utils/text/TextView'
-import { TextEdit } from '../utils/text/TextEdit'
-import { makeOnChange } from '../utils/text/plugins/OnChangePlugin'
-import { TaskStatePlugin } from '../utils/text/plugins/TaskStatePlugin'
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
+import { parseNote } from './parseNote'
 import React, { useState } from 'react'
 import { formatTimeAgo } from '../utils/time/formatTimeAgo'
 import { updateRecord, createRecord, Note as NoteType } from 'thin-backend'
@@ -11,169 +7,129 @@ import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import TextareaAutosize from '@mui/material/TextareaAutosize'
 import { useRouter } from 'next/router'
+import { NoteAddOutlined } from '@mui/icons-material'
 
-function onClick(
-  note: NoteType,
-  clientId: string,
-  edit: boolean,
-  setEdit: (newEdit: boolean) => any,
-) {
-  if (edit) {
-    updateRecord('notes', note.id, { clientId: null })
-    setEdit(false)
-  } else {
-    updateRecord('notes', note.id, { clientId: clientId })
-    setEdit(true)
-  }
-}
+const LOADING_COMPONENT = <p>Loading Note</p>
 
-function getStatus(note: NoteType, edit: boolean): string {
-  if (edit) {
-    return 'Editing Here '
-  } else {
-    if (note.clientId) {
-      return 'Editing Elsewhere '
-    } else if (note.draftRawEditorState) {
-      return 'Draft '
-    }
-  }
-
-  return ''
-}
-
-function getEditorState(note: NoteType) {
-  if (note.draftRawEditorState) {
-    return note.draftRawEditorState
-  } else if (note.rawEditorState) {
-    return note.rawEditorState
-  }
-
-  return ''
-}
-
-async function saveNewVersion(
-  note: NoteType,
-  setEdit: (edit: boolean) => void,
-): Promise<any> {
-  const parsedNote: Partial<NoteType> = JSON.parse(note.draftParsedNote) as any
-  if (parsedNote.error) {
-    alert(
-      'This should never happen since the save button should be disabled. Please refresh your client.',
-    )
-    return
-  }
-
-  createRecord('notes_history', {
-    noteId: note.id,
-    rawEditorState: note.rawEditorState,
-    version: note.version,
-  })
-  updateRecord('notes', note.id, {
-    rawEditorState: note.draftRawEditorState,
-    draftRawEditorState: '',
-    version: note.version++,
-    clientId: null,
-    ...parsedNote,
-  })
-  setEdit(false)
-}
-
-function deleteDraft(note: NoteType, setEdit: any): any {
-  updateRecord('notes', note.id, {
-    draftRawEditorState: '',
-    error: '',
-    clientId: null,
-  })
-  setEdit(false)
-}
-
+// TODO: Split this up into two components. Edit should be a separate url `/edit`
 export function Note(props: { note: NoteType; clientId: string }): JSX.Element {
-  const { note, clientId } = props
-  const [edit, setEdit] = useState(false)
-  const router = useRouter()
+  const { note } = props
+  const [draft, setDraft] = useState(note.draft)
+
+  // TODO: remove
+  console.log(note.description)
+  console.log(draft)
 
   if (!note) {
-    return <p>Loading Note</p>
-  }
-
-  // Cancel out of edit if another window takes focus
-  if (clientId != note.clientId && edit) {
-    setEdit(false)
+    return LOADING_COMPONENT
   }
 
   let textElement: JSX.Element
-  if (!edit) {
+  if (!draft) {
     textElement = (
-      <TextView>
-        <TaskStatePlugin note={note} />
-      </TextView>
+      <p style={{ 'white-space': 'pre-line' } as any}>{note.description}</p>
     )
   } else {
-    let initialState = getEditorState(note)
-
-    const editProps: any = initialState ? { initialState } : {}
     textElement = (
-      <TextEdit {...editProps}>
-        {/* TODO I might need to make my own OnChangePlugin that handles updating the task state from other clients without triggering onChange handler lop */}
-        <OnChangePlugin
-          ignoreInitialChange={true}
-          ignoreSelectionChange={true}
-          onChange={makeOnChange(note)}
-        />
-      </TextEdit>
+      <TextareaAutosize
+        aria-label="Note"
+        placeholder="Empty"
+        style={{ width: '100%' }}
+        value={draft}
+        onChange={(e) => {
+          setDraft(e.target.value)
+        }}
+      />
     )
   }
 
   const allDayText = note.allDay ? '(all day)' : ''
+  const parsedNote = parseNote(draft)
 
-  // TODO: Handle onClick anywhere updating edit status
   return (
     <Card
       variant="outlined"
       sx={{ minWidth: 275 }}
-      onClick={() => !edit && onClick(note, clientId, edit, setEdit)}
+      onClick={() => {
+        if (!draft) {
+          setDraft(note.description)
+        }
+      }}
     >
       <CardContent>
-        {textElement}
-        <Typography
-          sx={{ mb: 1.5 }}
-          color="text.secondary"
-          onClick={async () => {
-            // TODO: DO NOT DO THIS IMPERATIVELY and make it a link instead
-            router.push(`/notes/${note.id}`)
-          }}
-        >
-          {getStatus(note, edit) + `(${formatTimeAgo(note.updatedAt)})`}
-        </Typography>
-        {note.error ? (
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            <b>Error:</b> {note.error}
-          </Typography>
+        {draft ? (
+          <>
+            {textElement}
+            {parsedNote.error ? (
+              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                <b>Error:</b> {parsedNote.error}
+              </Typography>
+            ) : (
+              <></>
+            )}
+            {parsedNote.due ? (
+              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                <b>Due:</b> {formatTimeAgo(parsedNote.due)} {allDayText}
+              </Typography>
+            ) : (
+              <></>
+            )}
+          </>
         ) : (
-          <></>
-        )}
-        {!edit && note.due ? (
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            <b>Due:</b> {formatTimeAgo(note.due)} {allDayText}
-          </Typography>
-        ) : (
-          <></>
+          <>
+            {textElement}
+            {note.due ? (
+              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                <b>Due:</b> {formatTimeAgo(note.due)} {allDayText}
+              </Typography>
+            ) : (
+              <></>
+            )}
+            {/* TODO: Change Last Updated to use history time instead */}
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              <b>Last Updated:</b> {formatTimeAgo(note.updatedAt)}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              <b>Version:</b> {note.version}
+            </Typography>
+          </>
         )}
       </CardContent>
       <CardActions>
-        {edit ? (
+        {draft ? (
           <>
             <Button
-              onClick={() => saveNewVersion(note, setEdit)}
-              disabled={!!note.error || !note.draftRawEditorState}
+              onClick={() => {
+                // TODO: Clean history and migrate it to use all this new stuff
+                parsedNote.draft = ''
+                parsedNote.version = note.version + 1
+                updateRecord('notes', note.id, parsedNote)
+                createRecord('notes_history', {
+                  noteId: note.id,
+                  rawEditorState: parsedNote.description,
+                  version: parsedNote.version,
+                } as any)
+                setDraft('')
+              }}
+              disabled={!!parsedNote.error || draft === note.description}
             >
               Save New Version
             </Button>
-            <Button onClick={() => onClick(note, clientId, edit, setEdit)}>
+            <Button
+              onClick={() => {
+                updateRecord('notes', note.id, { draft: draft })
+              }}
+            >
               Save Draft
             </Button>
-            <Button onClick={() => deleteDraft(note, setEdit)}>
+            <Button
+              onClick={() => {
+                updateRecord('notes', note.id, { draft: '' })
+                setDraft('')
+              }}
+            >
               Delete Draft
             </Button>
           </>
