@@ -8,19 +8,14 @@ import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
-import { useRouter } from 'next/router'
-import { NoteAddOutlined } from '@mui/icons-material'
 
 const LOADING_COMPONENT = <p>Loading Note</p>
 
+// TODO: automatically save draft every few seconds
 // TODO: Split this up into two components. Edit should be a separate url `/edit`
 export function Note(props: { note: NoteType; clientId: string }): JSX.Element {
   const { note } = props
   const [draft, setDraft] = useState(note.draft)
-
-  // TODO: remove
-  console.log(note.description)
-  console.log(draft)
 
   if (!note) {
     return LOADING_COMPONENT
