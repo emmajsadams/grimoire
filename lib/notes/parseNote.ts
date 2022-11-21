@@ -63,7 +63,8 @@ export function parseNote(text: string): Partial<Note> {
   }
 
   // Parse for metadata tags:
-  for (const textLine of textLines) {
+  for (let textLine of textLines) {
+    textLine = textLine.trim()
     if (textLine === '') {
       continue
     }

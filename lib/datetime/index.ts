@@ -1,6 +1,12 @@
 import TimeAgo from 'javascript-time-ago'
 import moment from 'moment-timezone'
 import * as chrono from 'chrono-node'
+import en from 'javascript-time-ago/locale/en'
+
+TimeAgo.addDefaultLocale(en)
+
+export const DEFAULT_TIMEZONE = 'America/Los_Angeles'
+export const DEFAULT_LOCALE = 'en-US'
 
 export function formatTimeAgo(date: string): string {
   if (!date) {
@@ -8,7 +14,7 @@ export function formatTimeAgo(date: string): string {
   }
 
   // TODO: Consider using a user.locale property then falling back to en-US
-  const timeAgo = new TimeAgo('en-US')
+  const timeAgo = new TimeAgo(DEFAULT_LOCALE)
 
   return timeAgo.format(new Date(date)) as any
 }
@@ -16,7 +22,7 @@ export function formatTimeAgo(date: string): string {
 // EXPECTED FORMAT: "2013-11-18 11:55"
 export function isDate(date: string): boolean {
   // TODO: Consider using a user.timezone property then falling back to LA
-  return moment.tz(date, 'America/Los_Angeles').isValid()
+  return moment.tz(date, DEFAULT_TIMEZONE).isValid()
 }
 
 export function parseDate(
