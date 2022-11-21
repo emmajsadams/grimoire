@@ -111,7 +111,7 @@ export function PrimaryAppBar({
           router.push(`/notes/${note.id}`)
         }}
       >
-        <Link href="`/notes/${note.id}`">Create New Note</Link>
+        Create New Note
       </MenuItem>
     </Menu>
   )
