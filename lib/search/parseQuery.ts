@@ -6,8 +6,8 @@ import {
   TAG_PROPERTY,
   TAGS,
   STATUSES,
-} from '../notes'
-import { Query, Operations } from '.'
+} from 'lib/notes'
+import { Query, Operations } from 'lib/search'
 
 export function createDefaultQuery(): Query {
   return {

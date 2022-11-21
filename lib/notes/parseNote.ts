@@ -1,7 +1,7 @@
 import { Note } from 'thin-backend'
 import moment from 'moment-timezone'
-import { STATUS_PROPERTY, DUE_PROPERTY, STATUSES } from '.'
-import { isDate, parseDate } from 'lib/date'
+import { STATUS_PROPERTY, DUE_PROPERTY, STATUSES } from 'lib/notes'
+import { isDate, parseDate } from 'lib/datetime'
 
 const ANYTIME_SYNONYMS = [
   'anytime',

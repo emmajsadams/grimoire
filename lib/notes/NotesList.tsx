@@ -8,9 +8,10 @@ import TableContainer from '@mui/material/TableContainer'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Link from 'next/link'
-import { AppProps } from '../../pages/_app'
-import { formatTimeAgo } from '../utils/time/formatTimeAgo'
-import { setQueryFilters } from '../search'
+
+import { AppProps } from 'pages/_app'
+import { formatTimeAgo } from 'lib/datetime'
+import { setQueryFilters } from 'lib/search'
 
 interface NotesProps extends AppProps {}
 

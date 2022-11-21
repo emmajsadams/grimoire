@@ -3,10 +3,11 @@ import Head from 'next/head'
 import { initThinBackend } from 'thin-backend'
 import { ThinBackend } from 'thin-backend-react'
 import { Container } from '@mui/material'
-import { PrimaryAppBar } from '../lib/utils/navigation/AppBar'
-import { Query, parseSearchQuery } from '../lib/search'
 import React, { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+
+import { PrimaryAppBar } from 'lib/navigation'
+import { Query, parseSearchQuery } from 'lib/search'
 
 initThinBackend({ host: process.env.NEXT_PUBLIC_BACKEND_URL })
 

@@ -1,6 +1,4 @@
-import { parseNote } from './parseNote'
 import React, { useState } from 'react'
-import { formatTimeAgo } from '../utils/time/formatTimeAgo'
 import { updateRecord, createRecord, Note as NoteType } from 'thin-backend'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
@@ -8,6 +6,9 @@ import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
+
+import { parseNote } from 'lib/notes'
+import { formatTimeAgo } from 'lib/datetime'
 
 const LOADING_COMPONENT = <p>Loading Note</p>
 

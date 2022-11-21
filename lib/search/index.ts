@@ -5,10 +5,10 @@ import {
   DUE_PROPERTY,
   TAG_PROPERTY,
   STATUS_PROPERTY,
-} from '../notes'
+} from 'lib/notes'
 import { Moment } from 'moment-timezone'
-import * as parseSearchQueryModule from './parseQuery'
-import * as setQueryFiltersModule from './setQueryFilters'
+import * as parseSearchQueryModule from 'lib/search/parseQuery'
+import * as setQueryFiltersModule from 'lib/search/setQueryFilters'
 
 export const Operations = ['==', '!=', '>', '<', '>=', '<=']
 export type Operation = '==' | '!=' | '>' | '<' | '>=' | '<='
