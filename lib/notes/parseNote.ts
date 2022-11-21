@@ -1,5 +1,4 @@
 import { Note } from 'thin-backend'
-import { TextNode } from 'lexical'
 import moment from 'moment-timezone'
 import { STATUS_PROPERTY, DUE_PROPERTY, STATUSES } from '.'
 import { isDate, parseDate } from 'lib/date'
