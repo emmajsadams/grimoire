@@ -9,13 +9,14 @@ import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
-import { AppProps } from '../../pages/_app'
 import { logout } from 'thin-backend'
 import { useCurrentUser } from 'thin-backend-react'
 import { createRecord } from 'thin-backend'
 import { useRouter } from 'next/router'
-import { parseSearchQuery } from '../search'
 import Link from 'next/link'
+
+import { AppProps } from 'pages/_app'
+import { parseSearchQuery } from 'lib/search'
 
 const Search = styled('div')(({ theme }) => ({
   'position': 'relative',

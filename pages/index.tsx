@@ -6,7 +6,7 @@ import { AppProps } from 'pages/_app'
 
 interface IndexProps extends AppProps {}
 
-// TODO: Move this to notes/list? and maybe just redirect to notes list by default?
+// TODO: Redirect to -> /notes by default and move NotesLists to that page
 const Home: NextPage<any, any> = ({
   clientId,
   searchQuery,

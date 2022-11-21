@@ -13,7 +13,7 @@ import { formatTimeAgo } from 'lib/datetime'
 const LOADING_COMPONENT = <p>Loading Note</p>
 
 // TODO: automatically save draft every few seconds
-// TODO: Split this up into two components. Edit should be a separate url `/edit`
+// TODO: Convert this to two separate pages: ViewNote and EditNote
 export function Note(props: { note: NoteType; clientId: string }): JSX.Element {
   const { note } = props
   const [draft, setDraft] = useState(note.draft)

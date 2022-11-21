@@ -1,4 +1,3 @@
-// TODO: Move this to some constants file
 export const DONE = 'done'
 export type DONE_TYPE = 'done'
 export const TODO = 'todo'
