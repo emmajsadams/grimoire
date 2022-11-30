@@ -13,7 +13,7 @@ const NotesNewView: any = async (props: any) => {
   return (
     <>
       <Head>
-        <title>{'New Note'}</title>
+        <title>{'Loading New Note'}</title>
       </Head>
 
       <main>
