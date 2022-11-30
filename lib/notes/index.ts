@@ -38,8 +38,11 @@ export type Properties_TYPE =
   | TAG_PROPERTY_TYPE
   | STATUS_PROPERTY_TYPE
 
-import * as NoteModule from 'lib/notes/Note'
-export const Note = NoteModule.Note
+import * as ViewNoteModule from 'lib/notes/ViewNote'
+export const ViewNote = ViewNoteModule.ViewNote
+
+import * as EditNodeModule from 'lib/notes/EditNote'
+export const EditNote = EditNodeModule.EditNote
 
 import * as NotesListModule from 'lib/notes/NotesList'
 export const NotesList = NotesListModule.NotesList

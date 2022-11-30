@@ -12,9 +12,13 @@ import { formatTimeAgo } from 'lib/datetime'
 
 const LOADING_COMPONENT = <p>Loading Note</p>
 
+// TODO: Change this to automatically open edit view if a key is pressed, then close it if empty. Basically remove the delete draft button.
 // TODO: automatically save draft every few seconds
 // TODO: Convert this to two separate pages: ViewNote and EditNote
-export function Note(props: { note: NoteType; clientId: string }): JSX.Element {
+export function ViewNote(props: {
+  note: NoteType
+  clientId: string
+}): JSX.Element {
   const { note } = props
   const [draft, setDraft] = useState(note.draft)
 

@@ -4,13 +4,14 @@ import { query } from 'thin-backend'
 import { useQuery } from 'thin-backend-react'
 import { useRouter } from 'next/router'
 
-import { ViewNote } from 'lib/notes'
+import { EditNote } from 'lib/notes'
 import { AppProps } from 'pages/_app'
 
 interface NotesViewProps extends AppProps {}
 
+// TODO: Consolidate note classes
 // TODO: Change the name of clientID to requestID
-const NotesView: NextPage<any, any> = ({ clientId }: NotesViewProps) => {
+const EditNotesView: NextPage<any, any> = ({ clientId }: NotesViewProps) => {
   const router = useRouter()
   const { id } = router.query
 
@@ -38,10 +39,10 @@ const NotesView: NextPage<any, any> = ({ clientId }: NotesViewProps) => {
       </Head>
 
       <main>
-        <ViewNote note={note} clientId={clientId}></ViewNote>
+        <EditNote note={note} clientId={clientId}></EditNote>
       </main>
     </>
   )
 }
 
-export default NotesView
+export default EditNotesView

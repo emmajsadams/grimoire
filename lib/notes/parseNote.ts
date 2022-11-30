@@ -14,6 +14,8 @@ const ANYTIME_SYNONYMS = [
   'some day',
 ]
 
+// TODO: let users set parser plugins via ui. basically make this one part of the parsing step
+//   -- this would require converting plugins to operate on a line by line basis to avoid looping the whole thing.
 // TODO: Add Parser for `Tags: ....`
 // TODO: Add Parser for `Recurring: Weekly|Monthly`
 export function parseNote(text: string): Partial<Note> {
