@@ -54,3 +54,15 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+// TODO: Should note fields be required?
+model Note {
+  id      String @id @default(cuid())
+  version Int    @default(0)
+
+  description String?
+  title       String    @unique @default("")
+  status      String?
+  due         DateTime?
+  allDay      Boolean?
+}

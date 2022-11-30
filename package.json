@@ -26,6 +26,7 @@
     "chrono-node": "^2.3.8",
     "ical-generator": "^3.4.3",
     "javascript-time-ago": "^2.5.4",
+    "json-diff": "^1.0.0",
     "lexical": "^0.3.5",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.34",
