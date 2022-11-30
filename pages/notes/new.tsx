@@ -1,9 +1,11 @@
-import type { NextPage } from 'next'
 import { createRecord } from 'thin-backend'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
-const NotesNewView: NextPage<any, any> = async (props: any): any => {
+// TODO fix typing
+// import type { NextPage } from 'next'
+// const NotesNewView: NextPage<any, any> = async (props: any): any => {
+const NotesNewView: any = async (props: any) => {
   const router = useRouter()
   const note = await createRecord('notes', {} as any)
   router.push(`/notes/${note.id}`)
