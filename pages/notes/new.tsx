@@ -3,10 +3,10 @@ import { createRecord } from 'thin-backend'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
-const NotesNewView: NextPage<any, any> = (props: any) => {
+const NotesNewView: NextPage<any, any> = async (props: any): any => {
   const router = useRouter()
-
-  router.push(`/notes/${props.id}`)
+  const note = await createRecord('notes', {} as any)
+  router.push(`/notes/${note.id}`)
 
   return (
     <>
@@ -22,13 +22,3 @@ const NotesNewView: NextPage<any, any> = (props: any) => {
 }
 
 export default NotesNewView
-
-export async function getStaticProps() {
-  const note = await createRecord('notes', {} as any)
-
-  return {
-    props: {
-      id: note.id,
-    },
-  }
-}
