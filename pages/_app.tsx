@@ -7,6 +7,7 @@ import React, { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { SessionProvider } from 'next-auth/react'
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 
 import { PrimaryAppBar } from 'lib/navigation'
 import { Query, parseSearchQuery } from 'lib/search'
@@ -31,7 +32,7 @@ function LoginContainer({ children }: any): JSX.Element {
   if (status === 'unauthenticated') {
     return (
       <>
-        <a href="/api/auth/signin">Login to access Grimoire</a>
+        <Link href="/api/auth/signin">Login to access Grimoire</Link>
       </>
     )
   }
