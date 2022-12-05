@@ -6,8 +6,6 @@ import { Container } from '@mui/material'
 import React, { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { SessionProvider } from 'next-auth/react'
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
 
 import { PrimaryAppBar } from 'lib/navigation'
 import { Query, parseSearchQuery } from 'lib/search'
@@ -20,6 +18,8 @@ export interface AppProps {
   setSearchQuery: (query: Query) => void
 }
 
+// import { useSession } from 'next-auth/react'
+// import Link from 'next/link'
 // TODO: redirect unauthenticated, and consider handling loading state in component
 // TODO: use auth url
 // function LoginContainer({ children }: any): JSX.Element {
