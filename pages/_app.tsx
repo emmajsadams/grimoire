@@ -22,26 +22,26 @@ export interface AppProps {
 
 // TODO: redirect unauthenticated, and consider handling loading state in component
 // TODO: use auth url
-function LoginContainer({ children }: any): JSX.Element {
-  const { data: session, status } = useSession()
+// function LoginContainer({ children }: any): JSX.Element {
+//   const { data: session, status } = useSession()
 
-  if (status === 'loading') {
-    return <>Loading</>
-  }
+//   if (status === 'loading') {
+//     return <>Loading</>
+//   }
 
-  if (status === 'unauthenticated') {
-    return (
-      <>
-        <Link href="/api/auth/signin">Login to access Grimoire</Link>
-      </>
-    )
-  }
+//   if (status === 'unauthenticated') {
+//     return (
+//       <>
+//         <Link href="/api/auth/signin">Login to access Grimoire</Link>
+//       </>
+//     )
+//   }
 
-  console.log(session?.user?.email)
-  console.log(session?.user?.name)
+//   console.log(session?.user?.email)
+//   console.log(session?.user?.name)
 
-  return children
-}
+//   return children
+// }
 
 // TODO: What is the accurate type here?
 function MyApp({ Component, pageProps }: any): JSX.Element {
