@@ -55,20 +55,19 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
     setSearchQuery,
   }
 
+  // TODO: Add back <LoginContainer>
   return (
     <SessionProvider session={pageProps.session}>
-      <LoginContainer>
-        <ThinBackend requireLogin>
-          <Head>
-            <meta name="description" content="Grimoire Automata" />
-            <link rel="icon" href="/favicon.ico" />
-          </Head>
-          <PrimaryAppBar {...customProps} />
-          <Container maxWidth="lg">
-            <Component {...customProps} {...pageProps} />
-          </Container>
-        </ThinBackend>
-      </LoginContainer>
+      <ThinBackend requireLogin>
+        <Head>
+          <meta name="description" content="Grimoire Automata" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <PrimaryAppBar {...customProps} />
+        <Container maxWidth="lg">
+          <Component {...customProps} {...pageProps} />
+        </Container>
+      </ThinBackend>
     </SessionProvider>
   )
 }
