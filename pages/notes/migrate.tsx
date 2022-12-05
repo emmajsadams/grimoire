@@ -1,3 +1,7 @@
+const MigrateView: any = () => <p>TODO</p>
+
+export default MigrateView
+
 // import prisma from 'lib/prisma'
 
 // import postgres from 'postgres'
