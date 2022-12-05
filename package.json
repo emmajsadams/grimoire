@@ -10,10 +10,11 @@
     "lint": "next lint",
     "lint-fix": "eslint * --fix --no-error-on-unmatched-pattern",
     "preinstall": "npm remove @types/thin-backend && npm install --save-dev 'https://thin.dev/types/7026857c-b4ba-4612-a9c7-7268559988cc/NdDqvuVmuWMmXhltVIfIltGFxcKsYgxS'",
-    "postinstall": "npx prisma db push",
+    "postinstall": "echo 'TODO npx prisma db push'",
     "test": "jest",
     "test-watch": "jest --watch",
-    "test-coverage": "jest --coverage"
+    "test-coverage": "jest --coverage",
+    "db": "node prisma/generate.js ; prisma db push"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
