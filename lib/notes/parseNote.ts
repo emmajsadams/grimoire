@@ -3,6 +3,8 @@ import moment from 'moment-timezone'
 import { STATUS_PROPERTY, DUE_PROPERTY, STATUSES } from 'lib/notes'
 import { isDate, parseDate } from 'lib/datetime'
 
+const IGNORED_TITLE_PREFIXES = ['#', '##', '###']
+
 const ANYTIME_SYNONYMS = [
   'anytime',
   'whenever',
@@ -62,6 +64,12 @@ export function parseNote(text: string): Partial<Note> {
     }
   } else {
     note.title = headerText
+  }
+
+  for (const ignoredPrefix of IGNORED_TITLE_PREFIXES) {
+    if (note.title.startsWith(ignoredPrefix)) {
+      note.title = note.title.substring(ignoredPrefix.length)
+    }
   }
 
   // Parse for metadata tags:

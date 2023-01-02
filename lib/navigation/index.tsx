@@ -106,7 +106,7 @@ export function PrimaryAppBar({
         onClick={async () => {
           // TODO: Create a url that is `/notes/new` that does this by default so anywhere can link to it without all this code
           // TODO: Figure out why textSearch and error need to be set to null for new notes?
-          const note = await createRecord('notes', { draft: 'i' } as any)
+          const note = await createRecord('notes', { draft: '# ' } as any)
           handleMenuClose()
           router.push(`/notes/${note.id}`)
         }}
