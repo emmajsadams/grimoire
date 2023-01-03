@@ -6,6 +6,7 @@ import { AppProps } from 'pages/_app'
 
 interface IndexProps extends AppProps {}
 
+// TODO: create a scaffold test notes feature for dev!
 // TODO: Redirect to -> /notes by default and move NotesLists to that page
 const Home: NextPage<any, any> = ({
   clientId,
