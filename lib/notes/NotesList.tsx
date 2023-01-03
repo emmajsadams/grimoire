@@ -1,5 +1,3 @@
-import { query } from 'thin-backend'
-import { useQuery } from 'thin-backend-react'
 import * as React from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -11,54 +9,24 @@ import Link from 'next/link'
 
 import { AppProps } from 'pages/_app'
 import { formatTimeAgo } from 'lib/datetime'
-import { setQueryFilters } from 'lib/search'
+import { getNotes } from 'lib/notes/client'
 
 interface NotesProps extends AppProps {}
 
 export function NotesList({ searchQuery }: NotesProps) {
-  // TODO: let orderby be set by filters???
-  let notesQuery = query('notes').orderByAsc('due').orderByAsc('createdAt')
-  if (searchQuery) {
-    if (
-      searchQuery.title.length == 0 ||
-      searchQuery.title[0].operation !== '=='
-    ) {
-      alert('Invalid query this should never happen')
-      searchQuery.errors.push('Invalid query this should never happen')
-    } else {
-      // TODO: move these loops into the query filters object
-      for (const searchQueryPart of searchQuery.status) {
-        notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'status')
-      }
-
-      for (const searchQueryPart of searchQuery.due) {
-        notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'due')
-      }
-
-      for (const searchQueryPart of searchQuery.tag) {
-        notesQuery = setQueryFilters(notesQuery, searchQueryPart, 'tag')
-      }
-
-      if (searchQuery.title[0].value !== '') {
-        notesQuery = notesQuery.whereTextSearchStartsWith(
-          'textSearch',
-          searchQuery.title[0].value,
-        )
-      }
-    }
+  let query: any = null
+  if (searchQuery && searchQuery.title && searchQuery.title.length > 0) {
+    query = searchQuery.title[0].value // TODO: support the rest of the query schema? maybe just create the json query for primsa locally?
+  }
+  const { data, component } = getNotes(query) // TODO: update getNotes to use searchQuery
+  if (component) {
+    return component
+  }
+  const notes = data
+  if (!notes) {
+    return <p>Loading</p>
   }
 
-  const notes = useQuery(notesQuery)
-
-  if (searchQuery.errors.length > 0) {
-    return <p>Search Query Errors: {searchQuery.errors.join(', ')}</p>
-  }
-
-  if (notes === null) {
-    return <div>Loading ...</div>
-  }
-
-  // TODO: Use clientID to mark which client is editing the draft.
   // TODO: on edit set task.clientID
   // TODO: on save or save as draft remove task.clientID
   // TODO: if task.clientID is set prevent editing and show a button to force the other user to stop editing the draft

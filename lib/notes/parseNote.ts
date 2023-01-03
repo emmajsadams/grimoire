@@ -23,13 +23,13 @@ const ANYTIME_SYNONYMS = [
 export function parseNote(text: string): Partial<Note> {
   const note: Partial<Note> = {
     title: '',
-    description: '',
+    description: text,
     status: '',
     error: '',
     allDay: false,
   }
 
-  if (text == '') {
+  if (!text) {
     return note
   }
 
@@ -109,8 +109,6 @@ export function parseNote(text: string): Partial<Note> {
       console.log(note.due)
       continue
     }
-
-    note.description += textLine + ' \n '
   }
 
   // By default unless overridden anything with a due date should have the status todo.

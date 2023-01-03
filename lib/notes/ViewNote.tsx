@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { updateRecord, createRecord, Note as NoteType } from 'thin-backend'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
@@ -9,18 +8,18 @@ import TextareaAutosize from '@mui/material/TextareaAutosize'
 
 import { parseNote } from 'lib/notes'
 import { formatTimeAgo } from 'lib/datetime'
+import { getUpdateNoteTrigger } from 'lib/notes/client'
+import { Note } from 'lib/prisma/client'
 
 const LOADING_COMPONENT = <p>Loading Note</p>
 
 // TODO: Change this to automatically open edit view if a key is pressed, then close it if empty. Basically remove the delete draft button.
 // TODO: automatically save draft every few seconds
 // TODO: Convert this to two separate pages: ViewNote and EditNote
-export function ViewNote(props: {
-  note: NoteType
-  clientId: string
-}): JSX.Element {
+export function ViewNote(props: { note: Note; clientId: string }): JSX.Element {
   const { note } = props
-  const [draft, setDraft] = useState(note.draft)
+  const [draft, setDraft] = useState('')
+  const updateNoteTrigger = getUpdateNoteTrigger(note.id)
 
   if (!note) {
     return LOADING_COMPONENT
@@ -54,7 +53,7 @@ export function ViewNote(props: {
       sx={{ minWidth: 275 }}
       onClick={() => {
         if (!draft) {
-          setDraft(note.description)
+          setDraft(note?.description || '# ')
         }
       }}
     >
@@ -71,7 +70,7 @@ export function ViewNote(props: {
             )}
             {parsedNote.due ? (
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                <b>Due:</b> {formatTimeAgo(parsedNote.due)} {allDayText}
+                <b>Due:</b> {formatTimeAgo(parsedNote.due as any)} {allDayText}
               </Typography>
             ) : (
               <></>
@@ -82,14 +81,14 @@ export function ViewNote(props: {
             {textElement}
             {note.due ? (
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                <b>Due:</b> {formatTimeAgo(note.due)} {allDayText}
+                <b>Due:</b> {formatTimeAgo(note.due as any)} {allDayText}
               </Typography>
             ) : (
               <></>
             )}
             {/* TODO: Change Last Updated to use history time instead */}
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              <b>Last Updated:</b> {formatTimeAgo(note.updatedAt)}
+              <b>Last Updated:</b> {formatTimeAgo(note.updatedAt as any)}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               <b>Version:</b> {note.version}
@@ -103,38 +102,32 @@ export function ViewNote(props: {
             <Button
               onClick={() => {
                 // TODO: Clean history and migrate it to use all this new stuff
-                parsedNote.draft = ''
+                delete parsedNote.error
+                delete parsedNote.draft
+                parsedNote.id = note.id
                 parsedNote.version = note.version + 1
-                updateRecord('notes', note.id, parsedNote)
-                createRecord('notes_history', {
-                  noteId: note.id,
-                  rawEditorState: parsedNote.description,
-                  version: parsedNote.version,
-                } as any)
+                debugger
+                updateNoteTrigger(parsedNote)
                 setDraft('')
               }}
               disabled={!!parsedNote.error || draft === note.description}
             >
-              Save New Version
-            </Button>
-            <Button
-              onClick={() => {
-                updateRecord('notes', note.id, { draft: draft })
-              }}
-            >
-              Save Draft
-            </Button>
-            <Button
-              onClick={() => {
-                updateRecord('notes', note.id, { draft: '' })
-                setDraft('')
-              }}
-            >
-              Delete Draft
+              Save
             </Button>
           </>
         ) : (
-          <></>
+          <>
+            <Button
+              onClick={() => {
+                if (!draft) {
+                  setDraft(note?.description || '# ')
+                }
+              }}
+              disabled={!!parsedNote.error || draft === note.description}
+            >
+              Edit
+            </Button>
+          </>
         )}
       </CardActions>
     </Card>

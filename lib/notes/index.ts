@@ -41,9 +41,6 @@ export type Properties_TYPE =
 import * as ViewNoteModule from 'lib/notes/ViewNote'
 export const ViewNote = ViewNoteModule.ViewNote
 
-import * as EditNodeModule from 'lib/notes/EditNote'
-export const EditNote = EditNodeModule.EditNote
-
 import * as NotesListModule from 'lib/notes/NotesList'
 export const NotesList = NotesListModule.NotesList
 

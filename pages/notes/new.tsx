@@ -2,13 +2,17 @@ import { createRecord } from 'thin-backend'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
+import { getNewNoteTrigger } from 'lib/notes/client'
+
 // TODO fix typing
-// import type { NextPage } from 'next'
 // const NotesNewView: NextPage<any, any> = async (props: any): any => {
 const NotesNewView: any = async (props: any) => {
   const router = useRouter()
-  const note = await createRecord('notes', {} as any)
-  router.push(`/notes/${note.id}`)
+  const newNoteTrigger = getNewNoteTrigger()
+
+  newNoteTrigger({ title: '# ' }).then((note: any) => {
+    router.push(`/notes/${note.id}`)
+  })
 
   return (
     <>

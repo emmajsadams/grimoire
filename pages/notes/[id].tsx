@@ -1,11 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { query } from 'thin-backend'
-import { useQuery } from 'thin-backend-react'
 import { useRouter } from 'next/router'
 
 import { ViewNote } from 'lib/notes'
 import { AppProps } from 'pages/_app'
+import { getNote } from 'lib/notes/client'
 
 interface NotesViewProps extends AppProps {}
 
@@ -13,22 +12,19 @@ interface NotesViewProps extends AppProps {}
 const NotesView: NextPage<any, any> = ({ clientId }: NotesViewProps) => {
   const router = useRouter()
   const { id } = router.query
-
-  const notes = useQuery(
-    query('notes')
-      .where('id', id as string)
-      .limit(1),
-  )
-
-  if (!notes) {
-    return <p>Loading</p>
+  if (!id) {
+    // TODO: use a function to validate the id matches expectations
+    return <p>ID is not defined</p>
   }
 
-  if (notes.length != 1) {
-    return <p>Note not found, please check the ID</p>
+  const { data, component } = getNote(id as any)
+  if (component) {
+    return component
   }
-
-  const note = notes[0]
+  const note = data
+  if (!note) {
+    return <p>Loading...</p>
+  }
 
   // TODO: add breadcrumbs going back to main list view
   return (
