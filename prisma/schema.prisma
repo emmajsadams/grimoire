@@ -43,10 +43,16 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  wallpaperUrl  String?
   accounts      Account[]
   sessions      Session[]
   Note          Note[]
+
+  // Custom fields
+  wallpaperUrl   String?
+  calendarApiKey String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model VerificationToken {
@@ -69,7 +75,7 @@ model Note {
   due         DateTime?
   allDay      Boolean?
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  updatedAt   DateTime  @default(now()) @updatedAt
 
   owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 

@@ -7,23 +7,34 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<string>,
 ) {
-  // Only allow POST requests
-  if (req.method !== 'GET') {
-    res.status(405).end()
-    return
-  }
-
   // Validate the user is logged in and get their user object
   const { user } = await getApiUser(req, res)
   if (!user) {
     return
   }
 
-  // TODO: add actual wallpaper url updating, this is just a quick hack to test
-  if (req.query.wallpaper) {
-    user.wallpaperUrl = req.query.wallpaper as string
-    return res.status(200).json((await updateUser(user)) as any)
-  }
+  // Only allow POST requests
+  if (req.method === 'GET') {
+    let updatedUser = false
+    if (req.query.wallpaper) {
+      user.wallpaperUrl = req.query.wallpaper as string
+      updatedUser = true
+    }
 
-  return res.status(200).json(user as any)
+    if (req.query.calendarApiKey) {
+      user.calendarApiKey = req.query.calendarApiKey as string
+      updatedUser = true
+    }
+
+    if (updatedUser) {
+      return res.status(200).json((await updateUser(user)) as any)
+    }
+
+    return res.status(200).json(user as any)
+  } else if (req.method === 'PUT') {
+    // TODO: implement this
+    return res.status(200).json(user as any)
+  } else {
+    res.status(405).end()
+  }
 }
