@@ -60,17 +60,17 @@ export default async function handler(
     let query = req.query.query as any
     // TODO: see above use actual query
     let notesWhere = {
-      title: {
-        contains: query,
-        mode: 'insensitive',
-      },
       ownerId: user.id,
+      status: 'todo', // TODO: change this to pull from the query
     } as any
     if (query) {
       if (query.startsWith('status:==:todo')) {
         query = query.replace('status:==:todo', '')
       }
-      notesWhere.status = 'todo'
+      notesWhere.title = {
+        contains: query,
+        mode: 'insensitive',
+      }
     }
 
     const notes = await prisma.note.findMany({
@@ -84,6 +84,7 @@ export default async function handler(
         },
       ],
     })
+
     return res.status(200).json(notes as any)
   } else {
     res.status(405).end()
