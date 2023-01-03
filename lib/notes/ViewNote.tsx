@@ -135,7 +135,7 @@ export function ViewNote(props: {
               Edit
             </Button>
             <Button
-              onClick={(e) => {
+              onClick={() => {
                 note.description += '\n status: done'
                 saveNote(parseNote(note.description as any))
               }}
