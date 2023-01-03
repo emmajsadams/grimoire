@@ -1,5 +1,5 @@
-import { Note } from 'thin-backend'
 import moment from 'moment-timezone'
+
 import { STATUS_PROPERTY, DUE_PROPERTY, STATUSES } from 'lib/notes'
 import { isDate, parseDate } from 'lib/datetime'
 
@@ -20,8 +20,9 @@ const ANYTIME_SYNONYMS = [
 //   -- this would require converting plugins to operate on a line by line basis to avoid looping the whole thing.
 // TODO: Add Parser for `Tags: ....`
 // TODO: Add Parser for `Recurring: Weekly|Monthly`
-export function parseNote(text: string): Partial<Note> {
-  const note: Partial<Note> = {
+// TODO: use type correctly
+export function parseNote(text: string): Partial<any> {
+  const note: any = {
     title: '',
     description: text,
     status: '',
@@ -128,7 +129,7 @@ export function parseNote(text: string): Partial<Note> {
 function parseProperty(
   property: string,
   lowerCaseTextContent: string,
-  note: Partial<Note>,
+  note: any,
   validate: (value: string) => string,
 ): boolean {
   if (!lowerCaseTextContent.startsWith(`${property}:`)) {
