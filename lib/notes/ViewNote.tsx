@@ -100,7 +100,10 @@ export function ViewNote(props: {
             )}
             {/* TODO: Change Last Updated to use history time instead */}
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              <b>Last Updated:</b> {formatTimeAgo(note.updatedAt as any)}
+              <b>Updated At:</b> {formatTimeAgo(note.updatedAt as any)}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              <b>Created On:</b> {formatTimeAgo(note.updatedAt as any)}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               <b>Version:</b> {note.version}
