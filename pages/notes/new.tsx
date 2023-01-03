@@ -1,19 +1,11 @@
-import { createRecord } from 'thin-backend'
-import { useRouter } from 'next/router'
 import Head from 'next/head'
 
-import { getNewNoteTrigger } from 'lib/notes/client'
+import { getContextUser } from 'lib/auth/server'
+import { createNote } from 'lib/notes/server'
 
 // TODO fix typing
 // const NotesNewView: NextPage<any, any> = async (props: any): any => {
 const NotesNewView: any = async (props: any) => {
-  const router = useRouter()
-  const newNoteTrigger = getNewNoteTrigger()
-
-  newNoteTrigger({ title: '# ' }).then((note: any) => {
-    router.push(`/notes/${note.id}`)
-  })
-
   return (
     <>
       <Head>
@@ -28,3 +20,27 @@ const NotesNewView: any = async (props: any) => {
 }
 
 export default NotesNewView
+
+export async function getServerSideProps(context: any): Promise<any> {
+  const { user } = await getContextUser(context)
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  const note = await createNote({
+    title: '# ',
+    ownerId: user.id,
+  } as any)
+
+  return {
+    redirect: {
+      destination: `/notes/${(note as any).id}?edit=true`,
+      permanent: false,
+    },
+  }
+}

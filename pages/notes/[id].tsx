@@ -11,7 +11,7 @@ interface NotesViewProps extends AppProps {}
 // TODO: Change the name of clientID to requestID
 const NotesView: NextPage<any, any> = ({ clientId }: NotesViewProps) => {
   const router = useRouter()
-  const { id } = router.query
+  const { id, edit } = router.query
   if (!id) {
     // TODO: use a function to validate the id matches expectations
     return <p>ID is not defined</p>
@@ -34,7 +34,11 @@ const NotesView: NextPage<any, any> = ({ clientId }: NotesViewProps) => {
       </Head>
 
       <main>
-        <ViewNote note={note} clientId={clientId}></ViewNote>
+        <ViewNote
+          note={note}
+          clientId={clientId}
+          edit={(edit as any) === 'true' ? true : false}
+        ></ViewNote>
       </main>
     </>
   )

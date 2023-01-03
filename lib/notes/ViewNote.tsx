@@ -5,6 +5,7 @@ import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
+import { useRouter } from 'next/router'
 
 import { parseNote } from 'lib/notes'
 import { formatTimeAgo } from 'lib/datetime'
@@ -16,9 +17,20 @@ const LOADING_COMPONENT = <p>Loading Note</p>
 // TODO: Change this to automatically open edit view if a key is pressed, then close it if empty. Basically remove the delete draft button.
 // TODO: automatically save draft every few seconds
 // TODO: Convert this to two separate pages: ViewNote and EditNote
-export function ViewNote(props: { note: Note; clientId: string }): JSX.Element {
-  const { note } = props
-  const [draft, setDraft] = useState('')
+export function ViewNote(props: {
+  note: Note
+  clientId: string // TODO: Remove clientID concept
+  edit: boolean // TODO: split this out into separate components instead of a flag
+}): JSX.Element {
+  const router = useRouter()
+  const { note, edit } = props
+
+  let draftText = ''
+  if (edit) {
+    draftText = note.description || '# '
+  }
+
+  const [draft, setDraft] = useState(draftText)
   const updateNoteTrigger = getUpdateNoteTrigger(note.id)
 
   if (!note) {
@@ -109,6 +121,7 @@ export function ViewNote(props: { note: Note; clientId: string }): JSX.Element {
                 debugger
                 updateNoteTrigger(parsedNote)
                 setDraft('')
+                router.push('/notes/' + note.id)
               }}
               disabled={!!parsedNote.error || draft === note.description}
             >

@@ -64,7 +64,7 @@ model Note {
   version     Int       @default(0)
   ownerId     String    @map("user_id")
   description String?
-  title       String    @unique @default("")
+  title       String?
   status      String?
   due         DateTime?
   allDay      Boolean?
