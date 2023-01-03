@@ -37,6 +37,7 @@
   "rules": {
     "import/named": "off", // Does not work with typescript, complains about thin-dev types
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "error"
+    "@typescript-eslint/no-unused-vars": "error",
+    "import/no-unresolved": "off"
   }
 }
