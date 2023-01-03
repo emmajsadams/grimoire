@@ -59,16 +59,16 @@ export function ViewNote(props: {
   const allDayText = note.allDay ? '(all day)' : ''
   const parsedNote = parseNote(draft)
 
+  const saveNote = (localNote: any) => {
+    delete localNote.error
+    delete localNote.draft
+    localNote.id = note.id
+    localNote.version = note.version + 1
+    updateNoteTrigger(localNote)
+  }
+
   return (
-    <Card
-      variant="outlined"
-      sx={{ minWidth: 275 }}
-      onClick={() => {
-        if (!draft) {
-          setDraft(note?.description || '# ')
-        }
-      }}
-    >
+    <Card variant="outlined" sx={{ minWidth: 275 }}>
       <CardContent>
         {draft ? (
           <>
@@ -113,12 +113,7 @@ export function ViewNote(props: {
           <>
             <Button
               onClick={() => {
-                // TODO: Clean history and migrate it to use all this new stuff
-                delete parsedNote.error
-                delete parsedNote.draft
-                parsedNote.id = note.id
-                parsedNote.version = note.version + 1
-                updateNoteTrigger(parsedNote)
+                saveNote(parsedNote)
                 setDraft('')
                 router.push('/notes/' + note.id)
               }}
@@ -138,6 +133,22 @@ export function ViewNote(props: {
               disabled={!!parsedNote.error || draft === note.description}
             >
               Edit
+            </Button>
+            <Button
+              onClick={(e) => {
+                note.description += '\n status: done'
+                saveNote(parseNote(note.description as any))
+              }}
+              disabled={note.status === 'done'}
+            >
+              Done
+            </Button>
+            <Button
+              onClick={() => {
+                router.push('/')
+              }}
+            >
+              Home
             </Button>
           </>
         )}
