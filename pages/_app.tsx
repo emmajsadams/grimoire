@@ -23,9 +23,7 @@ export interface AppProps {
 // TODO: use auth url
 function LoginContainer({ children }: any): JSX.Element {
   const router = useRouter()
-  const {
-    data: { status },
-  } = useSession()
+  const { data: session, status } = useSession()
 
   if (status === 'loading') {
     return <>Loading</>
@@ -34,6 +32,8 @@ function LoginContainer({ children }: any): JSX.Element {
   if (status === 'unauthenticated') {
     router.push('/api/auth/signin')
   }
+
+  console.log(JSON.stringify(session))
 
   return children
 }
