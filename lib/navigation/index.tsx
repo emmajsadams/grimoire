@@ -9,8 +9,6 @@ import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
-import { logout } from 'thin-backend'
-import { useCurrentUser } from 'thin-backend-react'
 import { createRecord } from 'thin-backend'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -75,6 +73,8 @@ export function PrimaryAppBar({
   }
 
   const menuId = 'primary-search-account-menu'
+  // TODO: add back logout  <MenuItem onClick={() => logout()}>Logout</MenuItem>
+  // TODO: also add back a display of the current user email and a link to user page
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -91,9 +91,6 @@ export function PrimaryAppBar({
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem>{useCurrentUser()?.email}</MenuItem>
-      <MenuItem onClick={() => logout()}>Logout</MenuItem>
-      <MenuItem>--</MenuItem>
       <MenuItem
         onClick={() => {
           handleMenuClose()
@@ -104,11 +101,8 @@ export function PrimaryAppBar({
       </MenuItem>
       <MenuItem
         onClick={async () => {
-          // TODO: Create a url that is `/notes/new` that does this by default so anywhere can link to it without all this code
-          // TODO: Figure out why textSearch and error need to be set to null for new notes?
-          const note = await createRecord('notes', { draft: '# ' } as any)
           handleMenuClose()
-          router.push(`/notes/${note.id}`)
+          router.push(`/notes/new`)
         }}
       >
         Create New Note
