@@ -23,7 +23,9 @@ export interface AppProps {
 // TODO: use auth url
 function LoginContainer({ children }: any): JSX.Element {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const {
+    data: { status },
+  } = useSession()
 
   if (status === 'loading') {
     return <>Loading</>

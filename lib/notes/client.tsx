@@ -4,7 +4,11 @@ import useSWR from 'swr'
 import { fetcher } from 'lib/swr'
 import { Note } from 'lib/prisma/client'
 
-// TODO: type this
+// TODO: Disable this once I uppercase these functions
+/* eslint react-hooks/rules-of-hooks: "off" */
+
+// TODO: type this and fix name for react component
+// @ts-ignore
 export function getNewNoteTrigger(): any {
   const { trigger } = useSWRMutation('/api/notes', (url, { arg }) =>
     fetcher(url, {
@@ -16,7 +20,8 @@ export function getNewNoteTrigger(): any {
   return trigger
 }
 
-// TODO: type this
+// TODO: type this and fix name for react component
+// @ts-ignore
 export function getUpdateNoteTrigger(noteId: string): any {
   const { trigger } = useSWRMutation(`/api/notes/${noteId}`, (url, { arg }) =>
     fetcher(url, {
@@ -28,7 +33,8 @@ export function getUpdateNoteTrigger(noteId: string): any {
   return trigger
 }
 
-// TODO: type this
+// TODO: type this and fix name for react component
+// @ts-ignore
 export function getNote(noteId: string): {
   data: Note | null
   component: any
@@ -48,6 +54,8 @@ export function getNote(noteId: string): {
   return { data: data as any, component: null }
 }
 
+// TODO: type this and fix name for react component
+// @ts-ignore
 export function getNotes(query: string): {
   data: Note[] | null
   component: any

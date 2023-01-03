@@ -33,6 +33,7 @@
     // jsdom: true,
     "JSX": true
   },
+  "ignorePatterns": ["lib/prisma/client/*"],
   "rules": {
     "import/named": "off", // Does not work with typescript, complains about thin-dev types
     "no-unused-vars": "off",

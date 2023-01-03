@@ -118,7 +118,6 @@ export function ViewNote(props: {
                 delete parsedNote.draft
                 parsedNote.id = note.id
                 parsedNote.version = note.version + 1
-                debugger
                 updateNoteTrigger(parsedNote)
                 setDraft('')
                 router.push('/notes/' + note.id)
