@@ -48,7 +48,9 @@ function BackgroundImageContainer({ children }: any): JSX.Element {
   }
   const user: User = data as any
 
-  document.body.style.background = `url("${user?.wallpaperUrl || ''}")`
+  document.body.style.background = `url("${
+    user?.wallpaperUrl || '/static/wallpapers/emma.jpg'
+  }")`
   return (
     <Container maxWidth="lg">
       <>{children}</>
