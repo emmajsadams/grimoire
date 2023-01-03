@@ -15,7 +15,7 @@ const Home: NextPage<any, any> = ({
   return (
     <>
       <Head>
-        <title>Notes</title>
+        <title>Grimoire Automata - Notes</title>
         <meta name="description" content="Grimoire Automata" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
