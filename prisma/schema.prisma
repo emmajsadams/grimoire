@@ -50,6 +50,7 @@ model User {
   // Custom fields
   wallpaperUrl   String?
   calendarApiKey String?
+  ntfyTopic      String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
