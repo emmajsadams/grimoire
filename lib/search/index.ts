@@ -5,7 +5,7 @@ import {
   DUE_PROPERTY,
   TAG_PROPERTY,
   STATUS_PROPERTY,
-} from 'lib/notes'
+} from 'lib/notes/constants'
 import { Moment } from 'moment-timezone'
 import * as parseSearchQueryModule from 'lib/search/parseQuery'
 import * as setQueryFiltersModule from 'lib/search/setQueryFilters'

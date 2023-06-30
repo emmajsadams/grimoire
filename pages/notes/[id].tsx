@@ -2,14 +2,11 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { ViewNote } from 'lib/notes'
+import { Note } from 'lib/notes/components'
 import { AppProps } from 'pages/_app'
 import { getNote } from 'lib/notes/client'
 
-interface NotesViewProps extends AppProps {}
-
-// TODO: Change the name of clientID to requestID
-const NotesView: NextPage<any, any> = ({ clientId }: NotesViewProps) => {
+const NotesView: NextPage<any, any> = () => {
   const router = useRouter()
   const { id, edit } = router.query
   if (!id) {
@@ -26,7 +23,6 @@ const NotesView: NextPage<any, any> = ({ clientId }: NotesViewProps) => {
     return <p>Loading...</p>
   }
 
-  // TODO: add breadcrumbs going back to main list view
   return (
     <>
       <Head>
@@ -34,11 +30,7 @@ const NotesView: NextPage<any, any> = ({ clientId }: NotesViewProps) => {
       </Head>
 
       <main>
-        <ViewNote
-          note={note}
-          clientId={clientId}
-          edit={(edit as any) === 'true' ? true : false}
-        ></ViewNote>
+        <Note note={note} edit={(edit as any) === 'true' ? true : false}></Note>
       </main>
     </>
   )

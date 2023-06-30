@@ -37,12 +37,3 @@ export type Properties_TYPE =
   | DUE_PROPERTY_TYPE
   | TAG_PROPERTY_TYPE
   | STATUS_PROPERTY_TYPE
-
-import * as ViewNoteModule from 'lib/notes/ViewNote'
-export const ViewNote = ViewNoteModule.ViewNote
-
-import * as NotesListModule from 'lib/notes/NotesList'
-export const NotesList = NotesListModule.NotesList
-
-import * as ParseNoteModule from 'lib/notes/parseNote'
-export const parseNote = ParseNoteModule.parseNote

@@ -6,7 +6,7 @@ import {
   TAG_PROPERTY,
   TAGS,
   STATUSES,
-} from 'lib/notes'
+} from 'lib/notes/constants'
 import { Query, Operations } from 'lib/search'
 
 export function createDefaultQuery(): Query {

@@ -3,7 +3,7 @@ import ical, { ICalEventBusyStatus } from 'ical-generator'
 import moment from 'moment-timezone'
 import { validate as validateUUID } from 'uuid'
 
-import { TODO } from 'lib/notes'
+import { TODO } from 'lib/notes/constants'
 import { getUserWhere } from 'lib/user/server'
 import { getNotesWhere } from 'lib/notes/server'
 
