@@ -3,14 +3,11 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 
-import { formatTimeAgo } from 'lib/datetime'
+import { formatTimeAgo } from 'lib/datetime/utils'
 import { User } from 'lib/prisma/client'
 
 const LOADING_COMPONENT = <p>Loading User</p>
 
-// TODO: Change this to automatically open edit view if a key is pressed, then close it if empty. Basically remove the delete draft button.
-// TODO: automatically save draft every few seconds
-// TODO: Convert this to two separate pages: ViewNote and EditNote
 export function ViewUser(props: { user: User }): JSX.Element {
   const { user } = props
 

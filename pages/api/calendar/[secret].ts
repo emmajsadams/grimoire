@@ -4,7 +4,7 @@ import moment from 'moment-timezone'
 import { validate as validateUUID } from 'uuid'
 
 import { TODO } from 'lib/notes/constants'
-import { getUserWhere } from 'lib/user/server'
+import { getUserWhere } from 'lib/users/server'
 import { getNotesWhere } from 'lib/notes/server'
 
 // TODO: ratelimit failed attempts to prevent brute force attacks

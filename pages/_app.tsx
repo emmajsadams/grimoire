@@ -2,28 +2,23 @@ import '../styles/globals.css'
 import Head from 'next/head'
 import { Container } from '@mui/material'
 import React, { useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import { SessionProvider } from 'next-auth/react'
 import { useSession } from 'next-auth/react'
-import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
-import { User } from 'lib/prisma/client'
-import { PrimaryAppBar } from 'lib/navigation'
-import { Query, parseSearchQuery } from 'lib/search'
-import { fetcher } from 'lib/swr'
+import { PrimaryAppBar } from 'lib/navigation/components'
+import { Query } from 'lib/navigation/constants'
+import { parseSearchQuery } from 'lib/navigation/utils'
+import { getCurrentUser } from 'lib/users/client'
 
 export interface AppProps {
-  clientId: string
   searchQuery: Query
   setSearchQuery: (query: Query) => void
 }
 
-// TODO: redirect unauthenticated, and consider handling loading state in component
-// TODO: use auth url
 function LoginContainer({ children }: any): JSX.Element {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { status } = useSession()
 
   if (status === 'loading') {
     return <>Loading</>
@@ -33,23 +28,17 @@ function LoginContainer({ children }: any): JSX.Element {
     router.push('/api/auth/signin')
   }
 
-  console.log(JSON.stringify(session))
-
   return children
 }
 
 function BackgroundImageContainer({ children }: any): JSX.Element {
-  const { data, isLoading, error } = useSWR(`/api/user`, fetcher)
-  if (isLoading) {
-    return <>Loading user... </>
+  const { data, component } = getCurrentUser()
+  if (!data || component) {
+    return component
   }
-  if (error) {
-    return <>Error loading user</>
-  }
-  const user: User = data as any
 
   document.body.style.background = `url("${
-    user?.wallpaperUrl || '/static/wallpapers/emma.jpg'
+    data.wallpaperUrl || '/static/wallpapers/emma.jpg'
   }")`
   return (
     <Container maxWidth="lg">
@@ -58,22 +47,25 @@ function BackgroundImageContainer({ children }: any): JSX.Element {
   )
 }
 
-// TODO: What is the accurate type here?
-function MyApp({ Component, pageProps }: any): JSX.Element {
+function MyApp({
+  Component,
+  pageProps,
+}: {
+  Component: any // TODO: More specific type
+  pageProps: any // TODO: More specific type
+}): JSX.Element {
+  // TODO: Convert this to an object that contains the parsed search components maybe?
   const [searchQuery, setSearchQuery] = useState(
     parseSearchQuery('status:==:todo'), //
-  ) // TODO: Convert this to an object that contains the parsed search components maybe?
-  const [clientId] = useState(uuidv4())
+  )
 
+  // TODO: Can I remove this and stop passing customProps to Component?
   const customProps: AppProps = {
-    clientId,
     searchQuery,
     setSearchQuery,
     ...pageProps,
   }
 
-  // TODO: Remove login container
-  // TODO: do I need custom and page props?
   return (
     <SessionProvider session={pageProps.session}>
       <LoginContainer>
@@ -81,7 +73,10 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
           <meta name="description" content="Grimoire Automata" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <PrimaryAppBar {...customProps} />
+        <PrimaryAppBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
         <BackgroundImageContainer>
           <Component {...customProps} />
         </BackgroundImageContainer>

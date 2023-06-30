@@ -1,5 +1,5 @@
 import { getNotesWhere } from 'lib/notes/server'
-import { getUserWhere } from 'lib/user/server'
+import { getUserWhere } from 'lib/users/server'
 
 export default async function handler(_: any, res: any) {
   const notes = await getNotesWhere({

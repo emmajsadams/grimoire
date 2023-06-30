@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import { ViewUser } from 'lib/user/components'
-import { getCurrentUser } from 'lib/user/client'
+import { ViewUser } from 'lib/users/components'
+import { getCurrentUser } from 'lib/users/client'
 
 const UserView: NextPage<any, any> = () => {
   const { data, component } = getCurrentUser()

@@ -4,7 +4,7 @@ import { unstable_getServerSession } from 'next-auth/next'
 import { Session } from 'next-auth'
 
 import { User } from 'lib/prisma/client'
-import { getUserByEmail } from 'lib/user/server'
+import { getUserByEmail } from 'lib/users/server'
 
 interface SessionUser {
   session: Session | null

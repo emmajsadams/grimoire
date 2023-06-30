@@ -7,8 +7,6 @@ import {
   STATUS_PROPERTY,
 } from 'lib/notes/constants'
 import { Moment } from 'moment-timezone'
-import * as parseSearchQueryModule from 'lib/search/parseQuery'
-import * as setQueryFiltersModule from 'lib/search/setQueryFilters'
 
 export const Operations = ['==', '!=', '>', '<', '>=', '<=']
 export type Operation = '==' | '!=' | '>' | '<' | '>=' | '<='
@@ -41,7 +39,3 @@ export interface Query {
   errors: string[]
   rawQuery: string
 }
-
-export const parseSearchQuery = parseSearchQueryModule.parseSearchQuery
-
-export const setQueryFilters = setQueryFiltersModule.setQueryFilters

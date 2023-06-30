@@ -15,7 +15,7 @@ import TextareaAutosize from '@mui/material/TextareaAutosize'
 import { useRouter } from 'next/router'
 
 import { parseNote } from 'lib/notes/utils'
-import { formatTimeAgo } from 'lib/datetime'
+import { formatTimeAgo } from 'lib/datetime/utils'
 import { getUpdateNoteTrigger } from 'lib/notes/client'
 import { Note } from 'lib/prisma/client'
 import { AppProps } from 'pages/_app'

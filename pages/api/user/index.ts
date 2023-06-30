@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { getApiUser } from 'lib/auth/server'
-import { updateUser } from 'lib/user/server'
+import { updateUser } from 'lib/users/server'
 
 export default async function handler(
   req: NextApiRequest,

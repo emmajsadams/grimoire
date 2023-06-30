@@ -1,9 +1,8 @@
 import useSWRMutation from 'swr/mutation'
 import useSWR from 'swr'
 
-import { fetcher } from 'lib/swr'
+import { fetcher, defaultRequestHandler } from 'lib/swr/utils'
 import { User } from 'lib/prisma/client'
-import { defaultRequestHandler } from 'lib/utils/request'
 
 // TODO: Disable this once I uppercase these functions
 /* eslint react-hooks/rules-of-hooks: "off" */
