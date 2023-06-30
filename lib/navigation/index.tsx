@@ -144,6 +144,11 @@ export function PrimaryAppBar({
               onChange={(event) =>
                 setSearchQuery(parseSearchQuery(event.target.value))
               } // TODO: Convert this to an object that contains the parsed search components maybe?s
+              onKeyDown={(event) => {
+                if (event.key == 'Enter') {
+                  router.push('/')
+                }
+              }}
             />
           </Search>
         </Toolbar>

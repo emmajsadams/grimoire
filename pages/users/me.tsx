@@ -14,7 +14,6 @@ const UserView: NextPage<any, any> = () => {
     return <p>Loading...</p>
   }
 
-  // TODO: add breadcrumbs going back to main list view
   return (
     <>
       <Head>
