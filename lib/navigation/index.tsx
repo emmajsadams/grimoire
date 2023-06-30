@@ -93,15 +93,14 @@ export function PrimaryAppBar({
       <MenuItem
         onClick={async () => {
           handleMenuClose()
-          router.push(`/users/me`)
         }}
       >
         User
+        <Link href="/users/me">Notes</Link>
       </MenuItem>
       <MenuItem
         onClick={() => {
           handleMenuClose()
-          router.push(`/`)
         }}
       >
         <Link href="/">Notes</Link>
@@ -109,10 +108,9 @@ export function PrimaryAppBar({
       <MenuItem
         onClick={async () => {
           handleMenuClose()
-          router.push(`/notes/new`)
         }}
       >
-        Create New Note
+        <Link href="/notes/new"> Create New Note</Link>
       </MenuItem>
     </Menu>
   )
