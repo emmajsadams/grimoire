@@ -13,7 +13,6 @@ export default async function handler(
     return
   }
 
-  // Only allow POST requests
   if (req.method === 'GET') {
     let updatedUser = false
     if (req.query.wallpaper) {
@@ -32,7 +31,6 @@ export default async function handler(
 
     return res.status(200).json(user as any)
   } else if (req.method === 'PUT') {
-    // TODO: implement this
     return res.status(200).json(user as any)
   } else {
     res.status(405).end()
