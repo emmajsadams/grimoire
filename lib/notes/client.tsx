@@ -3,6 +3,7 @@ import useSWR from 'swr'
 
 import { fetcher } from 'lib/swr'
 import { Note } from 'lib/prisma/client'
+import { defaultRequestHandler } from 'lib/utils/request'
 
 // TODO: Disable this once I uppercase these functions
 /* eslint react-hooks/rules-of-hooks: "off" */
@@ -41,17 +42,7 @@ export function getNote(noteId: string): {
 } {
   const { data, error, isLoading } = useSWR(`/api/notes/${noteId}`, fetcher)
 
-  // TODO: dedupe these
-  if (error) {
-    return {
-      data: null,
-      component: <p>Failed to load: {JSON.stringify(error)}</p>,
-    }
-  }
-  if (isLoading) return { data: null, component: <p>Loading</p> }
-
-  // TODO: type this
-  return { data: data as any, component: null }
+  return defaultRequestHandler(data, error, isLoading)
 }
 
 // TODO: type this and fix name for react component
@@ -67,14 +58,5 @@ export function getNotes(query: string): {
 
   const { data, error, isLoading } = useSWR(url, fetcher)
 
-  // TODO: dedupe these
-  if (error)
-    return {
-      data: null,
-      component: <p>Failed to load: {JSON.stringify(error)}</p>,
-    }
-  if (isLoading) return { data: null, component: <p>Loading</p> }
-
-  // TODO: type this
-  return { data: data as any, component: null }
+  return defaultRequestHandler(data, error, isLoading)
 }
