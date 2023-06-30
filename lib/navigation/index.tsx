@@ -95,8 +95,7 @@ export function PrimaryAppBar({
           handleMenuClose()
         }}
       >
-        User
-        <Link href="/users/me">Notes</Link>
+        <Link href="/users/me">User</Link>
       </MenuItem>
       <MenuItem
         onClick={() => {
