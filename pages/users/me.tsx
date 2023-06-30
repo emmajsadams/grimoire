@@ -2,13 +2,9 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import { ViewUser } from 'lib/user/components'
-import { AppProps } from 'pages/_app'
 import { getCurrentUser } from 'lib/user/client'
 
-interface NotesViewProps extends AppProps {}
-
-// TODO: Change the name of clientID to requestID
-const UserView: NextPage<any, any> = ({}: NotesViewProps) => {
+const UserView: NextPage<any, any> = () => {
   const { data, component } = getCurrentUser()
   if (component) {
     return component
