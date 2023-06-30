@@ -91,6 +91,14 @@ export function PrimaryAppBar({
       onClose={handleMenuClose}
     >
       <MenuItem
+        onClick={async () => {
+          handleMenuClose()
+          router.push(`/users/me`)
+        }}
+      >
+        User
+      </MenuItem>
+      <MenuItem
         onClick={() => {
           handleMenuClose()
           router.push(`/`)
