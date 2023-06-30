@@ -1,7 +1,7 @@
 import { getNotesWhere } from 'lib/notes/server'
 import { getUserWhere } from 'lib/user/server'
 
-export default async function handler(_, res) {
+export default async function handler(_: any, res: any) {
   const notes = await getNotesWhere({
     // find notes due in the next 30 minutes
     due: {
