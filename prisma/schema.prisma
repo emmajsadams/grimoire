@@ -1,10 +1,11 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/prisma/client"
 }
 
 model Account {
@@ -44,6 +45,15 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Note          Note[]
+
+  // Custom fields
+  wallpaperUrl   String?
+  calendarApiKey String?
+  ntfyTopic      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model VerificationToken {
@@ -55,14 +65,20 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// TODO: Should note fields be required?
+// TODO: Should note fields be required? Probably description for sure
 model Note {
-  id      String @id @default(cuid())
-  version Int    @default(0)
-
+  id          String    @id @default(cuid())
+  version     Int       @default(0)
+  ownerId     String    @map("user_id")
   description String?
-  title       String    @unique @default("")
+  title       String?
   status      String?
   due         DateTime?
   allDay      Boolean?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([title, ownerId, status, due(sort: Asc), createdAt(sort: Asc)])
 }

@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
-import { updateRecord, createRecord, Note as NoteType } from 'thin-backend'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
+import { useRouter } from 'next/router'
 
 import { parseNote } from 'lib/notes'
 import { formatTimeAgo } from 'lib/datetime'
+import { getUpdateNoteTrigger } from 'lib/notes/client'
+import { Note } from 'lib/prisma/client'
 
 const LOADING_COMPONENT = <p>Loading Note</p>
 
@@ -16,11 +18,20 @@ const LOADING_COMPONENT = <p>Loading Note</p>
 // TODO: automatically save draft every few seconds
 // TODO: Convert this to two separate pages: ViewNote and EditNote
 export function ViewNote(props: {
-  note: NoteType
-  clientId: string
+  note: Note
+  clientId: string // TODO: Remove clientID concept
+  edit: boolean // TODO: split this out into separate components instead of a flag
 }): JSX.Element {
-  const { note } = props
-  const [draft, setDraft] = useState(note.draft)
+  const router = useRouter()
+  const { note, edit } = props
+
+  let draftText = ''
+  if (edit) {
+    draftText = note.description || '# '
+  }
+
+  const [draft, setDraft] = useState(draftText)
+  const updateNoteTrigger = getUpdateNoteTrigger(note.id)
 
   if (!note) {
     return LOADING_COMPONENT
@@ -48,16 +59,16 @@ export function ViewNote(props: {
   const allDayText = note.allDay ? '(all day)' : ''
   const parsedNote = parseNote(draft)
 
+  const saveNote = (localNote: any) => {
+    delete localNote.error
+    delete localNote.draft
+    localNote.id = note.id
+    localNote.version = note.version + 1
+    updateNoteTrigger(localNote)
+  }
+
   return (
-    <Card
-      variant="outlined"
-      sx={{ minWidth: 275 }}
-      onClick={() => {
-        if (!draft) {
-          setDraft(note.description)
-        }
-      }}
-    >
+    <Card variant="outlined" sx={{ minWidth: 275 }}>
       <CardContent>
         {draft ? (
           <>
@@ -71,7 +82,7 @@ export function ViewNote(props: {
             )}
             {parsedNote.due ? (
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                <b>Due:</b> {formatTimeAgo(parsedNote.due)} {allDayText}
+                <b>Due:</b> {formatTimeAgo(parsedNote.due as any)} {allDayText}
               </Typography>
             ) : (
               <></>
@@ -82,14 +93,17 @@ export function ViewNote(props: {
             {textElement}
             {note.due ? (
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                <b>Due:</b> {formatTimeAgo(note.due)} {allDayText}
+                <b>Due:</b> {formatTimeAgo(note.due as any)} {allDayText}
               </Typography>
             ) : (
               <></>
             )}
             {/* TODO: Change Last Updated to use history time instead */}
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              <b>Last Updated:</b> {formatTimeAgo(note.updatedAt)}
+              <b>Updated At:</b> {formatTimeAgo(note.updatedAt as any)}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              <b>Created On:</b> {formatTimeAgo(note.updatedAt as any)}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               <b>Version:</b> {note.version}
@@ -102,39 +116,44 @@ export function ViewNote(props: {
           <>
             <Button
               onClick={() => {
-                // TODO: Clean history and migrate it to use all this new stuff
-                parsedNote.draft = ''
-                parsedNote.version = note.version + 1
-                updateRecord('notes', note.id, parsedNote)
-                createRecord('notes_history', {
-                  noteId: note.id,
-                  rawEditorState: parsedNote.description,
-                  version: parsedNote.version,
-                } as any)
+                saveNote(parsedNote)
                 setDraft('')
+                router.push('/notes/' + note.id)
               }}
               disabled={!!parsedNote.error || draft === note.description}
             >
-              Save New Version
-            </Button>
-            <Button
-              onClick={() => {
-                updateRecord('notes', note.id, { draft: draft })
-              }}
-            >
-              Save Draft
-            </Button>
-            <Button
-              onClick={() => {
-                updateRecord('notes', note.id, { draft: '' })
-                setDraft('')
-              }}
-            >
-              Delete Draft
+              Save
             </Button>
           </>
         ) : (
-          <></>
+          <>
+            <Button
+              onClick={() => {
+                if (!draft) {
+                  setDraft(note?.description || '# ')
+                }
+              }}
+              disabled={!!parsedNote.error || draft === note.description}
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={() => {
+                note.description += '\n status: done'
+                saveNote(parseNote(note.description as any))
+              }}
+              disabled={note.status === 'done'}
+            >
+              Done
+            </Button>
+            <Button
+              onClick={() => {
+                router.push('/')
+              }}
+            >
+              Home
+            </Button>
+          </>
         )}
       </CardActions>
     </Card>

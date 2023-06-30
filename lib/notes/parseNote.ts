@@ -1,7 +1,9 @@
-import { Note } from 'thin-backend'
 import moment from 'moment-timezone'
+
 import { STATUS_PROPERTY, DUE_PROPERTY, STATUSES } from 'lib/notes'
 import { isDate, parseDate } from 'lib/datetime'
+
+const IGNORED_TITLE_PREFIXES = ['#', '##', '###']
 
 const ANYTIME_SYNONYMS = [
   'anytime',
@@ -18,16 +20,17 @@ const ANYTIME_SYNONYMS = [
 //   -- this would require converting plugins to operate on a line by line basis to avoid looping the whole thing.
 // TODO: Add Parser for `Tags: ....`
 // TODO: Add Parser for `Recurring: Weekly|Monthly`
-export function parseNote(text: string): Partial<Note> {
-  const note: Partial<Note> = {
+// TODO: use type correctly
+export function parseNote(text: string): Partial<any> {
+  const note: any = {
     title: '',
-    description: '',
+    description: text,
     status: '',
     error: '',
     allDay: false,
   }
 
-  if (text == '') {
+  if (!text) {
     return note
   }
 
@@ -62,6 +65,12 @@ export function parseNote(text: string): Partial<Note> {
     }
   } else {
     note.title = headerText
+  }
+
+  for (const ignoredPrefix of IGNORED_TITLE_PREFIXES) {
+    if (note.title.startsWith(ignoredPrefix)) {
+      note.title = note.title.substring(ignoredPrefix.length)
+    }
   }
 
   // Parse for metadata tags:
@@ -101,8 +110,6 @@ export function parseNote(text: string): Partial<Note> {
       console.log(note.due)
       continue
     }
-
-    note.description += textLine + ' \n '
   }
 
   // By default unless overridden anything with a due date should have the status todo.
@@ -122,7 +129,7 @@ export function parseNote(text: string): Partial<Note> {
 function parseProperty(
   property: string,
   lowerCaseTextContent: string,
-  note: Partial<Note>,
+  note: any,
   validate: (value: string) => string,
 ): boolean {
   if (!lowerCaseTextContent.startsWith(`${property}:`)) {

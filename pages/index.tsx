@@ -6,6 +6,7 @@ import { AppProps } from 'pages/_app'
 
 interface IndexProps extends AppProps {}
 
+// TODO: create a scaffold test notes feature for dev!
 // TODO: Redirect to -> /notes by default and move NotesLists to that page
 const Home: NextPage<any, any> = ({
   clientId,
@@ -15,7 +16,7 @@ const Home: NextPage<any, any> = ({
   return (
     <>
       <Head>
-        <title>Notes</title>
+        <title>Grimoire Automata - Notes</title>
         <meta name="description" content="Grimoire Automata" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

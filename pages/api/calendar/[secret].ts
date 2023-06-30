@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import ical, { ICalEventBusyStatus } from 'ical-generator'
-import { DONE, DELETED } from '../../../lib/notes'
-import postgres from 'postgres'
 import moment from 'moment-timezone'
 import { validate as validateUUID } from 'uuid'
 
-const sql = postgres(process.env.THIN_DB_URL || '', {})
+import { TODO } from 'lib/notes'
+import { getUserWhere } from 'lib/user/server'
+import { getNotesWhere } from 'lib/notes/server'
 
 // TODO: ratelimit failed attempts to prevent brute force attacks
 export default async function handler(
@@ -25,33 +25,21 @@ export default async function handler(
       return
     }
 
-    const users = await sql`
-      select
-        id,
-        timezone
-      from users
-      where calendar_secret = ${secret}
-    `
-    if (!users || users.length !== 1) {
+    const user = await getUserWhere({ calendarApiKey: secret })
+    if (!user) {
       res.status(400).send('Invalid secret')
       return
     }
-    const user = users[0]
 
-    const notes = await sql`
-      select
-        id,
-        title,
-        due,
-        status,
-        all_day
-      from notes
-      where user_id = ${user.id}
-        AND status != ${DELETED}
-        AND status != ${DONE}
-        AND due IS NOT NULL
-        AND title != ''
-    `
+    // TODO: add is not null for due somehow... for loop handles it below
+    const notes = await getNotesWhere({
+      ownerId: user.id,
+      status: TODO,
+    })
+    if (!notes) {
+      res.status(500).send('Valid secret, but critical error loading notes.')
+      return
+    }
 
     const calendar = ical({
       name: 'Grimoire Notes Calendar',
@@ -68,7 +56,7 @@ export default async function handler(
         id: note.id,
         start: moment.utc(note.due),
         end: moment.utc(note.due).add(1, 'hours'), // TODO: allow duration to be specified
-        allDay: note.all_day,
+        allDay: note.allDay || false,
         summary: note.title,
         busystatus: ICalEventBusyStatus.BUSY, // TODO: allow use to specify busy status?
         url: `https://grimoireautomata.com/notes/${note.id}`,

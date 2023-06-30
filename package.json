@@ -9,12 +9,11 @@
     "start": "next start",
     "lint": "next lint",
     "lint-fix": "eslint * --fix --no-error-on-unmatched-pattern",
-    "preinstall": "npm remove @types/thin-backend && npm install --save-dev 'https://thin.dev/types/7026857c-b4ba-4612-a9c7-7268559988cc/NdDqvuVmuWMmXhltVIfIltGFxcKsYgxS'",
-    "postinstall": "echo 'TODO npx prisma db push'",
+    "postinstall": "npm run db",
     "test": "jest",
     "test-watch": "jest --watch",
     "test-coverage": "jest --coverage",
-    "db": "node prisma/generate.js ; prisma db push"
+    "db": "prisma db push"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -32,11 +31,11 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.34",
     "next": "12.2.5",
-    "next-auth": "^4.17.0",
+    "next-auth": "4.20.1",
     "postgres": "^3.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "thin-backend-react": "^0.10.0",
+    "swr": "^2.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -46,7 +45,6 @@
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
-    "@types/thin-backend": "https://thin.dev/types/7026857c-b4ba-4612-a9c7-7268559988cc/NdDqvuVmuWMmXhltVIfIltGFxcKsYgxS",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "5.30.0",
     "@typescript-eslint/parser": "5.30.0",
@@ -61,7 +59,6 @@
     "jest-environment-jsdom": "^29.3.1",
     "prettier": "2.7.1",
     "prisma": "^4.7.0",
-    "thin-backend": "^0.10.3",
     "ts-jest": "^29.0.3",
     "typescript": "^4.7.4"
   }
