@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Note } from 'lib/notes/components'
+import { NoteCard } from 'lib/notes/components'
 import { getNote } from 'lib/notes/client'
 
 const NotesView: NextPage<any, any> = () => {
@@ -29,7 +29,7 @@ const NotesView: NextPage<any, any> = () => {
       </Head>
 
       <main>
-        <Note note={note} edit={(edit as any) === 'true' ? true : false}></Note>
+        <NoteCard note={note} edit={(edit as any) === 'true' ? true : false} />
       </main>
     </>
   )

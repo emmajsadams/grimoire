@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import { NotesList } from 'lib/notes/components'
+import { NotesCard } from 'lib/notes/components'
 import { AppProps } from 'pages/_app'
 
 interface IndexProps extends AppProps {}
@@ -9,7 +9,6 @@ interface IndexProps extends AppProps {}
 // TODO: create a scaffold test notes feature for dev!
 // TODO: Redirect to -> /notes by default and move NotesLists to that page
 const Home: NextPage<any, any> = ({
-  clientId,
   searchQuery,
   setSearchQuery,
 }: IndexProps) => {
@@ -22,11 +21,7 @@ const Home: NextPage<any, any> = ({
       </Head>
 
       <main>
-        <NotesList
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          clientId={clientId}
-        />
+        <NotesCard searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </main>
     </>
   )

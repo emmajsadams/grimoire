@@ -22,7 +22,7 @@ import { AppProps } from 'pages/_app'
 
 interface NotesProps extends AppProps {}
 
-export function NotesList({ searchQuery }: NotesProps) {
+export function NotesCard({ searchQuery }: NotesProps) {
   let query: any = null
   if (searchQuery && searchQuery.title && searchQuery.title.length > 0) {
     query = searchQuery.title[0].value // TODO: support the rest of the query schema? maybe just create the json query for primsa locally?
@@ -90,7 +90,7 @@ const LOADING_COMPONENT = <p>Loading Note</p>
 // TODO: Change this to automatically open edit view if a key is pressed, then close it if empty. Basically remove the delete draft button.
 // TODO: automatically save draft every few seconds
 // TODO: Convert this to two separate pages: ViewNote and EditNote
-export function Note(props: {
+export function NoteCard(props: {
   note: Note
   edit: boolean // TODO: split this out into separate components instead of a flag
 }): JSX.Element {
