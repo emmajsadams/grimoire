@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { Note } from 'lib/notes/components'
-import { AppProps } from 'pages/_app'
 import { getNote } from 'lib/notes/client'
 
 const NotesView: NextPage<any, any> = () => {

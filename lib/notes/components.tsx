@@ -16,10 +16,9 @@ import { useRouter } from 'next/router'
 
 import { parseNote } from 'lib/notes/utils'
 import { formatTimeAgo } from 'lib/datetime/utils'
-import { getUpdateNoteTrigger } from 'lib/notes/client'
+import { getUpdateNoteTrigger, getNotes } from 'lib/notes/client'
 import { Note } from 'lib/prisma/client'
 import { AppProps } from 'pages/_app'
-import { getNotes } from 'lib/notes/client'
 
 interface NotesProps extends AppProps {}
 
