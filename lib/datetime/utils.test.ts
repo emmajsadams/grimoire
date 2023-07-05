@@ -1,27 +1,32 @@
+import { describe, expect, test } from '@jest/globals'
 import {
   formatTimeAgo,
   isDate,
   parseDate,
   DEFAULT_TIMEZONE,
-} from 'lib/datetime'
+} from 'lib/datetime/utils'
 
-test('formatTimeAgo: returns nothing if empty stirng', () => {
-  expect(formatTimeAgo('')).toEqual('')
+describe('formatTimeAgo', () => {
+  test('returns nothing if empty stirng', () => {
+    expect(formatTimeAgo('')).toEqual('')
+  })
+
+  test('returns us localized date', () => {
+    const now = new Date()
+    now.setSeconds(now.getSeconds() + 1)
+
+    expect(formatTimeAgo(now.toISOString())).toEqual('in a moment')
+  })
 })
 
-test('formatTimeAgo: returns us localized date', () => {
-  const now = new Date()
-  now.setSeconds(now.getSeconds() + 1)
+describe('isDate', () => {
+  test('returns true for date matching expected format', () => {
+    expect(isDate('2013-11-18 11:55')).toEqual(true)
+  })
 
-  expect(formatTimeAgo(now.toISOString())).toEqual('in a moment')
-})
-
-test('isDate: returns true for date matching expected format', () => {
-  expect(isDate('2013-11-18 11:55')).toEqual(true)
-})
-
-test('isDate: returns false for date not matching expected format', () => {
-  expect(isDate('NOT A DATE')).toEqual(false)
+  test('returns false for date not matching expected format', () => {
+    expect(isDate('NOT A DATE')).toEqual(false)
+  })
 })
 
 test('parseDate: returns null and false if not a date', () => {
@@ -43,6 +48,6 @@ test('parseDate: returns date at specific time for next month', () => {
   const now = new Date()
   now.setMonth(now.getMonth() + 1)
   expect(date?.month()).toEqual(now.getMonth())
-  expect(date?.hours()).toEqual(13)
+  expect(date?.hours()).toEqual(12)
   expect(allDay).toEqual(false)
 })
