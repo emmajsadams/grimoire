@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Resolver, Query, Ctx } from 'type-graphql'
-import { User } from 'lib/graphql/user/model'
-import type { Context } from 'lib/graphql/context'
+import { User } from './model'
+import type { Context } from '../context'
 
 @Resolver(User)
 export class UserResolver {

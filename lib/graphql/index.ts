@@ -6,11 +6,11 @@ import { GraphQLScalarType } from 'graphql'
 import { DateTimeResolver } from 'graphql-scalars'
 import * as tq from 'type-graphql'
 import { Context, context } from './context'
-import { AccountResolver } from './user/resolvers'
+import { UserResolver } from './user/resolvers'
 
 const app = async () => {
   const schema = await tq.buildSchema({
-    resolvers: [AccountResolver],
+    resolvers: [UserResolver],
     scalarsMap: [{ type: GraphQLScalarType, scalar: DateTimeResolver }],
     validate: { forbidUnknownValues: false },
   })
