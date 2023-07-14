@@ -38,18 +38,6 @@ export function parseSearchQuery(searchQuery: string): Query {
   queryParts.rawQuery = searchQuery
 
   for (const stringQueryPart of stringQueryParts) {
-    // TODO: Parse title from query
-    // const parsedTitle = parseQueryPart(
-    //   queryParts,
-    //   stringQueryPart,
-    //   TITLE_PROPERTY,
-    //   null,
-    //   (value) => value,
-    // )
-    // if (parsedTitle) {
-    //   continue
-    // }
-
     const parsedTag = parseQueryPart(
       queryParts,
       stringQueryPart,
