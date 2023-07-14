@@ -6,7 +6,7 @@ import { GraphQLScalarType } from 'graphql'
 import { DateTimeResolver } from 'graphql-scalars'
 import * as tq from 'type-graphql'
 import { Context, context } from './context'
-import { AccountResolver } from './account/resolvers'
+import { AccountResolver } from './user/resolvers'
 
 const app = async () => {
   const schema = await tq.buildSchema({

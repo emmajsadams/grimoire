@@ -1,11 +1,11 @@
 import 'reflect-metadata'
 import { Resolver, Query, Ctx } from 'type-graphql'
-import { Account } from './model'
-import type { Context } from '../context'
+import { User } from 'lib/graphql/user/model'
+import type { Context } from 'lib/graphql/context'
 
-@Resolver(Account)
-export class AccountResolver {
-  @Query(() => [Account])
+@Resolver(User)
+export class UserResolver {
+  @Query(() => [User])
   async allUsers(@Ctx() ctx: Context) {
     return ctx.prisma.account.findMany()
   }
