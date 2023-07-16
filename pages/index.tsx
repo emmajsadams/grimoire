@@ -1,19 +1,18 @@
+import React, { useContext } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import { NotesCard } from 'lib/notes/components'
-import { AppProps } from 'pages/_app'
+import { AppProps, LoginContainer, QueryContext } from 'pages/_app'
 
 interface IndexProps extends AppProps {}
 
 // TODO: create a scaffold test notes feature for dev!
 // TODO: Redirect to -> /notes by default and move NotesLists to that page
-const Home: NextPage<any, any> = ({
-  searchQuery,
-  setSearchQuery,
-}: IndexProps) => {
+const Home: NextPage<any, any> = ({}: IndexProps) => {
+  const query = useContext(QueryContext)
   return (
-    <>
+    <LoginContainer>
       <Head>
         <title>Grimoire Automata - Notes</title>
         <meta name="description" content="Grimoire Automata" />
@@ -21,9 +20,9 @@ const Home: NextPage<any, any> = ({
       </Head>
 
       <main>
-        <NotesCard searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <NotesCard searchQuery={query} />
       </main>
-    </>
+    </LoginContainer>
   )
 }
 

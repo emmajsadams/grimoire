@@ -1,9 +1,8 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { NoteCard } from 'lib/notes/components'
-import { getNote } from 'lib/notes/client'
+import { ViewNoteCard, EditNoteCard } from 'lib/notes/components'
+import { LoginContainer } from 'pages/_app'
 
 const NotesView: NextPage<any, any> = () => {
   const router = useRouter()
@@ -12,26 +11,18 @@ const NotesView: NextPage<any, any> = () => {
     // TODO: use a function to validate the id matches expectations
     return <p>ID is not defined</p>
   }
+  if (Array.isArray(id)) {
+    return <>ID must be a single value</>
+  }
 
-  const { data, component } = getNote(id as any)
-  if (component) {
-    return component
-  }
-  const note = data
-  if (!note) {
-    return <p>Loading...</p>
-  }
+  const editBool = (edit as any) === 'true' ? true : false
 
   return (
-    <>
-      <Head>
-        <title>{note.title ? note.title : 'New Note'}</title>
-      </Head>
-
+    <LoginContainer>
       <main>
-        <NoteCard note={note} edit={(edit as any) === 'true' ? true : false} />
+        {editBool ? <EditNoteCard id={id} /> : <ViewNoteCard id={id} />}
       </main>
-    </>
+    </LoginContainer>
   )
 }
 

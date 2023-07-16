@@ -51,7 +51,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-interface PrimaryAppBarProps extends AppProps {}
+interface PrimaryAppBarProps extends AppProps {
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+}
 
 export function PrimaryAppBar({
   searchQuery,

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useQuery, useMutation, gql } from '@apollo/client'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -13,29 +14,46 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 import { parseNote } from 'lib/notes/utils'
 import { formatTimeAgo } from 'lib/datetime/utils'
-import { getUpdateNoteTrigger, getNotes } from 'lib/notes/client'
-import { Note } from 'lib/prisma/client'
-import { AppProps } from 'pages/_app'
+import ClientOnly from 'lib/graphql/clientOnly'
 
-interface NotesProps extends AppProps {}
+interface NotesProps {
+  searchQuery: string
+}
+
+const GET_NOTES_QUERY = gql`
+  query GetNotes($data: NoteSearchInput!) {
+    getNotes(data: $data) {
+      id
+      version
+      ownerId
+      description
+      title
+      status
+      due
+      allDay
+      createdAt
+      updatedAt
+    }
+  }
+`
 
 export function NotesCard({ searchQuery }: NotesProps) {
-  let query: any = null
-  if (searchQuery && searchQuery.title && searchQuery.title.length > 0) {
-    query = searchQuery.title[0].value // TODO: support the rest of the query schema? maybe just create the json query for primsa locally?
-  }
-  const { data, component } = getNotes(query) // TODO: update getNotes to use searchQuery
-  if (component) {
-    return component
-  }
-  const notes = data
-  if (!notes) {
-    return <p>Loading</p>
-  }
+  const { data, loading, error } = useQuery(GET_NOTES_QUERY, {
+    variables: {
+      data: {
+        title: searchQuery,
+        status: 'todo',
+      },
+    },
+  })
+  if (loading) return <>Loading notes....</>
+  if (error) return <>{`Loading notes error! ${error.message}`}</>
 
+  const notes = data.getNotes
   // TODO: on edit set task.clientID
   // TODO: on save or save as draft remove task.clientID
   // TODO: if task.clientID is set prevent editing and show a button to force the other user to stop editing the draft
@@ -50,7 +68,7 @@ export function NotesCard({ searchQuery }: NotesProps) {
   //           </TableRow>
   //         </TableHead>
   return (
-    <>
+    <ClientOnly>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableBody>
@@ -81,153 +99,224 @@ export function NotesCard({ searchQuery }: NotesProps) {
       <br />
       <br />
       <br />
+    </ClientOnly>
+  )
+}
+
+const GET_NOTE_QUERY = gql`
+  query GetNotes($data: NoteIdInput!) {
+    getNote(data: $data) {
+      id
+      version
+      ownerId
+      description
+      title
+      status
+      due
+      allDay
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+const UPDATE_NOTE_QUERY = gql`
+  mutation UpdateNote($data: UpdateNoteInput!) {
+    updateNote(data: $data) {
+      id
+      version
+      ownerId
+      description
+      title
+      status
+      due
+      allDay
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+// TODO: Change this to automatically open edit view if a key is pressed, then close it if empty. Basically remove the delete draft button.
+export function ViewNoteCard(props: { id: string }): JSX.Element {
+  const router = useRouter()
+  const { id } = props
+  const [updateNote, updateNoteResponse] = useMutation(UPDATE_NOTE_QUERY)
+  if (updateNoteResponse.loading) return <>Updating note...</>
+  if (updateNoteResponse.error)
+    return <>{`Update note error! ${updateNoteResponse.error.message}`}</>
+
+  const { data, loading, error } = useQuery(GET_NOTE_QUERY, {
+    variables: {
+      data: {
+        id: id,
+      },
+    },
+  })
+  if (loading) return <>Loading note....</>
+  if (error) return <>{`Loading note error! ${error.message}`}</>
+  const note = data.getNote
+
+  const allDayText = note.allDay ? '(all day)' : ''
+  const parsedNote = parseNote(note.description)
+
+  const markNoteDone = () => {
+    updateNote({
+      variables: {
+        data: {
+          id: note.id,
+          note: note.description + '\n status:done',
+        },
+      },
+    })
+    router.push('/notes/' + note.id)
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{note.title ? note.title : 'New Note'}</title>
+      </Head>
+      <Card variant="outlined" sx={{ minWidth: 275 }}>
+        <CardContent>
+          <p style={{ 'white-space': 'pre-line' } as any}>{note.description}</p>
+          {note.due ? (
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              <b>Due:</b> {formatTimeAgo(note.due as any)} {allDayText}
+            </Typography>
+          ) : (
+            <></>
+          )}
+          {/* TODO: Change Last Updated to use history time instead */}
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <b>Updated At:</b> {formatTimeAgo(note.updatedAt as any)}
+          </Typography>
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <b>Created On:</b> {formatTimeAgo(note.updatedAt as any)}
+          </Typography>
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <b>Version:</b> {note.version}
+          </Typography>
+          {parsedNote.due ? (
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              <b>Due:</b> {formatTimeAgo(parsedNote.due as any)} {allDayText}
+            </Typography>
+          ) : (
+            <></>
+          )}
+        </CardContent>
+        <CardActions>
+          <Button onClick={() => router.push(`/notes/${note.id}?edit=true`)}>
+            Edit
+          </Button>
+          <Button
+            onClick={() => {
+              markNoteDone()
+            }}
+            disabled={note.status === 'done'}
+          >
+            Done
+          </Button>
+          <Button
+            onClick={() => {
+              router.push('/')
+            }}
+          >
+            Home
+          </Button>
+        </CardActions>
+      </Card>
     </>
   )
 }
 
-const LOADING_COMPONENT = <p>Loading Note</p>
-
 // TODO: Change this to automatically open edit view if a key is pressed, then close it if empty. Basically remove the delete draft button.
 // TODO: automatically save draft every few seconds
-// TODO: Convert this to two separate pages: ViewNote and EditNote
-export function NoteCard(props: {
-  note: Note
-  edit: boolean // TODO: split this out into separate components instead of a flag
-}): JSX.Element {
+export function EditNoteCard(props: { id: string }): JSX.Element {
+  const { id } = props
   const router = useRouter()
-  const { note, edit } = props
+  const [draft, setDraft] = useState('')
+  const [updateNote, updateNoteResponse] = useMutation(UPDATE_NOTE_QUERY)
+  const { data, loading, error } = useQuery(GET_NOTE_QUERY, {
+    variables: {
+      data: {
+        id: id,
+      },
+    },
+  })
 
-  let draftText = ''
-  if (edit) {
-    draftText = note.description || '# '
-  }
+  if (updateNoteResponse.loading) return <>Updating note...</>
+  if (updateNoteResponse.error)
+    return <>{`Update note error! ${updateNoteResponse.error.message}`}</>
+  if (
+    updateNoteResponse.called &&
+    !updateNoteResponse.error &&
+    !updateNoteResponse.loading
+  )
+    router.push('/notes/' + id)
 
-  const [draft, setDraft] = useState(draftText)
-  const updateNoteTrigger = getUpdateNoteTrigger(note.id)
+  if (loading) return <>Loading notes....</>
+  if (error) return <>{`Loading notes error! ${error.message}`}</>
+  const note = data.getNote
 
-  if (!note) {
-    return LOADING_COMPONENT
-  }
-
-  let textElement: JSX.Element
   if (!draft) {
-    textElement = (
-      <p style={{ 'white-space': 'pre-line' } as any}>{note.description}</p>
-    )
-  } else {
-    textElement = (
-      <TextareaAutosize
-        aria-label="Note"
-        placeholder="Empty"
-        style={{ width: '100%' }}
-        value={draft}
-        onChange={(e) => {
-          setDraft(e.target.value)
-        }}
-      />
-    )
+    setDraft(note.description || '# ')
   }
 
   const allDayText = note.allDay ? '(all day)' : ''
   const parsedNote = parseNote(draft)
 
-  const saveNote = (localNote: any) => {
-    delete localNote.error
-    delete localNote.draft
-    localNote.id = note.id
-    localNote.version = note.version + 1
-    updateNoteTrigger(localNote)
+  const saveNote = () => {
+    updateNote({
+      variables: {
+        data: {
+          id: note.id,
+          note: draft,
+        },
+      },
+    })
   }
 
   return (
-    <Card variant="outlined" sx={{ minWidth: 275 }}>
-      <CardContent>
-        {draft ? (
-          <>
-            {textElement}
-            {parsedNote.error ? (
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                <b>Error:</b> {parsedNote.error}
-              </Typography>
-            ) : (
-              <></>
-            )}
-            {parsedNote.due ? (
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                <b>Due:</b> {formatTimeAgo(parsedNote.due as any)} {allDayText}
-              </Typography>
-            ) : (
-              <></>
-            )}
-          </>
-        ) : (
-          <>
-            {textElement}
-            {note.due ? (
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                <b>Due:</b> {formatTimeAgo(note.due as any)} {allDayText}
-              </Typography>
-            ) : (
-              <></>
-            )}
-            {/* TODO: Change Last Updated to use history time instead */}
+    <>
+      <Head>
+        <title>{note.title ? note.title : 'New Note'}</title>
+      </Head>
+      <Card variant="outlined" sx={{ minWidth: 275 }}>
+        <CardContent>
+          <TextareaAutosize
+            aria-label="Note"
+            placeholder="Empty"
+            style={{ width: '100%' }}
+            value={draft}
+            onChange={(e) => {
+              setDraft(e.target.value)
+            }}
+          />
+          {parsedNote.error ? (
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              <b>Updated At:</b> {formatTimeAgo(note.updatedAt as any)}
+              <b>Error:</b> {parsedNote.error}
             </Typography>
+          ) : (
+            <></>
+          )}
+          {parsedNote.due ? (
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              <b>Created On:</b> {formatTimeAgo(note.updatedAt as any)}
+              <b>Due:</b> {formatTimeAgo(parsedNote.due as any)} {allDayText}
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              <b>Version:</b> {note.version}
-            </Typography>
-          </>
-        )}
-      </CardContent>
-      <CardActions>
-        {draft ? (
-          <>
-            <Button
-              onClick={() => {
-                saveNote(parsedNote)
-                setDraft('')
-                router.push('/notes/' + note.id)
-              }}
-              disabled={!!parsedNote.error || draft === note.description}
-            >
-              Save
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button
-              onClick={() => {
-                if (!draft) {
-                  setDraft(note?.description || '# ')
-                }
-              }}
-              disabled={!!parsedNote.error || draft === note.description}
-            >
-              Edit
-            </Button>
-            <Button
-              onClick={() => {
-                note.description += '\n status: done'
-                saveNote(parseNote(note.description as any))
-              }}
-              disabled={note.status === 'done'}
-            >
-              Done
-            </Button>
-            <Button
-              onClick={() => {
-                router.push('/')
-              }}
-            >
-              Home
-            </Button>
-          </>
-        )}
-      </CardActions>
-    </Card>
+          ) : (
+            <></>
+          )}
+        </CardContent>
+        <CardActions>
+          <Button
+            onClick={() => saveNote()}
+            disabled={!!parsedNote.error || draft === note.description}
+          >
+            Save
+          </Button>
+        </CardActions>
+      </Card>
+    </>
   )
 }

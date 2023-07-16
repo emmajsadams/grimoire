@@ -22,7 +22,7 @@ export function updateCurrentUser(): any {
 
 // TODO: type this and fix name for react component
 // @ts-ignore
-export function getCurrentUser(): {
+export function login(): {
   data: User | null
   component: any
 } {

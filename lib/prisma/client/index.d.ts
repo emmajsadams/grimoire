@@ -53,6 +53,7 @@ export type User = {
   name: string | null
   email: string | null
   emailVerified: Date | null
+  password: string | null
   image: string | null
   wallpaperUrl: string | null
   calendarApiKey: string | null
@@ -3050,6 +3051,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     emailVerified: Date | null
+    password: string | null
     image: string | null
     wallpaperUrl: string | null
     calendarApiKey: string | null
@@ -3063,6 +3065,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     emailVerified: Date | null
+    password: string | null
     image: string | null
     wallpaperUrl: string | null
     calendarApiKey: string | null
@@ -3076,6 +3079,7 @@ export namespace Prisma {
     name: number
     email: number
     emailVerified: number
+    password: number
     image: number
     wallpaperUrl: number
     calendarApiKey: number
@@ -3091,6 +3095,7 @@ export namespace Prisma {
     name?: true
     email?: true
     emailVerified?: true
+    password?: true
     image?: true
     wallpaperUrl?: true
     calendarApiKey?: true
@@ -3104,6 +3109,7 @@ export namespace Prisma {
     name?: true
     email?: true
     emailVerified?: true
+    password?: true
     image?: true
     wallpaperUrl?: true
     calendarApiKey?: true
@@ -3117,6 +3123,7 @@ export namespace Prisma {
     name?: true
     email?: true
     emailVerified?: true
+    password?: true
     image?: true
     wallpaperUrl?: true
     calendarApiKey?: true
@@ -3209,6 +3216,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     emailVerified: Date | null
+    password: string | null
     image: string | null
     wallpaperUrl: string | null
     calendarApiKey: string | null
@@ -3239,6 +3247,7 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     emailVerified?: boolean
+    password?: boolean
     image?: boolean
     accounts?: boolean | AccountFindManyArgs
     sessions?: boolean | SessionFindManyArgs
@@ -6179,6 +6188,7 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     emailVerified: 'emailVerified',
+    password: 'password',
     image: 'image',
     wallpaperUrl: 'wallpaperUrl',
     calendarApiKey: 'calendarApiKey',
@@ -6343,6 +6353,7 @@ export namespace Prisma {
     name?: StringNullableFilter | string | null
     email?: StringNullableFilter | string | null
     emailVerified?: DateTimeNullableFilter | Date | string | null
+    password?: StringNullableFilter | string | null
     image?: StringNullableFilter | string | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
@@ -6359,6 +6370,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
+    password?: SortOrder
     image?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
@@ -6380,6 +6392,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
+    password?: SortOrder
     image?: SortOrder
     wallpaperUrl?: SortOrder
     calendarApiKey?: SortOrder
@@ -6399,6 +6412,7 @@ export namespace Prisma {
     name?: StringNullableWithAggregatesFilter | string | null
     email?: StringNullableWithAggregatesFilter | string | null
     emailVerified?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    password?: StringNullableWithAggregatesFilter | string | null
     image?: StringNullableWithAggregatesFilter | string | null
     wallpaperUrl?: StringNullableWithAggregatesFilter | string | null
     calendarApiKey?: StringNullableWithAggregatesFilter | string | null
@@ -6692,6 +6706,7 @@ export namespace Prisma {
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
+    password?: string | null
     image?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -6708,6 +6723,7 @@ export namespace Prisma {
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
+    password?: string | null
     image?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -6724,6 +6740,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -6740,6 +6757,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -6756,6 +6774,7 @@ export namespace Prisma {
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
+    password?: string | null
     image?: string | null
     wallpaperUrl?: string | null
     calendarApiKey?: string | null
@@ -6769,6 +6788,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     wallpaperUrl?: NullableStringFieldUpdateOperationsInput | string | null
     calendarApiKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6782,6 +6802,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     wallpaperUrl?: NullableStringFieldUpdateOperationsInput | string | null
     calendarApiKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7180,6 +7201,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
+    password?: SortOrder
     image?: SortOrder
     wallpaperUrl?: SortOrder
     calendarApiKey?: SortOrder
@@ -7193,6 +7215,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
+    password?: SortOrder
     image?: SortOrder
     wallpaperUrl?: SortOrder
     calendarApiKey?: SortOrder
@@ -7206,6 +7229,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
+    password?: SortOrder
     image?: SortOrder
     wallpaperUrl?: SortOrder
     calendarApiKey?: SortOrder
@@ -7759,6 +7783,7 @@ export namespace Prisma {
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
+    password?: string | null
     image?: string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     Note?: NoteCreateNestedManyWithoutOwnerInput
@@ -7774,6 +7799,7 @@ export namespace Prisma {
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
+    password?: string | null
     image?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     Note?: NoteUncheckedCreateNestedManyWithoutOwnerInput
@@ -7799,6 +7825,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     Note?: NoteUpdateManyWithoutOwnerNestedInput
@@ -7814,6 +7841,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     Note?: NoteUncheckedUpdateManyWithoutOwnerNestedInput
@@ -7829,6 +7857,7 @@ export namespace Prisma {
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
+    password?: string | null
     image?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     Note?: NoteCreateNestedManyWithoutOwnerInput
@@ -7844,6 +7873,7 @@ export namespace Prisma {
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
+    password?: string | null
     image?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     Note?: NoteUncheckedCreateNestedManyWithoutOwnerInput
@@ -7869,6 +7899,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     Note?: NoteUpdateManyWithoutOwnerNestedInput
@@ -7884,6 +7915,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     Note?: NoteUncheckedUpdateManyWithoutOwnerNestedInput
@@ -8091,6 +8123,7 @@ export namespace Prisma {
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
+    password?: string | null
     image?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -8106,6 +8139,7 @@ export namespace Prisma {
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
+    password?: string | null
     image?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -8131,6 +8165,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -8146,6 +8181,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput

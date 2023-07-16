@@ -14,6 +14,30 @@ export const AuthOptions = {
   ],
   adapter: PrismaAdapter(prisma as any), // TODO: fix typing
   secret: process.env.SECRET,
+  async session({
+    session,
+    token,
+    user,
+  }: {
+    session: any
+    token: any
+    user: any
+  }) {
+    const getToken = await prisma.account.findFirst({
+      where: {
+        userId: user.id,
+      },
+    })
+    console.log(getToken)
+
+    let accessToken: string | null = null
+    if (getToken) {
+      accessToken = getToken.access_token!
+    }
+
+    session.user.token = accessToken
+    return session
+  },
 }
 
 const authHandler: NextApiHandler = (req, res) =>

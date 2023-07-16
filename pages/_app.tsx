@@ -1,49 +1,52 @@
 import '../styles/globals.css'
 import Head from 'next/head'
 import { Container } from '@mui/material'
-import React, { useState } from 'react'
-import { SessionProvider } from 'next-auth/react'
-import { useSession } from 'next-auth/react'
+import React, { useState, createContext } from 'react'
 import { useRouter } from 'next/router'
+import { ApolloProvider, useQuery, gql } from '@apollo/client'
 
+import { client } from 'lib/graphql/client'
 import { PrimaryAppBar } from 'lib/navigation/components'
-import { Query } from 'lib/navigation/constants'
-import { parseSearchQuery } from 'lib/navigation/utils'
-import { getCurrentUser } from 'lib/users/client'
 
-export interface AppProps {
-  searchQuery: Query
-  setSearchQuery: (query: Query) => void
-}
+const GET_AUTHORIZED_USER_WALLPAPER = gql`
+  query GetAuthorizedUser {
+    getAuthorizedUser {
+      wallpaperUrl
+    }
+  }
+`
 
-function LoginContainer({ children }: any): JSX.Element {
+export const QueryContext = createContext('')
+
+export interface AppProps {}
+
+export function LoginContainer({ children }: any): JSX.Element {
+  // TODO: Convert this to an object that contains the parsed search components maybe?
+  const [searchQuery, setSearchQuery] = useState('')
   const router = useRouter()
-  const { status } = useSession()
-
-  if (status === 'loading') {
-    return <>Loading</>
+  const { data, loading, error } = useQuery(GET_AUTHORIZED_USER_WALLPAPER)
+  if (loading) return <>Loading user....</>
+  if (error) return <>{`Loading user error! ${error.message}`}</>
+  if (!data) {
+    router.push('/login')
+    return <>Redirecting to login no user</>
+  }
+  if (data) {
+    document.body.style.background = `url("${
+      data.wallpaperUrl || '/static/wallpapers/emma.jpg'
+    }")`
   }
 
-  if (status === 'unauthenticated') {
-    router.push('/api/auth/signin')
-  }
-
-  return children
-}
-
-function BackgroundImageContainer({ children }: any): JSX.Element {
-  const { data, component } = getCurrentUser()
-  if (!data || component) {
-    return component
-  }
-
-  document.body.style.background = `url("${
-    data.wallpaperUrl || '/static/wallpapers/emma.jpg'
-  }")`
   return (
-    <Container maxWidth="lg">
-      <>{children}</>
-    </Container>
+    <QueryContext.Provider value={searchQuery}>
+      <PrimaryAppBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
+      <Container maxWidth="lg">
+        <>{children}</>
+      </Container>
+    </QueryContext.Provider>
   )
 }
 
@@ -54,34 +57,14 @@ function MyApp({
   Component: any // TODO: More specific type
   pageProps: any // TODO: More specific type
 }): JSX.Element {
-  // TODO: Convert this to an object that contains the parsed search components maybe?
-  const [searchQuery, setSearchQuery] = useState(
-    parseSearchQuery('status:==:todo'), //
-  )
-
-  // TODO: Can I remove this and stop passing customProps to Component?
-  const customProps: AppProps = {
-    searchQuery,
-    setSearchQuery,
-    ...pageProps,
-  }
-
   return (
-    <SessionProvider session={pageProps.session}>
-      <LoginContainer>
-        <Head>
-          <meta name="description" content="Grimoire Automata" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <PrimaryAppBar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
-        <BackgroundImageContainer>
-          <Component {...customProps} />
-        </BackgroundImageContainer>
-      </LoginContainer>
-    </SessionProvider>
+    <ApolloProvider client={client}>
+      <Head>
+        <meta name="description" content="Grimoire Automata" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Component {...pageProps} />
+    </ApolloProvider>
   )
 }
 

@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { ObjectType, Field, ID, Int } from 'type-graphql'
+import { InputType, ObjectType, Field, ID } from 'type-graphql'
 
 @ObjectType()
 export class User {
@@ -12,7 +12,7 @@ export class User {
   @Field({ nullable: true })
   email?: string
 
-  @Field({ nullable: true })
+  @Field((type) => Date, { nullable: true })
   emailVerified?: Date
 
   @Field({ nullable: true })
@@ -27,9 +27,18 @@ export class User {
   @Field({ nullable: true })
   ntfyTopic?: string
 
-  @Field()
+  @Field((type) => Date)
   createdAt: Date
 
-  @Field()
+  @Field((type) => Date)
   updatedAt: Date
+}
+
+@InputType()
+export class UserLoginInput {
+  @Field()
+  email: string
+
+  @Field()
+  password: string
 }
