@@ -21,7 +21,7 @@ const app = async () => {
   const server = new ApolloServer<Context>({ schema })
 
   const { url } = await startStandaloneServer(server, {
-    context: async ({ req, res }) => {
+    context: async ({ req }) => {
       const authorization = req.headers.authorization
       if (authorization) {
         // Use splicing instead

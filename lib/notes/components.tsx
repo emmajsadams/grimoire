@@ -142,10 +142,6 @@ export function ViewNoteCard(props: { id: string }): JSX.Element {
   const router = useRouter()
   const { id } = props
   const [updateNote, updateNoteResponse] = useMutation(UPDATE_NOTE_QUERY)
-  if (updateNoteResponse.loading) return <>Updating note...</>
-  if (updateNoteResponse.error)
-    return <>{`Update note error! ${updateNoteResponse.error.message}`}</>
-
   const { data, loading, error } = useQuery(GET_NOTE_QUERY, {
     variables: {
       data: {
@@ -153,6 +149,9 @@ export function ViewNoteCard(props: { id: string }): JSX.Element {
       },
     },
   })
+  if (updateNoteResponse.loading) return <>Updating note...</>
+  if (updateNoteResponse.error)
+    return <>{`Update note error! ${updateNoteResponse.error.message}`}</>
   if (loading) return <>Loading note....</>
   if (error) return <>{`Loading note error! ${error.message}`}</>
   const note = data.getNote

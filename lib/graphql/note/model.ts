@@ -3,7 +3,7 @@ import { InputType, ObjectType, Field, ID } from 'type-graphql'
 
 @ObjectType()
 export class Note {
-  @Field((type) => ID)
+  @Field(() => ID)
   id: string
 
   @Field()
@@ -21,16 +21,16 @@ export class Note {
   @Field({ nullable: true })
   status?: string
 
-  @Field((type) => Date, { nullable: true })
+  @Field(() => Date, { nullable: true })
   due?: Date
 
   @Field({ nullable: true })
   allDay?: boolean
 
-  @Field((type) => Date)
+  @Field(() => Date)
   createdAt: Date
 
-  @Field((type) => Date)
+  @Field(() => Date)
   updatedAt: Date
 }
 

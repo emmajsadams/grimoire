@@ -3,7 +3,7 @@ import { InputType, ObjectType, Field, ID } from 'type-graphql'
 
 @ObjectType()
 export class User {
-  @Field((type) => ID)
+  @Field(() => ID)
   id: string
 
   @Field({ nullable: true })
@@ -12,7 +12,7 @@ export class User {
   @Field({ nullable: true })
   email?: string
 
-  @Field((type) => Date, { nullable: true })
+  @Field(() => Date, { nullable: true })
   emailVerified?: Date
 
   @Field({ nullable: true })
@@ -27,10 +27,10 @@ export class User {
   @Field({ nullable: true })
   ntfyTopic?: string
 
-  @Field((type) => Date)
+  @Field(() => Date)
   createdAt: Date
 
-  @Field((type) => Date)
+  @Field(() => Date)
   updatedAt: Date
 }
 

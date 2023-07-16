@@ -12,7 +12,7 @@ export class UserResolver {
     return ctx.user
   }
 
-  @Mutation((returns) => String)
+  @Mutation(() => String)
   async loginUser(
     @Arg('data') data: UserLoginInput,
     @Ctx() ctx: Context,

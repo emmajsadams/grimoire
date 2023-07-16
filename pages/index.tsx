@@ -5,11 +5,11 @@ import Head from 'next/head'
 import { NotesCard } from 'lib/notes/components'
 import { AppProps, LoginContainer, QueryContext } from 'pages/_app'
 
-interface IndexProps extends AppProps {}
+
 
 // TODO: create a scaffold test notes feature for dev!
 // TODO: Redirect to -> /notes by default and move NotesLists to that page
-const Home: NextPage<any, any> = ({}: IndexProps) => {
+const Home: NextPage<any, any> = () => {
   const query = useContext(QueryContext)
   return (
     <LoginContainer>
