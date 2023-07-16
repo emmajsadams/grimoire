@@ -139,11 +139,9 @@ export function PrimaryAppBar({
               sx={{ flexGrow: 1 }}
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
-              value={searchQuery.rawQuery}
+              value={searchQuery}
               // autoFocus={true} TODO: restore this after investigating accessibility concerns
-              onChange={(event) =>
-                setSearchQuery(parseSearchQuery(event.target.value))
-              } // TODO: Convert this to an object that contains the parsed search components maybe?s
+              onChange={(event) => setSearchQuery(event.target.value)}
               onKeyDown={(event) => {
                 if (event.key == 'Enter') {
                   router.push('/')
