@@ -29,7 +29,8 @@ export class UserResolver {
       throw new Error('Invalid password')
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.SECRET)
+    const secret = process.env.SECRET as any // TODO: fix this typing
+    const token = jwt.sign({ userId: user.id }, secret)
 
     return token
   }
