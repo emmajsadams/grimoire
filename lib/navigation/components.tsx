@@ -13,7 +13,6 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import { AppProps } from 'pages/_app'
-import { parseSearchQuery } from 'lib/navigation/utils'
 
 const Search = styled('div')(({ theme }) => ({
   'position': 'relative',
