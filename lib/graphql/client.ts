@@ -3,10 +3,10 @@ import { setContext } from '@apollo/client/link/context'
 
 console.log(process.env.GRAPHQL)
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000', //process.env.GRAPHQL, TODO FIGURE OUT WHHHY
-  fetchOptions: {
-    mode: 'cors', // no-cors, *cors, same-origin
-  },
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+  // fetchOptions: {
+  //   mode: 'cors', // no-cors, *cors, same-origin
+  // },
 })
 
 const authLink = setContext((_, { headers }) => {
