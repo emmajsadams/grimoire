@@ -1,6 +1,12 @@
 import 'reflect-metadata'
 import { Resolver, Query, Ctx, Arg, Mutation } from 'type-graphql'
-import { Note, NoteSearchInput, NoteIdInput, UpdateNoteInput } from './model'
+import {
+  Note,
+  NoteSearchInput,
+  NoteIdInput,
+  UpdateNoteInput,
+  CreateNoteInput,
+} from './model'
 import type { Context } from '../context'
 import { parseNote } from '../../notes/utils'
 
@@ -71,13 +77,28 @@ export class NoteResolver {
     delete parsedNote.error
     parsedNote.version = (note.version || 0) + 1
 
-    const updatedNote = await ctx.prisma.note.update({
+    return await ctx.prisma.note.update({
       where: {
         id: data.id,
       },
       data: parsedNote,
     })
-    console.log(updatedNote)
-    return updatedNote
+  }
+
+  @Mutation(() => Note)
+  async createNote(@Arg('data') data: CreateNoteInput, @Ctx() ctx: Context) {
+    if (!ctx.user) {
+      return null
+    }
+
+    const parsedNote = parseNote(data.note)
+    if (parsedNote.error) {
+      return null
+    }
+    delete parsedNote.error
+    parsedNote.version = 1
+    parsedNote.ownerId = ctx.user.id
+
+    return await ctx.prisma.note.create({ data: parsedNote as any })
   }
 }

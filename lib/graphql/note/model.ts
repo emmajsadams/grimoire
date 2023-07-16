@@ -57,3 +57,9 @@ export class UpdateNoteInput {
   @Field()
   note: string
 }
+
+@InputType()
+export class CreateNoteInput {
+  @Field()
+  note: string
+}
