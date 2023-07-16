@@ -23,7 +23,7 @@ const CREATE_NOTE_QUERY = gql`
   }
 `
 
-const NotesNewView: any = async (props: any) => {
+const NotesNewView: any = async () => {
   const router = useRouter()
   const [updateNote, { data, loading, error, called }] =
     useMutation(CREATE_NOTE_QUERY)
