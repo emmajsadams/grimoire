@@ -1,6 +1,5 @@
 import { describe, expect, test } from '@jest/globals'
 import { parseSearchQuery, createDefaultQuery } from 'lib/navigation/utils'
-import { Query, Operations } from 'lib/navigation/constants'
 
 describe('parseSearchQuery', () => {
   test('blank query returns default query', () => {
