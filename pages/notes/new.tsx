@@ -2,8 +2,6 @@ import Head from 'next/head'
 import { useMutation, gql } from '@apollo/client'
 import { useRouter } from 'next/router'
 
-import { getContextUser } from 'lib/auth/server'
-import { createNote } from 'lib/notes/server'
 import { LoginContainer } from 'pages/_app'
 
 const CREATE_NOTE_QUERY = gql`
@@ -50,27 +48,3 @@ const NotesNewView: any = async () => {
 }
 
 export default NotesNewView
-
-export async function getServerSideProps(context: any): Promise<any> {
-  const { user } = await getContextUser(context)
-  if (!user) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    }
-  }
-
-  const note = await createNote({
-    title: '# ',
-    ownerId: user.id,
-  } as any)
-
-  return {
-    redirect: {
-      destination: `/notes/${(note as any).id}?edit=true`,
-      permanent: false,
-    },
-  }
-}
