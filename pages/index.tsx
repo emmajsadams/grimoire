@@ -3,9 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import { NotesCard } from 'lib/notes/components'
-import { AppProps, LoginContainer, QueryContext } from 'pages/_app'
-
-
+import { LoginContainer, QueryContext } from 'pages/_app'
 
 // TODO: create a scaffold test notes feature for dev!
 // TODO: Redirect to -> /notes by default and move NotesLists to that page
