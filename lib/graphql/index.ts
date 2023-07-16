@@ -23,10 +23,10 @@ const app = async () => {
   const { url } = await startStandaloneServer(server, {
     context: async ({ req }) => {
       const authorization = req.headers.authorization
-      if (authorization) {
+      if (authorization && process.env.SECRET) {
         // Use splicing instead
         const token = authorization.replaceAll('Bearer ', '')
-        const decoded = jwt.verify(token, process.env.SECRET)
+        const decoded = jwt.verify(token, process.env.SECRET) as any
         const user = await context.prisma.user.findUnique({
           where: { id: decoded.userId },
         })
