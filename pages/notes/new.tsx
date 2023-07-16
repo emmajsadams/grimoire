@@ -1,12 +1,13 @@
 import Head from 'next/head'
+import type { NextPage } from 'next'
 import { useMutation, gql } from '@apollo/client'
 import { useRouter } from 'next/router'
 
 import { LoginContainer } from 'pages/_app'
 
 const CREATE_NOTE_QUERY = gql`
-  mutation CreateNote($createNoteData2: CreateNoteInput!) {
-    createNote(data: $createNoteData2) {
+  mutation CreateNote($data: CreateNoteInput!) {
+    createNote(data: $data) {
       id
       version
       ownerId
@@ -21,13 +22,12 @@ const CREATE_NOTE_QUERY = gql`
   }
 `
 
-const NotesNewView: any = async () => {
+const NotesNewView: NextPage<any, any> = () => {
   const router = useRouter()
-  const [updateNote, { data, loading, error, called }] =
-    useMutation(CREATE_NOTE_QUERY)
+  const [updateNote, { data, loading, error }] = useMutation(CREATE_NOTE_QUERY)
   if (loading) return <>Updating note...</>
   if (error) return <>Error creating new note...</>
-  if (!loading && !error && !called) {
+  if (data) {
     router.push(`/notes/${data.createNote.id}?edit=true`)
   }
 
@@ -36,13 +36,19 @@ const NotesNewView: any = async () => {
       <Head>
         <title>{'Loading New Note'}</title>
       </Head>
-      {updateNote({
-        variables: {
-          data: {
-            note: '# ',
-          },
-        },
-      })}
+      <button
+        onClick={() =>
+          updateNote({
+            variables: {
+              data: {
+                note: '# ',
+              },
+            },
+          })
+        }
+      >
+        Create Note
+      </button>
     </LoginContainer>
   )
 }

@@ -13,13 +13,14 @@ const LOGIN_USER = gql`
 // TODO: create a scaffold test notes feature for dev!
 // TODO: Redirect to -> /notes by default and move NotesLists to that page
 const Login: NextPage<any, any> = () => {
+  const componentType = typeof window === 'undefined' ? 'server' : 'client'
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER)
   if (loading) return <>Submitting...</>
   if (error) return <>{`Submission error! ${error.message}`}</>
-  if (data) {
+  if (data && componentType === 'client') {
     localStorage.setItem('token', data.loginUser)
     router.push('/')
   }

@@ -1,7 +1,6 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 
-console.log(process.env.GRAPHQL)
 const httpLink = createHttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
   // fetchOptions: {
@@ -10,6 +9,15 @@ const httpLink = createHttpLink({
 })
 
 const authLink = setContext((_, { headers }) => {
+  const componentType = typeof window === 'undefined' ? 'server' : 'client'
+  if (componentType === 'server') {
+    return {
+      headers: {
+        ...headers,
+      },
+    }
+  }
+
   // get the authentication token from local storage if it exists
   const token = localStorage.getItem('token')
   // return the headers to the context so httpLink can read them

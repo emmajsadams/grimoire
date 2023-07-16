@@ -107,7 +107,6 @@ export function parseNote(text: string): Partial<any> {
         .tz(note.due, 'America/Los_Angeles')
         .utc()
         .toISOString(true)
-      console.log(note.due)
       continue
     }
   }
