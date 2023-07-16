@@ -19,6 +19,7 @@ import Head from 'next/head'
 import { parseNote } from 'lib/notes/utils'
 import { formatTimeAgo } from 'lib/datetime/utils'
 import ClientOnly from 'lib/graphql/clientOnly'
+import { Note } from 'lib/prisma/client'
 
 interface NotesProps {
   searchQuery: string
@@ -53,7 +54,7 @@ export function NotesCard({ searchQuery }: NotesProps) {
   if (loading) return <>Loading notes....</>
   if (error) return <>{`Loading notes error! ${error.message}`}</>
 
-  const notes = data.getNotes
+  const notes: Note[] = data.getNotes
   // TODO: on edit set task.clientID
   // TODO: on save or save as draft remove task.clientID
   // TODO: if task.clientID is set prevent editing and show a button to force the other user to stop editing the draft

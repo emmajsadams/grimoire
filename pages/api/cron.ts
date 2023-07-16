@@ -1,3 +1,7 @@
+export default function todo(): void {
+  console.log('todo')
+}
+
 // TODO: figure out if I care about this
 // import { getNotesWhere } from 'lib/notes/server'
 // import { getUserWhere } from 'lib/users/server'

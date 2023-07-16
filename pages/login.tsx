@@ -17,10 +17,9 @@ const Login: NextPage<any, any> = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER)
-  if (loading) return 'Submitting...'
-  if (error) return `Submission error! ${error.message}`
+  if (loading) return <>Submitting...</>
+  if (error) return <>{`Submission error! ${error.message}`}</>
   if (data) {
-    console.log(data)
     localStorage.setItem('token', data.loginUser)
     router.push('/')
   }
