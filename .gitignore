@@ -36,5 +36,4 @@ yarn-error.log*
 *.tsbuildinfo
 
 # prisma
-prisma/dev.debug
-prisma/schema.prisma
+lib/prisma/client/*

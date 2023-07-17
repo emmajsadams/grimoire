@@ -1,16 +1,16 @@
 import 'reflect-metadata'
 
 import { ApolloServer } from '@apollo/server'
-import { startStandaloneServer } from '@apollo/server/standalone'
-import { GraphQLScalarType } from 'graphql'
 import { DateTimeResolver } from 'graphql-scalars'
+import { GraphQLScalarType } from 'graphql'
+import { startStandaloneServer } from '@apollo/server/standalone'
 import * as tq from 'type-graphql'
-import { Context, context } from './context'
-import { UserResolver } from './user/resolvers'
-import { NoteResolver } from './note/resolvers'
 import jwt from 'jsonwebtoken'
 
-// TODOOOO USE  EXPRESS JWT!!!
+import { Context, context } from 'lib/graphql/context'
+import { NoteResolver } from 'lib/graphql/note/resolvers'
+import { UserResolver } from 'lib/graphql/user/resolvers'
+
 const app = async () => {
   const schema = await tq.buildSchema({
     resolvers: [UserResolver, NoteResolver],

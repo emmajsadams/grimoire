@@ -1,7 +1,7 @@
 import moment from 'moment-timezone'
 
-import { STATUS_PROPERTY, DUE_PROPERTY, STATUSES } from './constants'
-import { isDate, parseDate } from '../datetime/utils'
+import { STATUS_PROPERTY, DUE_PROPERTY, STATUSES } from 'lib/notes/constants'
+import { isDate, parseDate } from 'lib/datetime/utils'
 
 const IGNORED_TITLE_PREFIXES = ['#', '##', '###']
 

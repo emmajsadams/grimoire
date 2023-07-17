@@ -1,4 +1,5 @@
 import { describe, expect, test } from '@jest/globals'
+
 import {
   formatTimeAgo,
   isDate,
@@ -7,7 +8,7 @@ import {
 } from 'lib/datetime/utils'
 
 describe('formatTimeAgo', () => {
-  test('returns nothing if empty stirng', () => {
+  test('returns nothing if empty string', () => {
     expect(formatTimeAgo('')).toEqual('')
   })
 

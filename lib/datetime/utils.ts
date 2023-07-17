@@ -1,7 +1,7 @@
-import TimeAgo from 'javascript-time-ago'
-import moment from 'moment-timezone'
 import * as chrono from 'chrono-node'
 import en from 'javascript-time-ago/locale/en'
+import moment from 'moment-timezone'
+import TimeAgo from 'javascript-time-ago'
 
 TimeAgo.addDefaultLocale(en)
 

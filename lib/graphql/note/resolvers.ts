@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+
 import { Resolver, Query, Ctx, Arg, Mutation } from 'type-graphql'
 import {
   Note,
@@ -6,9 +7,9 @@ import {
   NoteIdInput,
   UpdateNoteInput,
   CreateNoteInput,
-} from './model'
-import type { Context } from '../context'
-import { parseNote } from '../../notes/utils'
+} from 'lib/graphql/note/model'
+import type { Context } from 'lib/graphql/context'
+import { parseNote } from 'lib/notes/utils'
 
 @Resolver(Note)
 export class NoteResolver {

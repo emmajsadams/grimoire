@@ -1,4 +1,4 @@
-import { PrismaClient, User } from '../prisma/client'
+import { PrismaClient, User } from 'lib/prisma/client'
 
 const prisma = new PrismaClient()
 
