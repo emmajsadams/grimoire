@@ -27,11 +27,11 @@ const UserView: NextPage<any, any> = () => {
   if (loading) return <>Getting authorized user</>
   if (error) return <>{`Get error ${error.message}`}</>
 
-  const user = data
+  const user = data.getAuthorizedUser
   return (
     <LoginContainer>
       <Head>
-        <title>{user.name}</title>
+        <title>{user.email}</title>
       </Head>
 
       <main>

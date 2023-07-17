@@ -1,14 +1,20 @@
 import 'reflect-metadata'
 import { Resolver, Query, Ctx, Mutation, Arg } from 'type-graphql'
-import { User, UserLoginInput } from './model'
-import type { Context } from '../context'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import { v4 as uuidv4 } from 'uuid'
+
+import { User, UserLoginInput } from './model'
+import type { Context } from '../context'
 
 @Resolver(User)
 export class UserResolver {
   @Query(() => User)
   async getAuthorizedUser(@Ctx() ctx: Context) {
+    if (!ctx.user) {
+      throw new Error('No authorized user')
+    }
+
     return ctx.user
   }
 
@@ -33,5 +39,21 @@ export class UserResolver {
     const token = jwt.sign({ userId: user.id }, secret)
 
     return token
+  }
+
+  @Mutation(() => String)
+  async regenerateCalendarApiKey(@Ctx() ctx: Context) {
+    if (!ctx.user) {
+      throw new Error('No authorized user')
+    }
+
+    return await ctx.prisma.user.update({
+      where: {
+        id: ctx.user.id,
+      },
+      data: {
+        calendarApiKey: uuidv4(),
+      },
+    })
   }
 }

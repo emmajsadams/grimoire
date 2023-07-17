@@ -93,7 +93,7 @@ export function PrimaryAppBar({
       onClose={handleMenuClose}
     >
       <MenuItem
-        onClick={async () => {
+        onClick={() => {
           handleMenuClose()
         }}
       >
@@ -107,14 +107,14 @@ export function PrimaryAppBar({
         <Link href="/">Notes</Link>
       </MenuItem>
       <MenuItem
-        onClick={async () => {
+        onClick={() => {
           handleMenuClose()
         }}
       >
-        <Link href="/notes/new"> Create New Note</Link>
+        <Link href="/notes/new">New Note</Link>
       </MenuItem>
       <MenuItem
-        onClick={async () => {
+        onClick={() => {
           localStorage.clear()
           handleMenuClose()
         }}

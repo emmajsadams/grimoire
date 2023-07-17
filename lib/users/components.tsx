@@ -6,22 +6,10 @@ import Typography from '@mui/material/Typography'
 import { formatTimeAgo } from 'lib/datetime/utils'
 import { User } from 'lib/prisma/client'
 
-const LOADING_COMPONENT = <p>Loading User</p>
-
-export function ViewUser(props: { user: User }): JSX.Element {
-  const { user } = props
-
-  if (!user) {
-    return LOADING_COMPONENT
-  }
-
-  // TODO: Show image
+export function ViewUser({ user }: { user: User }): JSX.Element {
   return (
     <Card variant="outlined" sx={{ minWidth: 275 }}>
       <CardContent>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          <b>Name:</b> {user.name}
-        </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           <b>Email:</b> {user.email}
         </Typography>
@@ -43,9 +31,6 @@ export function ViewUser(props: { user: User }): JSX.Element {
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           <b>Calendar API Key:</b> {user.calendarApiKey}
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          <b>Ntfy Topic:</b> {user.ntfyTopic}
         </Typography>
       </CardContent>
     </Card>
