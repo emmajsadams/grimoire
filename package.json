@@ -22,6 +22,7 @@
     "@apollo/server": "4.7.5",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@fontsource/roboto": "^5.0.5",
     "@lexical/react": "^0.3.5",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.5",

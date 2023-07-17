@@ -113,6 +113,14 @@ export function PrimaryAppBar({
       >
         <Link href="/notes/new"> Create New Note</Link>
       </MenuItem>
+      <MenuItem
+        onClick={async () => {
+          localStorage.clear()
+          handleMenuClose()
+        }}
+      >
+        <Link href="/login">Logout</Link>
+      </MenuItem>
     </Menu>
   )
 

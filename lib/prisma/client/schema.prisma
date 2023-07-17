@@ -3,6 +3,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// TODO: Can I remove this and stop checking in prsima client?
 generator client {
   provider = "prisma-client-js"
   output   = "../lib/prisma/client"
