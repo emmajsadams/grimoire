@@ -4,8 +4,18 @@ import moment from 'moment-timezone'
 import { validate as validateUUID } from 'uuid'
 
 import { TODO } from 'lib/notes/constants'
-import { getUserWhere } from 'lib/users/server'
-import { getNotesWhere } from 'lib/notes/server'
+import prisma from 'lib/prisma'
+import type { Note, User } from 'lib/prisma/client'
+
+async function getUserWhere(where: any): Promise<User | null> {
+  return (await prisma.user.findFirst({
+    where,
+  })) as any
+}
+
+async function getNotesWhere(where: any): Promise<Note[] | null> {
+  return (await prisma.note.findMany({ where })) as any
+}
 
 // TODO: ratelimit failed attempts to prevent brute force attacks
 export default async function handler(

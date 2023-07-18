@@ -20,6 +20,7 @@ import { parseNote } from 'lib/notes/utils'
 import { formatTimeAgo } from 'lib/datetime/utils'
 import ClientOnly from 'lib/graphql/clientOnly'
 import { Note } from 'lib/prisma/client'
+import { NoteSearchInput } from 'lib/graphql/note/model'
 
 interface NotesProps {
   searchQuery: string
@@ -43,12 +44,12 @@ const GET_NOTES_QUERY = gql`
 `
 
 export function NotesCard({ searchQuery }: NotesProps) {
+  const noteSearchInput: NoteSearchInput = {
+    query: searchQuery,
+  }
   const { data, loading, error } = useQuery(GET_NOTES_QUERY, {
     variables: {
-      data: {
-        title: searchQuery,
-        status: 'todo',
-      },
+      data: noteSearchInput,
     },
   })
   if (loading) return <>Loading notes....</>

@@ -17,7 +17,7 @@ const GET_AUTHORIZED_USER_WALLPAPER = gql`
   }
 `
 
-export const QueryContext = createContext('')
+export const QueryContext = createContext('status:==:todo ')
 
 export interface AppProps {}
 

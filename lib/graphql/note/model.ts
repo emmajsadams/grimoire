@@ -35,13 +35,11 @@ export class Note {
   updatedAt: Date
 }
 
+// TODO: Change this to use parseQuery
 @InputType()
 export class NoteSearchInput {
   @Field()
-  title: string
-
-  @Field()
-  status: string
+  query: string
 }
 
 @InputType()

@@ -10,6 +10,7 @@ import {
 } from 'lib/graphql/note/model'
 import type { Context } from 'lib/graphql/context'
 import { parseNote } from 'lib/notes/utils'
+import { parseQuery } from 'lib/navigation/utils'
 
 @Resolver(Note)
 export class NoteResolver {
@@ -20,6 +21,7 @@ export class NoteResolver {
       return []
     }
 
+    // TODO: Change this to use parseQuery
     return await ctx.prisma.note.findMany({
       where: {
         ownerId: ctx.user.id,
