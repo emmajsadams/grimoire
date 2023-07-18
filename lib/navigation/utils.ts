@@ -9,6 +9,7 @@ import {
   STATUSES,
 } from 'lib/notes/constants'
 import { Query, Operations } from 'lib/navigation/constants'
+import { NoteFindManyArgs } from 'lib/prisma/client'
 
 export function createDefaultQuery(): Query {
   return {
@@ -34,10 +35,8 @@ export function createDefaultQuery(): Query {
 //
 // TODO: parse this in appBar when setting state instead
 export function parseSearchQuery(searchQuery: string): Query {
+  const query: NoteFindManyArgs = {}
   const stringQueryParts = searchQuery.trim().split(' ')
-  const queryParts = createDefaultQuery()
-  queryParts.rawQuery = searchQuery
-
   for (const stringQueryPart of stringQueryParts) {
     const parsedTag = parseQueryPart(
       queryParts,

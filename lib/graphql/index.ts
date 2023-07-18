@@ -16,6 +16,13 @@ const app = async () => {
     resolvers: [UserResolver, NoteResolver],
     scalarsMap: [{ type: GraphQLScalarType, scalar: DateTimeResolver }],
     validate: { forbidUnknownValues: false },
+    authChecker: ({ context }, _) => {
+      if (context.user) {
+        return true
+      }
+
+      return false
+    },
   })
 
   const server = new ApolloServer<Context>({ schema })
