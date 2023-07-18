@@ -15,7 +15,6 @@ const GET_AUTHORIZED_USER_QUERY = gql`
       image
       wallpaperUrl
       calendarApiKey
-      ntfyTopic
       createdAt
       updatedAt
     }

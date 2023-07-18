@@ -25,9 +25,6 @@ export class User {
   @Field({ nullable: true })
   calendarApiKey?: string
 
-  @Field({ nullable: true })
-  ntfyTopic?: string
-
   @Field(() => Date)
   createdAt: Date
 

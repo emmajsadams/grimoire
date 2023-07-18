@@ -1,0 +1,41 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output = "../lib/prisma/client"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  password      String
+  image         String?
+  Note          Note[]
+  wallpaperUrl   String?
+  calendarApiKey String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// TODO: Should note fields be required? Probably description for sure
+model Note {
+  id          String    @id @default(cuid())
+  version     Int       @default(0)
+  ownerId     String    @map("user_id")
+  description String?
+  title       String?
+  status      String?
+  due         DateTime?
+  allDay      Boolean?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([title, ownerId, status, due(sort: Asc), createdAt(sort: Asc)])
+}
