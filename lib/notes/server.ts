@@ -1,6 +1,6 @@
 // TODO move get and update to this file
 
-import type { Note } from from '@prisma/client'
+import type { Note } from 'lib/prisma/client'
 
 import prisma from 'lib/prisma'
 

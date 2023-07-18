@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { Resolver, Query, Ctx, Arg, Mutation } from 'type-graphql'
+import { Resolver, Query, Ctx, Arg, Mutation, Authorized } from 'type-graphql'
 import {
   Note,
   NoteSearchInput,
@@ -13,16 +13,12 @@ import { parseNote } from 'lib/notes/utils'
 
 @Resolver(Note)
 export class NoteResolver {
-  // TODO: Use @Authorized
+  @Authorized()
   @Query(() => [Note])
   async getNotes(@Arg('data') data: NoteSearchInput, @Ctx() ctx: Context) {
-    if (!ctx.user) {
-      return []
-    }
-
     return await ctx.prisma.note.findMany({
       where: {
-        ownerId: ctx.user.id,
+        ownerId: ctx.user?.id,
         title: {
           contains: data.title,
           mode: 'insensitive',
@@ -40,30 +36,24 @@ export class NoteResolver {
     })
   }
 
+  @Authorized()
   @Query(() => Note)
-  async getNote(@Arg('data') data: NoteIdInput, @Ctx() ctx: Context) {
-    if (!ctx.user) {
-      return null
-    }
-
-    return await ctx.prisma.note.findFirst({
+  async getNote(@Arg('data') data: NoteIdInput, @Ctx() context: Context) {
+    return await context.prisma.note.findFirst({
       where: {
-        ownerId: ctx.user.id,
+        ownerId: context.user?.id,
         id: data.id,
       },
     })
   }
 
+  @Authorized()
   @Mutation(() => Note)
   async updateNote(@Arg('data') data: UpdateNoteInput, @Ctx() ctx: Context) {
-    if (!ctx.user) {
-      return null
-    }
-
     // Check if the user has access to the note.
     const note = await ctx.prisma.note.findFirst({
       where: {
-        ownerId: ctx.user.id,
+        ownerId: ctx.user?.id,
         id: data.id,
       },
     })
@@ -86,19 +76,16 @@ export class NoteResolver {
     })
   }
 
+  @Authorized()
   @Mutation(() => Note)
   async createNote(@Arg('data') data: CreateNoteInput, @Ctx() ctx: Context) {
-    if (!ctx.user) {
-      return null
-    }
-
     const parsedNote = parseNote(data.note)
     if (parsedNote.error) {
       return null
     }
     delete parsedNote.error
     parsedNote.version = 1
-    parsedNote.ownerId = ctx.user.id
+    parsedNote.ownerId = ctx.user?.id
 
     return await ctx.prisma.note.create({ data: parsedNote as any })
   }

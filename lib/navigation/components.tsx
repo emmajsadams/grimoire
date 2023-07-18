@@ -11,8 +11,17 @@ import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { useMutation, gql } from '@apollo/client'
 
 import { AppProps } from 'pages/_app'
+
+const CREATE_NOTE_QUERY = gql`
+  mutation CreateNote($data: CreateNoteInput!) {
+    createNote(data: $data) {
+      id
+    }
+  }
+`
 
 const Search = styled('div')(({ theme }) => ({
   'position': 'relative',
@@ -59,23 +68,25 @@ export function PrimaryAppBar({
   searchQuery,
   setSearchQuery,
 }: PrimaryAppBarProps) {
+  const [updateNote, { data, loading, error }] = useMutation(CREATE_NOTE_QUERY)
   const router = useRouter()
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const isMenuOpen = Boolean(anchorEl)
-
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
-
   const handleMenuClose = () => {
     setAnchorEl(null)
   }
 
+  if (loading) return <>Updating note...</>
+  if (error) return <>Error creating new note...</>
+  if (data) {
+    router.push(`/notes/${data.createNote.id}?edit=true`)
+  }
+
   const menuId = 'primary-search-account-menu'
-  // TODO: add back logout  <MenuItem onClick={() => logout()}>Logout</MenuItem>
-  // TODO: also add back a display of the current user email and a link to user page
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -109,14 +120,21 @@ export function PrimaryAppBar({
       <MenuItem
         onClick={() => {
           handleMenuClose()
+          updateNote({
+            variables: {
+              data: {
+                note: '# ',
+              },
+            },
+          })
         }}
       >
         <Link href="/notes/new">New Note</Link>
       </MenuItem>
       <MenuItem
         onClick={() => {
-          localStorage.clear()
           handleMenuClose()
+          localStorage.clear()
         }}
       >
         <Link href="/login">Logout</Link>
