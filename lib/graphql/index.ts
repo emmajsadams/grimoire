@@ -16,7 +16,7 @@ const app = async () => {
     resolvers: [UserResolver, NoteResolver],
     scalarsMap: [{ type: GraphQLScalarType, scalar: DateTimeResolver }],
     validate: { forbidUnknownValues: false },
-    authChecker: ({ context }, _) => {
+    authChecker: ({ context }) => {
       if (context.user) {
         return true
       }

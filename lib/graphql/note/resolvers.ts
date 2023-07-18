@@ -17,31 +17,10 @@ export class NoteResolver {
   @Authorized()
   @Query(() => [Note])
   async getNotes(@Arg('data') data: NoteSearchInput, @Ctx() ctx: Context) {
-    const query = parseSearchQuery(data.query)
+    const query = parseSearchQuery(data.query) as any
+    query.where.ownerId = ctx.user?.id
 
-    let title = ''
-    if (query.title.length) {
-      title = query.title[0].value
-    }
-    // TODO: Finish supporting rest of query object
-    return await ctx.prisma.note.findMany({
-      where: {
-        ownerId: ctx.user?.id,
-        title: {
-          contains: title,
-          mode: 'insensitive',
-        },
-        status: data.status,
-      },
-      orderBy: [
-        {
-          due: 'asc',
-        },
-        {
-          createdAt: 'asc',
-        },
-      ],
-    })
+    return await ctx.prisma.note.findMany(query)
   }
 
   @Authorized()
@@ -74,14 +53,6 @@ export class NoteResolver {
       return null
     }
     delete parsedNote.error
-    parsedNote.version = (note.version || 0) + 1
-
-    return await ctx.prisma.note.update({
-      where: {
-        id: data.id,
-      },
-      data: parsedNote,
-    })
   }
 
   @Authorized()
