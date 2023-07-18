@@ -10,6 +10,12 @@ Will expand on each choice here eventually
 
 - https://typegraphql.com
 - https://www.apollographql.com/
+- https://cloud.digitalocean.com/ - hosting graphql server
+- https://www.prisma.io/docs/concepts/components/prisma-client/crud - PostgreSQL orm
+- https://www.howtographql.com/graphql-js/6-authentication/ - auth jwt guide
+- https://jwt.io/ guide
+- https://raw.githubusercontent.com/prisma/prisma-examples/latest/typescript/graphql-typegraphql/prisma/seed.ts prisma seed script
+- https://github.com/prisma/prisma-examples/blob/latest/typescript/graphql-typegraphql/src/UserResolver.ts user resolver example
 
 ## Local
 
@@ -18,6 +24,8 @@ Will expand on each choice here eventually
 ### Setup
 
 - Use a linux based operating system. Might work on windows, but I do not test on that.
+- Run `sudo apt-get update`
+- Run `sudo apt-get install -y build-essential python` for bcrypt
 - Install nvm https://github.com/nvm-sh/nvm
 - Clone this repository
 - `nvm install X` where X is the version of node in `.nvmrc`

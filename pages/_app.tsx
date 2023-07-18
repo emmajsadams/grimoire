@@ -17,13 +17,13 @@ const GET_AUTHORIZED_USER_WALLPAPER = gql`
   }
 `
 
-export const QueryContext = createContext('status:==:todo ')
+export const QueryContext = createContext('')
 
 export interface AppProps {}
 
 export function LoginContainer({ children }: any): JSX.Element {
   // TODO: Convert this to an object that contains the parsed search components maybe?
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState('status==todo ')
   const router = useRouter()
   const { data, loading, error } = useQuery(GET_AUTHORIZED_USER_WALLPAPER)
   if (loading) return <>Loading user....</>
