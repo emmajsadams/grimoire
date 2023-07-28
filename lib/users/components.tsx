@@ -30,7 +30,10 @@ export function ViewUser({ user }: { user: User }): JSX.Element {
           <b>Wallpaper URL:</b> {user.wallpaperUrl}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          <b>Calendar API Key:</b> {user.calendarApiKey}
+          <b>Calendar API Key:</b>{' '}
+          <a href={`/api/calendar/${user.calendarApiKey}`} target="_blank">
+            {user.calendarApiKey}
+          </a>
         </Typography>
       </CardContent>
     </Card>
