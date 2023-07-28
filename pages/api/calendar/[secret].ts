@@ -51,6 +51,7 @@ export default async function handler(
       return
     }
 
+    const today = moment.utc()
     const calendar = ical({
       name: 'Grimoire Notes Calendar',
       timezone: 'America/Los_Angeles',
@@ -61,16 +62,29 @@ export default async function handler(
         continue
       }
 
-      // TODO: investigate more properties to set. `alarms` in particular seemed valuable but was ignored by all cliens.
-      calendar.createEvent({
+      let noteDue = moment.utc(note.due)
+      let title = note.title
+      let allDay = note.allDay || false
+      if (noteDue.isBefore(today)) {
+        title = `OVERDUE: ${title}`
+        allDay = true
+        noteDue = today
+      }
+      const event: any = {
         id: note.id,
         start: moment.utc(note.due),
-        end: moment.utc(note.due).add(1, 'hours'), // TODO: allow duration to be specified
         allDay: note.allDay || false,
-        summary: note.title,
-        busystatus: ICalEventBusyStatus.BUSY, // TODO: allow use to specify busy status?
+        summary: title,
         url: `https://grimoireautomata.com/notes/${note.id}`,
-      })
+      }
+
+      if (!allDay) {
+        event.end = moment.utc(note.due).add(1, 'hours') // TODO: allow duration to be specified
+        event.busystatus = ICalEventBusyStatus.BUSY // TODO: allow use to specify busy status?
+      }
+
+      // TODO: investigate more properties to set. `alarms` in particular seemed valuable but was ignored by all cliens.
+      calendar.createEvent(event)
     }
 
     res.status(200).send(calendar.toString())
