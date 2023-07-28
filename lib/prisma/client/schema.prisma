@@ -5,21 +5,21 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  output = "../lib/prisma/client"
+  output   = "../lib/prisma/client"
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  password      String
-  image         String?
-  Note          Note[]
+  id             String    @id @default(cuid())
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  password       String
+  image          String?
+  Note           Note[]
   wallpaperUrl   String?
-  calendarApiKey String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  calendarApiKey String    @unique
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now()) @updatedAt
 }
 
 // TODO: Should note fields be required? Probably description for sure

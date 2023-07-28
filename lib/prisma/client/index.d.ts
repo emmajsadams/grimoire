@@ -24,7 +24,7 @@ export type User = {
   password: string
   image: string | null
   wallpaperUrl: string | null
-  calendarApiKey: string | null
+  calendarApiKey: string
   createdAt: Date
   updatedAt: Date
 }
@@ -1058,7 +1058,7 @@ export namespace Prisma {
     password: string
     image: string | null
     wallpaperUrl: string | null
-    calendarApiKey: string | null
+    calendarApiKey: string
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -3056,7 +3056,7 @@ export namespace Prisma {
     image?: StringNullableFilter | string | null
     Note?: NoteListRelationFilter
     wallpaperUrl?: StringNullableFilter | string | null
-    calendarApiKey?: StringNullableFilter | string | null
+    calendarApiKey?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
   }
@@ -3078,6 +3078,7 @@ export namespace Prisma {
   export type UserWhereUniqueInput = {
     id?: string
     email?: string
+    calendarApiKey?: string
   }
 
   export type UserOrderByWithAggregationInput = {
@@ -3107,7 +3108,7 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter | string
     image?: StringNullableWithAggregatesFilter | string | null
     wallpaperUrl?: StringNullableWithAggregatesFilter | string | null
-    calendarApiKey?: StringNullableWithAggregatesFilter | string | null
+    calendarApiKey?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
@@ -3190,7 +3191,7 @@ export namespace Prisma {
     image?: string | null
     Note?: NoteCreateNestedManyWithoutOwnerInput
     wallpaperUrl?: string | null
-    calendarApiKey?: string | null
+    calendarApiKey: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3204,7 +3205,7 @@ export namespace Prisma {
     image?: string | null
     Note?: NoteUncheckedCreateNestedManyWithoutOwnerInput
     wallpaperUrl?: string | null
-    calendarApiKey?: string | null
+    calendarApiKey: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3218,7 +3219,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     Note?: NoteUpdateManyWithoutOwnerNestedInput
     wallpaperUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    calendarApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    calendarApiKey?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3232,7 +3233,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     Note?: NoteUncheckedUpdateManyWithoutOwnerNestedInput
     wallpaperUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    calendarApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    calendarApiKey?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3245,7 +3246,7 @@ export namespace Prisma {
     password: string
     image?: string | null
     wallpaperUrl?: string | null
-    calendarApiKey?: string | null
+    calendarApiKey: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3258,7 +3259,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     wallpaperUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    calendarApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    calendarApiKey?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3271,7 +3272,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     wallpaperUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    calendarApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    calendarApiKey?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3955,7 +3956,7 @@ export namespace Prisma {
     password: string
     image?: string | null
     wallpaperUrl?: string | null
-    calendarApiKey?: string | null
+    calendarApiKey: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3968,7 +3969,7 @@ export namespace Prisma {
     password: string
     image?: string | null
     wallpaperUrl?: string | null
-    calendarApiKey?: string | null
+    calendarApiKey: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3991,7 +3992,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     wallpaperUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    calendarApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    calendarApiKey?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4004,7 +4005,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     wallpaperUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    calendarApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    calendarApiKey?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
