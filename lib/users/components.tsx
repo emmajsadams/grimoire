@@ -31,7 +31,11 @@ export function ViewUser({ user }: { user: User }): JSX.Element {
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           <b>Calendar API Key:</b>{' '}
-          <a href={`/api/calendar/${user.calendarApiKey}`} target="_blank">
+          <a
+            href={`/api/calendar/${user.calendarApiKey}`}
+            target="_blank"
+            rel="noreferrer"
+          >
             {user.calendarApiKey}
           </a>
         </Typography>
