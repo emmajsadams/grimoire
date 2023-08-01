@@ -36,11 +36,14 @@ export class NoteResolver {
 
   @Authorized()
   @Mutation(() => Note)
-  async updateNote(@Arg('data') data: UpdateNoteInput, @Ctx() ctx: Context) {
+  async updateNote(
+    @Arg('data') data: UpdateNoteInput,
+    @Ctx() context: Context,
+  ) {
     // Check if the user has access to the note.
-    const note = await ctx.prisma.note.findFirst({
+    const note = await context.prisma.note.findFirst({
       where: {
-        ownerId: ctx.user?.id,
+        ownerId: context.user?.id,
         id: data.id,
       },
     })
@@ -53,6 +56,15 @@ export class NoteResolver {
       return null
     }
     delete parsedNote.error
+    parsedNote.version = note.version + 1
+
+    console.log(parsedNote)
+    return await context.prisma.note.update({
+      where: {
+        id: note.id,
+      },
+      data: parsedNote,
+    })
   }
 
   @Authorized()

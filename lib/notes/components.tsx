@@ -126,15 +126,6 @@ const UPDATE_NOTE_QUERY = gql`
   mutation UpdateNote($data: UpdateNoteInput!) {
     updateNote(data: $data) {
       id
-      version
-      ownerId
-      description
-      title
-      status
-      due
-      allDay
-      createdAt
-      updatedAt
     }
   }
 `
@@ -150,6 +141,7 @@ export function ViewNoteCard(props: { id: string }): JSX.Element {
         id: id,
       },
     },
+    pollInterval: 500,
   })
   if (updateNoteResponse.loading) return <>Updating note...</>
   if (updateNoteResponse.error)
@@ -159,7 +151,6 @@ export function ViewNoteCard(props: { id: string }): JSX.Element {
   const note = data.getNote
 
   const allDayText = note.allDay ? '(all day)' : ''
-  const parsedNote = parseNote(note.description)
 
   const markNoteDone = () => {
     updateNote({
@@ -170,7 +161,6 @@ export function ViewNoteCard(props: { id: string }): JSX.Element {
         },
       },
     })
-    router.push('/notes/' + note.id)
   }
 
   return (
@@ -198,13 +188,6 @@ export function ViewNoteCard(props: { id: string }): JSX.Element {
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             <b>Version:</b> {note.version}
           </Typography>
-          {parsedNote.due ? (
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              <b>Due:</b> {formatTimeAgo(parsedNote.due as any)} {allDayText}
-            </Typography>
-          ) : (
-            <></>
-          )}
         </CardContent>
         <CardActions>
           <Button onClick={() => router.push(`/notes/${note.id}?edit=true`)}>
@@ -253,8 +236,9 @@ export function EditNoteCard(props: { id: string }): JSX.Element {
     updateNoteResponse.called &&
     !updateNoteResponse.error &&
     !updateNoteResponse.loading
-  )
+  ) {
     router.push('/notes/' + id)
+  }
 
   if (loading) return <>Loading notes....</>
   if (error) return <>{`Loading notes error! ${error.message}`}</>
