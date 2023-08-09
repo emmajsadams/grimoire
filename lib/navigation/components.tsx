@@ -68,7 +68,7 @@ export function PrimaryAppBar({
   searchQuery,
   setSearchQuery,
 }: PrimaryAppBarProps) {
-  const [updateNote, { data, loading, error }] = useMutation(CREATE_NOTE_QUERY)
+  const [createNote, { data, loading, error }] = useMutation(CREATE_NOTE_QUERY)
   const router = useRouter()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -120,7 +120,7 @@ export function PrimaryAppBar({
       <MenuItem
         onClick={() => {
           handleMenuClose()
-          updateNote({
+          createNote({
             variables: {
               data: {
                 note: '# ',
@@ -129,7 +129,7 @@ export function PrimaryAppBar({
           })
         }}
       >
-        <Link href="/notes/new">New Note</Link>
+        New Note
       </MenuItem>
       <MenuItem
         onClick={() => {
