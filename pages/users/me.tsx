@@ -31,8 +31,12 @@ const REGENERATE_CALENDAR_API_KEY = gql`
 
 const UserView: NextPage<any, any> = () => {
   const { data, loading, error } = useQuery(GET_AUTHORIZED_USER_QUERY)
-  const [regenerateCalendarApiKey, regenerateCalendarApiKeyResponse] =
-    useMutation(REGENERATE_CALENDAR_API_KEY)
+
+  // TODO: Add regenerate calendar key support
+  // const [regenerateCalendarApiKey, regenerateCalendarApiKeyResponse] = useQuery(
+  //   REGENERATE_CALENDAR_API_KEY,
+  // )
+
   if (loading) return <>Getting authorized user</>
   if (error) return <>{`Get error ${error.message}`}</>
 
