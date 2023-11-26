@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import { v4 as uuidv4 } from 'uuid'
 
 import { formatTimeAgo } from 'lib/datetime/utils'
 import { User } from 'lib/prisma/client'
 
 export function ViewUser({ user }: { user: User }): JSX.Element {
+  const [wallpaperUrl, setWallpaperUrl] = useState(user.wallpaperUrl)
+
   return (
     <Card variant="outlined" sx={{ minWidth: 275 }}>
       <CardContent>
@@ -39,6 +44,9 @@ export function ViewUser({ user }: { user: User }): JSX.Element {
             {user.calendarApiKey}
           </a>
         </Typography>
+        <Button onClick={() => setWallpaperUrl(uuidv4())}>
+          Regenerate Wallpaper URL
+        </Button>
       </CardContent>
     </Card>
   )

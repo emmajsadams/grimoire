@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery, useMutation, gql } from '@apollo/client'
 
 import { ViewUser } from 'lib/users/components'
 import { LoginContainer } from 'pages/_app'
@@ -21,8 +21,18 @@ const GET_AUTHORIZED_USER_QUERY = gql`
   }
 `
 
+const REGENERATE_CALENDAR_API_KEY = gql`
+  query RegenerateCalendarApiKey {
+    regenerateCalendarApiKey {
+      calendarApiKey
+    }
+  }
+`
+
 const UserView: NextPage<any, any> = () => {
   const { data, loading, error } = useQuery(GET_AUTHORIZED_USER_QUERY)
+  const [regenerateCalendarApiKey, regenerateCalendarApiKeyResponse] =
+    useMutation(REGENERATE_CALENDAR_API_KEY)
   if (loading) return <>Getting authorized user</>
   if (error) return <>{`Get error ${error.message}`}</>
 

@@ -15,7 +15,8 @@
     "test-coverage": "jest --coverage",
     "db": "prisma db push",
     "dev-graphql": "ts-node-dev -r tsconfig-paths/register --no-notify --respawn --transpile-only lib/graphql/index.ts",
-    "graphql": "ts-node -r tsconfig-paths/register lib/graphql/index.ts"
+    "graphql": "ts-node -r tsconfig-paths/register lib/graphql/index.ts",
+    "seed": "ts-node -r tsconfig-paths/register lib/scripts/seed.ts"
   },
   "dependencies": {
     "@apollo/client": "3.7.17",
