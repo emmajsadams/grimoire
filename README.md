@@ -48,3 +48,9 @@ Both services currently connect to the production PostgresSQL database. In the f
 - `NEXT_PUBLIC_GRAPHQL_URL`
   - Local=http://localhost:4000/graphql
   - Prod=https://octopus-app-p952p.ondigitalocean.app/
+
+## Currently Hosted
+
+- Next.js Frontend - Vercel https://vercel.com/${VERCEL_PROJECT_ID}/grimoire
+- PostgresSQL - SupaBase https://supabase.com/dashboard/project/${SUPABASE_PROJECT_ID}/settings/database
+- GraphQL Backend - DigitalOcean https://sea-turtle-app-ogwal.ondigitalocean.app/
