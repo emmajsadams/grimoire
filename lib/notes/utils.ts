@@ -135,12 +135,13 @@ function parseProperty(
     return false
   }
 
+  // NOTE: This breaks the done button so lets allow multiple metadata properties to be set. The last one is the correct value.
   // If the property is already set that means multiple of the same properties were added to the same note
   // which is not allowed.
-  if ((note as any)[property]) {
-    note.error += `${property} is already set.`
-    return true
-  }
+  // if ((note as any)[property]) {
+  //   note.error += `${property} is already set.`
+  //   return true
+  // }
 
   // Check if the property text is in the acceptable format
   const propertyText = lowerCaseTextContent.replace(`${property}:`, '').trim()

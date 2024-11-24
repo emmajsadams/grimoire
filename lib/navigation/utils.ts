@@ -6,11 +6,16 @@ export function parseSearchQuery(
 ): Prisma.NoteAggregateArgs {
   const query: Prisma.NoteAggregateArgs = {
     where: {
-      title: {
-        contains: '',
-        mode: 'insensitive',
+      NOT: {
+        OR: [
+          {
+            status: 'done',
+          },
+          {
+            status: 'deleted',
+          },
+        ],
       },
-      status: 'todo',
     },
     orderBy: [
       {
@@ -24,11 +29,19 @@ export function parseSearchQuery(
 
   const stringQueryParts = searchQuery.trim().split(' ')
   for (const stringQueryPart of stringQueryParts) {
-    if (stringQueryPart.startsWith('status==')) {
-      ;(query.where as any).status = stringQueryPart.replaceAll('status===', '')
+    if (!stringQueryPart) {
+      continue
     }
 
-    ;(query.where as any).title.contains += stringQueryPart
+    if (stringQueryPart.startsWith('status==')) {
+      ;(query.where as any).status = stringQueryPart.replaceAll('status==', '')
+      continue
+    }
+
+    ;(query.where as any).title = {
+      contains: stringQueryPart,
+      mode: 'insensitive',
+    }
   }
 
   return query

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -21,10 +21,7 @@ import { formatTimeAgo } from 'lib/datetime/utils'
 import ClientOnly from 'lib/graphql/clientOnly'
 import { Note } from 'lib/prisma/client'
 import { NoteSearchInput } from 'lib/graphql/note/model'
-
-interface NotesProps {
-  searchQuery: string
-}
+import { QueryContext } from 'pages/_app'
 
 const GET_NOTES_QUERY = gql`
   query GetNotes($data: NoteSearchInput!) {
@@ -43,7 +40,8 @@ const GET_NOTES_QUERY = gql`
   }
 `
 
-export function NotesCard({ searchQuery }: NotesProps) {
+export function NotesCard() {
+  const searchQuery = useContext(QueryContext)
   const noteSearchInput: NoteSearchInput = {
     query: searchQuery,
   }

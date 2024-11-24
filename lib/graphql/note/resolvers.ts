@@ -58,7 +58,6 @@ export class NoteResolver {
     delete parsedNote.error
     parsedNote.version = note.version + 1
 
-    console.log(parsedNote)
     return await context.prisma.note.update({
       where: {
         id: note.id,
@@ -80,4 +79,22 @@ export class NoteResolver {
 
     return await ctx.prisma.note.create({ data: parsedNote as any })
   }
+
+  // TODO: Work on import.
+  // @Authorized()
+  // @Mutation(() => [Note])
+  // async importNotes(@Arg('data') data: ImportNotesInput, @Ctx() ctx: Context) {
+  //   const notes: Note[] = []
+  //   for (const note in data.notes.split('#//')) {
+  //     const parsedNote = parseNote(note)
+  //     delete parsedNote.error
+  //     parsedNote.version = 1
+  //     parsedNote.ownerId = ctx.user?.id
+  //     if (parsedNote.error) {
+  //       return null
+  //     }
+  //   }
+
+  //   return await ctx.prisma.note.createMany({ data: notes as any })
+  // }
 }

@@ -14,7 +14,6 @@ export class UserResolver {
     @Arg('data') data: UserLoginInput,
     @Ctx() ctx: Context,
   ): Promise<string> {
-    console.log(data)
     const user = await ctx.prisma.user.findUnique({
       where: { email: data.email },
     })

@@ -8,7 +8,6 @@ import { LoginContainer, QueryContext } from 'pages/_app'
 // TODO: create a scaffold test notes feature for dev!
 // TODO: Redirect to -> /notes by default and move NotesLists to that page
 const Home: NextPage<any, any> = () => {
-  const query = useContext(QueryContext)
   return (
     <LoginContainer>
       <Head>
@@ -18,7 +17,7 @@ const Home: NextPage<any, any> = () => {
       </Head>
 
       <main>
-        <NotesCard searchQuery={query} />
+        <NotesCard />
       </main>
     </LoginContainer>
   )

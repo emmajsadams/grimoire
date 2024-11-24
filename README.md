@@ -54,3 +54,37 @@ Both services currently connect to the production PostgresSQL database. In the f
 - Next.js Frontend - Vercel https://vercel.com/${VERCEL_PROJECT_ID}/grimoire
 - PostgresSQL - SupaBase https://supabase.com/dashboard/project/${SUPABASE_PROJECT_ID}/settings/database
 - GraphQL Backend - DigitalOcean https://sea-turtle-app-ogwal.ondigitalocean.app/
+
+## DigitalOcean Spec
+
+```
+alerts:
+- rule: DEPLOYMENT_FAILED
+- rule: DOMAIN_FAILED
+features:
+- buildpack-stack=ubuntu-22
+ingress:
+  rules:
+  - component:
+      name: grimoire
+    match:
+      path:
+        prefix: /
+name: sea-turtle-app
+region: sfo
+services:
+- build_command: npm run build
+  environment_slug: node-js
+  envs:
+# REDACTED JUST USE PREFILLED FROM ENVIRONMENT ENVS #
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: emmajsadams/grimoire
+  http_port: 4000
+  instance_count: 1
+  instance_size_slug: apps-s-1vcpu-1gb-fixed
+  name: grimoire
+  run_command: npm run graphql
+  source_dir: /
+```

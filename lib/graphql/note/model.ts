@@ -62,3 +62,10 @@ export class CreateNoteInput {
   @Field()
   note: string
 }
+
+// TODO: work on import notes
+// @InputType()
+// export class ImportNotesInput {
+//   @Field()
+//   notes: string
+// }
