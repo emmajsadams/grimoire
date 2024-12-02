@@ -31,7 +31,7 @@
     "bcrypt": "^5.1.0",
     "chrono-node": "^2.3.8",
     "class-validator": "0.14.0",
-    "graphql": "16.7.1",
+    "graphql": "16.8.1",
     "graphql-scalars": "1.22.2",
     "ical-generator": "^3.4.3",
     "javascript-time-ago": "^2.5.4",
